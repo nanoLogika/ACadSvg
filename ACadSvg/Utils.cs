@@ -9,6 +9,9 @@ using ACadSharp;
 using ACadSharp.Entities;
 using ACadSharp.Tables;
 using CSMath;
+
+using SvgElements;
+
 using System.Text;
 
 
