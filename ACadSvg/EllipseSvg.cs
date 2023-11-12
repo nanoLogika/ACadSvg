@@ -12,12 +12,20 @@ using SvgElements;
 namespace ACadSvg {
 
 	/// <summary>
-	/// Represents an SVG <i>ellipse</i> converted from an ACad <see cref="Ellipse"/> entity.
+	/// Represents an SVG element converted from an ACad <see cref="Ellipse"/> entity.
+	/// The <see cref="Ellipse"/> entity is converted into a <i>ellipse</i> element.
 	/// </summary>
 	internal class EllipseSvg : EntitySvg {
 
 		private Ellipse _ellipse;
 
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="EllipseSvg"/> class
+		/// for the specified <see cref="Ellipse"/> entity.
+		/// </summary>
+		/// <param name="ellipse">The <see cref="Ellipse"/> entity to be converted.</param>
+		/// <param name="ctx">This parameter is not used in this class.</param>
 		public EllipseSvg(Entity ellipse, ConversionContext ctx) {
 			_ellipse = (Ellipse)ellipse;
 			SetStandardIdAndClassIf(ellipse, ctx);

@@ -11,7 +11,11 @@ using SvgElements;
 
 namespace ACadSvg {
 
-    internal class Polyline3DSvg : EntitySvg {
+	/// <summary>
+	/// Represents an SVG element converted from an ACad <see cref="Polyline3D"/> entity.
+	/// The <see cref="Polyline3D"/> entity is converted into a <i>path</i> element.
+	/// </summary>
+	internal class Polyline3DSvg : EntitySvg {
 
         private Polyline3D _polyline;
 

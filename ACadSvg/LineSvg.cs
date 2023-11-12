@@ -11,6 +11,10 @@ using SvgElements;
 
 namespace ACadSvg {
 
+    /// <summary>
+    /// Represents an SVG element converted from an ACad <see cref="Line"/> entity.
+    /// The <see cref="Line"/> entity is converted into a <i>path</i> element.
+    /// </summary>
     internal class LineSvg : EntitySvg {
 
         private Line _line;

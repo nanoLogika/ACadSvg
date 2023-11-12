@@ -13,7 +13,9 @@ namespace ACadSvg {
 
 
 	/// <summary>
-	/// 
+	/// Represents an SVG element converted from an ACad <see cref="TextEntity"/>.
+	/// The <see cref="TextEntity"/> is converted into a <i>text</i> element, somtime
+	/// containing one <i>tspan</i> element.
 	/// </summary>
     internal class TextEntitySvg : EntitySvg {
 

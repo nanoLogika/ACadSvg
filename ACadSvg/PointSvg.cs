@@ -10,6 +10,13 @@ using SvgElements;
 
 
 namespace ACadSvg {
+
+    // TODO Should the point radius be configurable or evaluated from the drawing size?
+
+    /// <summary>
+    /// Represents an SVG element converted from an ACad <see cref="Point"/> entity.
+    /// The <see cref="Point"/> entity is converted into a <i>circle</i> element.
+    /// </summary>
     internal class PointSvg : EntitySvg {
 
         private Point _point;

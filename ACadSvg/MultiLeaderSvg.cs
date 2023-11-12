@@ -18,6 +18,17 @@ using static ACadSharp.Objects.MultiLeaderAnnotContext;
 
 namespace ACadSvg {
 
+    /// <summary>
+    /// Represents an SVG element converted from an ACad <see cref="MultiLeader"/> entity.
+    /// The <see cref="MultiLeader"/> entity is converted into a complex element including
+    /// several <i>path</i> elements for the for the leader line and optionlly a dog-leg.
+    /// A standard arrowhead can be constituted by a filled path element. Other standrd
+    /// arrowheads or custom arrowheds can be contituted by the entities from a
+    /// <see cref="BlockRecord"/> evolving into a <i>use</i> element.
+    /// The informational content of the <see cref="MultiLeader"/> can either be a multiline
+    /// text contituted by a <i>text</i> element with one or more <i>tspn</i> elements or
+    /// custom content from a <see cref="BlockRecord"/> evolving into a <i>use</i> element.
+    /// </summary>
     internal class MultiLeaderSvg : EntitySvg {
 
         private MultiLeader _multiLeader;

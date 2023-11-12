@@ -17,24 +17,46 @@ using SvgElements;
 namespace ACadSvg {
 
     /// <summary>
-    /// The base class for classes representing converted ACad Entities.
+    /// The base class for classes representing converted ACad entities.
     /// </summary>
     public abstract class EntitySvg {
 
+        /// <summary>
+        /// Gets or sets a value for the <i>id</i> attribute
+        /// </summary>
         public string ID { get; set; }
 
 
+        /// <summary>
+        /// Gets or sets a value for the <i>class</i> attribute
+        /// </summary>
         public string Class { get; set; }
 
 
+        /// <summary>
+        /// Gets a value indicating whether this entity is to be skipped
+        /// and excluded from the conversion. The standard value is <b>false</b>.
+        /// A derived class may implement a contion to exclude the entity from
+        /// conversion.
+        /// </summary>
         public virtual bool Skip {
             get { return false; }
         }
 
 
+        /// <summary>
+        /// Gets or sets a comment text that is to be created as comment element
+        /// before this element.
+        /// </summary>
         public string Comment { get; set; }
 
 
+        /// <summary>
+        /// Converts  list of ACad entities to SVG elements.
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <param name="ctx"></param>
+        /// <returns></returns>
         protected static IList<EntitySvg> ConvertEntitiesToSvg(IList<Entity> entities, ConversionContext ctx) {
 
             IList<EntitySvg> convertedEntities = new List<EntitySvg>();
@@ -136,8 +158,7 @@ namespace ACadSvg {
         /// property.
         /// </summary>
         /// <param name="entity">The AutoCAD-DWG entity to be converterd.</param>
-        /// <param name="groupsInDefs">The list of blocks and patterns can be used by
-        /// <see cref="Hatch"/> entities.</param>
+        /// <param name="ctx">The conversion context provides several options and data required for the conversion.</param>
         /// <returns>An entity-specific converter object or null if the entity to be
         /// converted is not supported.</returns>
         /// 
@@ -211,6 +232,12 @@ namespace ACadSvg {
         }
 
 
+        /// <summary>
+        /// Creates a <see cref="SvgElement"/> object and sets values for the attributes
+        /// <i>viewbox</i>, <i>stroke</i>, <i>strike-width</i>, and <i>fill</i>.
+        /// </summary>
+        /// <param name="ctx">The conversion context provides several options and the values for the attributes to create.</param>
+        /// <returns>The ctreated <see cref="SvgElement"/>.</returns>
         public static SvgElementBase CreateSVG(
             ConversionContext ctx,
             bool strokeEnabled,

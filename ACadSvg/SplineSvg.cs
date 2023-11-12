@@ -11,7 +11,13 @@ using SvgElements;
 
 namespace ACadSvg {
 
-    internal class SplineSvg : EntitySvg {
+	/// <summary>
+	/// Represents an SVG element converted from an ACad <see cref="Spline"/> entity.
+	/// The <see cref="Spline"/> entity is converted into a <i>path</i> element.
+	/// The <i>path</i> element aproximates the spline curve by a polygon. This should
+	/// be improved soon.
+	/// </summary>
+	internal class SplineSvg : EntitySvg {
 
         private Spline _spline;
 

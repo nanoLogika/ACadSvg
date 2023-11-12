@@ -11,7 +11,13 @@ using System.Xml.Linq;
 
 namespace ACadSvg {
 
-	public class PatternSvg : GroupSvg {
+    /// <summary>
+    /// Represents an SVG element converted from an ACad <see cref="BlockRecord"/> table entry
+    /// that is used as a pattern to fill a shape of a <see cref="Hatch"/> entity.
+    /// The <see cref="BlockRecord"/> associated with the <see cref="Hatch"/> entity is
+    /// converted into a <i>pattern</i> element.
+    /// </summary>
+    public class PatternSvg : GroupSvg {
 
 		public string Width { get; set; } = "0";
 

@@ -13,9 +13,19 @@ using System.Xml.Linq;
 
 namespace ACadSvg {
 
-	/// <summary>
-	/// Represents an SVG element converted from an ACad <see cref="Hatch"/> entity.
-	/// </summary>
+    /// <summary>
+    /// Represents an SVG element converted from an ACad <see cref="Hatch"/> entity.
+    /// The <see cref="Hatch"/> entity is converted into one complex <i>path</i> element
+    /// for the shape. The contour of the shape is invisible. The pattern to fill the
+    /// shape is referenced by the <i>fill</i> attribute linking to a <i>pattern</i>
+    /// member in the <i>defs</i> section.
+    /// </summary>
+    /// <remarks><para>
+    /// The pattern to fill the shape either has been created before and is found in
+    /// the the <see cref="ConversionContext.BlocksInDefs"/> list in the
+    /// <see cref="ConversionContext"/> or has to be created during the intializtion
+    /// of this object and stored in the <see cref="ConversionContext.BlocksInDefs"/> list.
+    /// </para></remarks>
     internal class HatchSvg : EntitySvg {
 
         private Hatch _hatch;
@@ -27,9 +37,9 @@ namespace ACadSvg {
 		/// for the specified <see cref="Hatch"/> entity.
         /// </summary>
         /// <param name="hatch">The <see cref="Hatch"/> entity to be converted.</param>
-        /// <param name="ctx">The conversion context, contains the list of groups representing
-        /// <see cref="GroupSvg"/> objects representing <see cref="BlockRecords"/>.
-        /// Hatch patterns required by this <see cref="Hatch"/> can be added.
+        /// <param name="ctx">The conversion context; the <see cref="ConversionContext.BlocksInDefs"/>
+        /// in the <see cref="ConversionContext"/> also contains patterns to be used
+        /// to fill the hatch shape.
         /// </param>
         public HatchSvg(Entity hatch, ConversionContext ctx) {
             _hatch = (Hatch)hatch;
@@ -50,7 +60,6 @@ namespace ACadSvg {
                 IList<Hatch.BoundaryPath.Edge> edges = sortHatchEdges2(boundaryPath.Edges, out Dictionary<Hatch.BoundaryPath.Edge, bool> edgeReverse);
 
                 int ellarcCounter = 0;
-
                 bool first = true;
 
                 foreach (var edge in edges) {
