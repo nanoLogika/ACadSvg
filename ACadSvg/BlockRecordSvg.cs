@@ -32,7 +32,7 @@ namespace ACadSvg {
     public class BlockRecordSvg : GroupSvg {
 
 		private BlockRecord _blockRecord;
-
+        private ConversionContext _ctx;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="BlockRecord"/> is to be skipped
@@ -48,6 +48,7 @@ namespace ACadSvg {
 		public BlockRecordSvg(BlockRecord blockRecord, ConversionContext ctx) {
 
 			_blockRecord = blockRecord;
+            _ctx = ctx;
 
 			ctx.ConversionInfo.Log($"{_blockRecord.Handle.ToString("X")}: Start Block: {blockRecord.Name}");
 
@@ -85,12 +86,12 @@ namespace ACadSvg {
                     };
                     //  Add "free-entities subblock" and convert the remaining entities
                     Children.Add(childGroupSvg);
+                    childGroupSvg.Children.AddRange(ConvertEntitiesToSvg(blockRecordEntities, ctx));
                 }
             }
-
-            //  Add the ... TODO see above
-            GroupSvg targetGroupSvg = childGroupSvg == null ? this : childGroupSvg;
-            targetGroupSvg.Children.AddRange(ConvertEntitiesToSvg(blockRecordEntities, ctx));
+            else {
+                this.Children.AddRange(ConvertEntitiesToSvg(blockRecordEntities, ctx));
+            }
 
             if (dynamicBLock != null) {
                 if (blockRecord.Entities.Count > 0) {

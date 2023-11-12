@@ -464,9 +464,9 @@ namespace ACadSvg {
                         .WithFont(fontFamily, fontSize, bold, italic)
                         .WithTextAnchor(textAnchor)
                         .WithTspans(tspans)
-                        .AddRotate(rot, textLocX, textLocY)
                         .WithFill(ColorUtils.GetHtmlTextColor(_multiLeader, textColor))
-                        .ReverseY();
+                        .ReverseY()
+                        .AddRotate(rot, textLocX, textLocY);
                 groupElement.Children.Add(textElement);
 
                 if (_multiLeader.TextFrame) {
