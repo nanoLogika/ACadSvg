@@ -49,14 +49,13 @@ namespace ACadSvg {
 			double rx;
 			double ry;
 			if (ep.X < 0.0001) {
-				ry = Math.Abs(cy - ec.Y);
+				ry = Math.Abs(cy - ep.Y);
 				rx = ry * rr;
 			}
 			else {
-				rx = Math.Abs(cx - ec.X);
+				rx = Math.Abs(cx - ep.X);
 				ry = rx * rr;
 			}
-
 
 			return new EllipseElement() { Cx = cx, Cy = cy, Rx = rx, Ry = ry }
 				.WithID(ID)
