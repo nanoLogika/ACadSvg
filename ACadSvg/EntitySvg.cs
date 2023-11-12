@@ -5,12 +5,12 @@
 //  See LICENSE file in the project root for full license information.
 #endregion
 
-using System.Globalization;
 using System.Text;
 
 using ACadSharp;
 using ACadSharp.Entities;
 using ACadSharp.Tables.Collections;
+
 using SvgElements;
 
 
@@ -145,9 +145,17 @@ namespace ACadSvg {
             if (ctx.ConversionOptions.ExportHandleAsID) {
                 ID = entity.Handle.ToString("X");
             }
+            Class = string.Empty;
             if (ctx.ConversionOptions.ExportLayerAsClass) {
                 string className = Utils.CleanBlockName(entity.Layer.Name);
-                Class = className;
+                Class += className;
+            }
+            if (ctx.ConversionOptions.ExportObjectTypeAsClass) {
+                string objectType = Utils.GetObjectType(entity);
+                if (!string.IsNullOrEmpty(Class)) {
+                    Class += " ";
+                }
+                Class += objectType;
             }
         }
 
@@ -238,28 +246,24 @@ namespace ACadSvg {
         /// </summary>
         /// <param name="ctx">The conversion context provides several options and the values for the attributes to create.</param>
         /// <returns>The ctreated <see cref="SvgElement"/>.</returns>
-        public static SvgElementBase CreateSVG(
-            ConversionContext ctx,
-            bool strokeEnabled,
-            string stroke,
-            double strokeWidth,
-            bool fillEnabled,
-            string fill) {
+        public static SvgElement CreateSVG(ConversionContext ctx) {
 
-            SvgElementBase svgElement = new SvgElement()
-                .WithViewbox(
-					ctx.ViewboxData.MinX,
-					ctx.ViewboxData.MinY,
-					ctx.ViewboxData.Width,
-					ctx.ViewboxData.Height)
-				.WithID("svg-element");
+            SvgElement svgElement = new SvgElement() { ID = "svg-element" };
 
-            if (strokeEnabled) {
-                svgElement.WithStroke(stroke, strokeWidth);
+            if (ctx.ViewboxData.Enabled) {
+                svgElement.WithViewbox(
+                    ctx.ViewboxData.MinX,
+                    ctx.ViewboxData.MinY,
+                    ctx.ViewboxData.Width,
+                    ctx.ViewboxData.Height);
             }
 
-            if (fillEnabled) {
-                svgElement.WithFill(fill);
+            if (ctx.GlobalAttributeData.StrokeEnabled) {
+                svgElement.WithStroke(ctx.GlobalAttributeData.Stroke, ctx.GlobalAttributeData.StrokeWidth);
+            }
+
+            if (ctx.GlobalAttributeData.FillEnabled) {
+                svgElement.WithFill(ctx.GlobalAttributeData.Fill);
             }
             else {
                 svgElement.WithFill("none");
