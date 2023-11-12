@@ -148,7 +148,7 @@ namespace ACadSvg {
             Class = string.Empty;
             if (ctx.ConversionOptions.ExportLayerAsClass) {
                 string className = Utils.CleanBlockName(entity.Layer.Name);
-                Class += className;
+                Class += "L_" + className;
             }
             if (ctx.ConversionOptions.ExportObjectTypeAsClass) {
                 string objectType = Utils.GetObjectType(entity);
