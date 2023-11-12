@@ -6,6 +6,9 @@
 #endregion
 
 using ACadSharp.Entities;
+
+using CSMath;
+
 using SvgElements;
 
 
@@ -38,26 +41,20 @@ namespace ACadSvg {
 			var ec = _ellipse.Center;
 			var rr = _ellipse.RadiusRatio;
 			var ep = _ellipse.EndPoint;
+			var ep2 = new XY(ep.X, ep.Y);
 
-			//    ep defines the length of the large axis
-			//    ep.x = 0 means lage axis parallel to y
-			//    ep.y = 0 means lage axis parallel to x
-			//  both != 0 we need a transform in SVG, since svg ellipse only supports cx, ca, rx, rx
+			//  ep defines the length and rolation of the large axis
 
 			var cx = ec.X;
 			var cy = ec.Y;
-			double rx;
-			double ry;
-			if (ep.X < 0.0001) {
-				ry = Math.Abs(cy - ep.Y);
-				rx = ry * rr;
-			}
-			else {
-				rx = Math.Abs(cx - ep.X);
-				ry = rx * rr;
-			}
+			double rx = ep2.GetLength();
+			double ry = rx * rr;
+			double rot = ep2.GetAngle();
+			double sa = _ellipse.StartParameter;
+			double ea = _ellipse.EndParameter;
 
-			return new EllipseElement() { Cx = cx, Cy = cy, Rx = rx, Ry = ry }
+			return new PathElement()
+				.AddMoveAndArc(cx, cy, sa, ea, rx, ry, rot)
 				.WithID(ID)
 				.WithClass(Class)
 				.WithStroke(ColorUtils.GetHtmlColor(_ellipse, _ellipse.Color));
