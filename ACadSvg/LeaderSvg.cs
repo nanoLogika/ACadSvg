@@ -6,6 +6,9 @@
 #endregion
 
 using ACadSharp.Entities;
+
+using CSMath;
+
 using SvgElements;
 
 
@@ -40,11 +43,37 @@ namespace ACadSvg {
 
         /// <inheritdoc />
         public override SvgElementBase ToSvgElement() {
-            return new PathElement()
+            GroupElement groupElement = new GroupElement();
+            groupElement.WithID(ID).WithClass(Class);
+
+            var lineColor = ColorUtils.GetHtmlColor(_leader, _leader.Color);
+            var vertices = _leader.Vertices;
+
+            var leaderLine = new PathElement()
                 .AddPoints(Utils.VerticesToArray(_leader.Vertices))
-                .WithID(ID)
-                .WithClass(Class)
-                .WithStroke(ColorUtils.GetHtmlColor(_leader, _leader.Color));
-		}
+                .WithStroke(lineColor);
+            groupElement.Children.Add(leaderLine);
+
+            if (_leader.ArrowHeadEnabled) {
+                var dimStyle = _leader.Style;
+                var arrowColor = lineColor;
+                var record = GetExtendedData(_leader, "ACAD", "DSTYLE", 41);
+                double arrowSize;
+                if (record != null) {
+                    arrowSize = (double)record.Value;
+                }
+                else {
+                    var sf = dimStyle.ScaleFactor;
+                    arrowSize = dimStyle.ArrowSize * 250;  //  Why is this scaler necessary 
+                }
+                var arrowDirection = (vertices[0] - vertices[1]).Normalize() * arrowSize;
+                var arrowHead = XElementFactory.CreateStandardArrowHead(vertices[0], arrowDirection, arrowColor);
+
+                groupElement.Children.Add(arrowHead);
+            }
+
+            return groupElement;
+
+        }
     }
 }
