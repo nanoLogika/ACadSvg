@@ -6,6 +6,8 @@
 #endregion
 
 using ACadSharp.Entities;
+using CSMath;
+
 using SvgElements;
 
 
@@ -36,17 +38,26 @@ namespace ACadSvg {
 
 		/// <inheritdoc />
 		public override SvgElementBase ToSvgElement() {
-			if (_spline.ControlPoints.Count == 0) {
-				return null;
+			if (_spline.ControlPoints.Count > 0) {
+				return new PathElement()
+					.AddPoints(Utils.VerticesToArray(_spline.ControlPoints))
+					.WithID(ID)
+					.WithClass(Class)
+					.WithStroke(ColorUtils.GetHtmlColor(_spline, _spline.Color))
+					.WithStrokeDashArray(Utils.LineToDashArray(_spline, _spline.LineType));
+			}
+			else if (_spline.FitPoints != null) {
+				XY[] fitPoints = Utils.XYZToXYArray(_spline.FitPoints.ToArray());
+				XY[] curve = SplineUtils.InterpolateXY(fitPoints, fitPoints.Length * 10);
+				return new PathElement()
+					.AddPoints(Utils.VerticesToArray(curve))
+					.WithID(ID)
+					.WithClass(Class)
+					.WithStroke(ColorUtils.GetHtmlColor(_spline, _spline.Color))
+					.WithStrokeDashArray(Utils.LineToDashArray(_spline, _spline.LineType));
 			}
 
-			return new PathElement()
-				.AddPoints(Utils.VerticesToArray(_spline.ControlPoints))
-				.AddPoints(false, Utils.VerticesToArray(_spline.FitPoints))
-				.WithID(ID)
-				.WithClass(Class)
-				.WithStroke(ColorUtils.GetHtmlColor(_spline, _spline.Color))
-				.WithStrokeDashArray(Utils.LineToDashArray(_spline, _spline.LineType));
+			return null;
 		}
     }
 }
