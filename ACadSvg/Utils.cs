@@ -19,19 +19,49 @@ namespace ACadSvg {
 
 	internal static class Utils {
 
-		public static double[] VerticesToArray(IList<XYZ> list) {
-			List<double> result = new List<double>();
-
-			foreach (XYZ v in list) {
-				result.Add(v.X);
-				result.Add(v.Y);
-			}
-
-			return result.ToArray();
-		}
+        public static XY[] XYZToXYArray(XYZ[] xyzs) {
+            XY[] xys = new XY[xyzs.Length];
+            for (int i = 0; i < xyzs.Length; i++) {
+                xys[i] = new XY(xyzs[i].X, xyzs[i].Y);
+            }
+            return xys;
+        }
 
 
-		public static double[] VerticesToArray(IList<LwPolyline.Vertex> list) {
+        public static XYZ[] XYToXYZArray(XY[] xysOut) {
+            XYZ[] xyzsOut = new XYZ[xysOut.Length];
+            for (int i = 0; i < xysOut.Length; i++) {
+                xyzsOut[i] = new XYZ(xysOut[i].X, xysOut[i].Y, 0);
+            }
+            return xyzsOut;
+        }
+
+
+        public static double[] VerticesToArray(IList<XY> list) {
+            List<double> result = new List<double>();
+
+            foreach (XYZ v in list) {
+                result.Add(v.X);
+                result.Add(v.Y);
+            }
+
+            return result.ToArray();
+        }
+
+
+        public static double[] VerticesToArray(IList<XYZ> list) {
+            List<double> result = new List<double>();
+
+            foreach (XYZ v in list) {
+                result.Add(v.X);
+                result.Add(v.Y);
+            }
+
+            return result.ToArray();
+        }
+
+
+        public static double[] VerticesToArray(IList<LwPolyline.Vertex> list) {
 			List<double> result = new List<double>();
 
 			foreach (LwPolyline.Vertex v in list) {
