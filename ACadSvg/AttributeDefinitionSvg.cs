@@ -11,11 +11,21 @@ using SvgElements;
 
 namespace ACadSvg {
 
+    /// <summary>
+    /// Represents an SVG element converted from an ACad <see cref="AttributeDefinition"/> entity.
+    /// Conversion of this entity is not yet supported.
+    /// </summary>
     internal class AttributeDefinitionSvg : EntitySvg {
 
         private AttributeDefinition _attributeDefinition;
 
 
+        /// <summary>
+		/// Initializes a new instance of the <see cref="AttributeDefinitionSvg"/> class
+		/// for the specified <see cref="AttributeDefinition"/> entity.
+        /// </summary>
+        /// <param name="attributeDefinition">The <see cref="AttributeDefinition"/> entity to be converted.</param>
+        /// <param name="ctx">This parameter is not used in this class.</param>
         public AttributeDefinitionSvg(Entity attributeDefinition, ConversionContext ctx) {
             _attributeDefinition = (AttributeDefinition)attributeDefinition;
         }
@@ -30,7 +40,7 @@ namespace ACadSvg {
 
         /// <inheritdoc />
         public override string ToSvg() {
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

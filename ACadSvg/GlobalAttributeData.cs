@@ -54,9 +54,11 @@ namespace ACadSvg {
             double scaleY,
             double rot) {
 
-			Stroke = strokeEnabled ? strokeColor.Name : string.Empty;
+			StrokeEnabled = strokeEnabled;
+			Stroke = strokeColor.Name;
 			StrokeWidth = strokeWidth;
-			Fill = fillEnabled ? fillColor.Name : "none";
+			FillEnabled = fillEnabled;
+			Fill = fillColor.Name;
 			TransX = transX;
 			TransY = transY;
 			ScaleX = scaleX;

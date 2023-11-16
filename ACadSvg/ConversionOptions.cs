@@ -19,6 +19,9 @@ namespace ACadSvg {
 		public bool ExportLayerAsClass { get; set; } = true;
 
 
+		public bool ExportObjectTypeAsClass { get; set; } = true;
+
+
 		public bool EnableComments { get; set; } = true;
 	}
 }

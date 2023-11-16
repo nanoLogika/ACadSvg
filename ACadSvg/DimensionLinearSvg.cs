@@ -14,11 +14,27 @@ using CSMath;
 
 namespace ACadSvg {
 
+    /// <summary>
+    /// Represents an SVG element converted from an ACad <see cref="DimensionLinear"/> entity.
+    /// The <see cref="DimensionLinear"/> entity is complex element including several <i>path</i>
+    /// elements for the dimension lines, extension lines, filled <i>path</i> elements for the
+    /// standard arrowheads, and finally  <i>text</i> element for the mesurement.
+    /// </summary>
+    /// <remarks><para>
+    /// The converter for the <see cref="DimensionLinear"/> entity is not yet fully implemented.
+    /// Only vertical dimension lines and standard arrowheads are supported.
+    /// </para></remarks>
     internal class DimensionLinearSvg : EntitySvg {
 
         private DimensionLinear _linDim;
 
 
+        /// <summary>
+		/// Initializes a new instance of the <see cref="DimensionLinearSvg"/> class
+		/// for the specified <see cref="DimensionLinear"/> entity.
+        /// </summary>
+        /// <param name="linDim">The <see cref="DimensionLinear"/> entity to be converted.</param>
+        /// <param name="ctx">This parameter is not used in this class.</param>
         public DimensionLinearSvg(Entity linDim, ConversionContext ctx) {
             _linDim = (DimensionLinear)linDim;
             SetStandardIdAndClassIf(linDim, ctx);

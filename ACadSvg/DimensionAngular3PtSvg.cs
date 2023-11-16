@@ -13,11 +13,27 @@ using CSMath;
 
 namespace ACadSvg {
 
+    /// <summary>
+    /// Represents an SVG element converted from an ACad <see cref="DimensionAngular3Pt"/> entity.
+    /// The <see cref="DimensionAngular3Pt"/> entity is converted into a complex element including
+    /// several <i>path</i> elements for the dimension-line arc, extension lines, filled <i>path</i>
+    /// elements for the standard arrowheads, and finally a <i>text</i> element for the mesurement.
+    /// </summary>
+    /// <remarks><para>
+    /// The converter for the <see cref="DimensionAngular3Pt"/> entity is not yet fully implemented.
+    /// Currently no arrowheads other than teh standard arrow are supported.
+    /// </para></remarks>
     internal class DimensionAngular3PtSvg : EntitySvg {
 
         private DimensionAngular3Pt _ang3PtDim;
 
 
+        /// <summary>
+		/// Initializes a new instance of the <see cref="DimensionAngular3PtSvg"/> class
+		/// for the specified <see cref="DimensionAngular3Pt"/> entity.
+        /// </summary>
+        /// <param name="ang3PtDim">The <see cref="DimensionAngular3Pt"/> entity to be converted.</param>
+        /// <param name="ctx">This parameter is not used in this class.</param>
         public DimensionAngular3PtSvg(Entity ang3PtDim, ConversionContext ctx) {
             _ang3PtDim = (DimensionAngular3Pt)ang3PtDim;
             SetStandardIdAndClassIf(ang3PtDim, ctx);

@@ -11,7 +11,11 @@ using SvgElements;
 
 namespace ACadSvg {
 
-    internal class SolidSvg : EntitySvg {
+	/// <summary>
+	/// Represents an SVG element converted from an ACad <see cref="Solid"/> entity.
+	/// The <see cref="Solid"/> entity is converted into a closed <i>path</i> element.
+	/// </summary>
+	internal class SolidSvg : EntitySvg {
 
         private Solid _solid;
 

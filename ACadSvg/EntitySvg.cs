@@ -5,36 +5,59 @@
 //  See LICENSE file in the project root for full license information.
 #endregion
 
-using System.Globalization;
 using System.Text;
 
 using ACadSharp;
 using ACadSharp.Entities;
+using ACadSharp.Tables;
 using ACadSharp.Tables.Collections;
+
 using SvgElements;
 
 
 namespace ACadSvg {
 
     /// <summary>
-    /// The base class for classes representing converted ACad Entities.
+    /// The base class for classes representing converted ACad entities.
     /// </summary>
     public abstract class EntitySvg {
 
+        /// <summary>
+        /// Gets or sets a value for the <i>id</i> attribute
+        /// </summary>
         public string ID { get; set; }
 
 
+        /// <summary>
+        /// Gets or sets a value for the <i>class</i> attribute
+        /// </summary>
         public string Class { get; set; }
 
 
+        /// <summary>
+        /// Gets a value indicating whether this entity is to be skipped
+        /// and excluded from the conversion. The standard value is <b>false</b>.
+        /// A derived class may implement a contion to exclude the entity from
+        /// conversion.
+        /// </summary>
         public virtual bool Skip {
             get { return false; }
         }
 
 
+        /// <summary>
+        /// Gets or sets a comment text that is to be created as comment element
+        /// before this element.
+        /// </summary>
         public string Comment { get; set; }
 
 
+        /// <summary>
+        /// Converts  list of ACad entities to SVG elements.
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <param name="ctx"></param>
+        /// <returns></returns>
         protected static IList<EntitySvg> ConvertEntitiesToSvg(IList<Entity> entities, ConversionContext ctx) {
 
             IList<EntitySvg> convertedEntities = new List<EntitySvg>();
@@ -62,7 +85,6 @@ namespace ACadSvg {
             ExtendedDataDictionary extendedData = entity.ExtendedData;
             var doc = entity.Document;
             AppIdsTable appIds = doc.AppIds;
-            //var appId = appIds["AcDbBlockRepETag"];
             foreach (var appId in appIds) {
                 if (extendedData.ContainsKey(appId)) {
                     exdSb.AppendLine();
@@ -77,6 +99,81 @@ namespace ACadSvg {
             }
 
             return exdSb.ToString();
+        }
+
+
+        /// <summary>
+        /// Gets a record from an <see cref="ExtendedData"/> dictionary with the specified
+        /// <see cref="AppId"/> name and 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="appIdName"></param>
+        /// <param name="entryName"></param>
+        /// <param name="field"></param>
+        /// <returns>A <see cref="ExtendedDataRecord"/> or null when the specified record was not found.</returns>
+        /// <remarks>
+        /// <para>
+        /// An <see cref="ExtendedDataRecord"/> contains a <see cref="ExtendedDataRecord.Code"/>
+        /// and a <see cref="ExtendedDataRecord.Value"/>. The Code indicates the type of the value.
+        /// The record provides no information about the meaning of the value. We assume that the
+        /// preceding record tells what the value of the value ist to be used for. The <paramref name="field"/>
+        /// is the value of the preceding field, thus specified the next record to be returned.
+        /// </para><para>
+        /// Example:
+        /// </para><para>
+        /// When in AutoCAD for a LEADER a custom arrowsize is set, the value appears in an
+        /// <see cref="ExtendedData"/> dictionary associated with the <see cref="AppId"/> having the
+        /// name <i>ACAD</i>. The <see cref="ExtendedData"/> entries contain a list of
+        /// <see cref="ExtendedDataRecord"/> records. The first record contains the name
+        /// <i>DSTYLE</i>. One of the next records contains the desired arrowsize. The
+        /// preceding record contains the value <i>41</i>. We believe that this indicates that the
+        /// desired data are in the next record.
+        /// </para>
+        /// </remarks>
+        protected ExtendedDataRecord GetExtendedData(Entity entity, string appIdName, string entryName, short field) {
+            ExtendedData extendedData = getExtendedDataDictionary(entity, appIdName, entryName);
+            bool fieldFound = false;
+            foreach (ExtendedDataRecord record in extendedData.Data) {
+                if (record.Code == DxfCode.ExtendedDataInteger16 && (short)record.Value == field) {
+                    fieldFound = true;
+                }
+                else if (fieldFound) {
+                    //  If preceding record matched.
+                    return record;
+                }
+            }
+            return null;
+        }
+
+
+        //protected ExtendedDataRecord GetExtendedData(Entity entity, string appIdName, int index) {
+        //    ExtendedData extendedData = getExtendedDataDictionary(entity, appIdName, "");
+        //    return extendedData.Data[index];
+        //}
+
+
+        private ExtendedData getExtendedDataDictionary(Entity entity, string appIdName, string entryName) {
+            ExtendedDataDictionary extendedDataDict = entity.ExtendedData;
+            var doc = entity.Document;
+            AppIdsTable appIds = doc.AppIds;
+
+            AppId appIdByName = null;
+            foreach (var appId in appIds) {
+                if (appId.Name == appIdName) {
+                    appIdByName = appId;
+                    break;
+                }
+            }
+            if (appIdByName == null) {
+                return null;
+            }
+            if (!extendedDataDict.TryGet(appIdByName, out ExtendedData extendedDataValue)) {
+                return null;
+            }
+            if (!string.IsNullOrEmpty(entryName) && extendedDataValue.Data[0].Value.ToString() != entryName) {
+                return null;
+            }
+            return extendedDataValue;
         }
 
 
@@ -123,9 +220,17 @@ namespace ACadSvg {
             if (ctx.ConversionOptions.ExportHandleAsID) {
                 ID = entity.Handle.ToString("X");
             }
+            Class = string.Empty;
             if (ctx.ConversionOptions.ExportLayerAsClass) {
                 string className = Utils.CleanBlockName(entity.Layer.Name);
-                Class = className;
+                Class += "L_" + className;
+            }
+            if (ctx.ConversionOptions.ExportObjectTypeAsClass) {
+                string objectType = Utils.GetObjectType(entity);
+                if (!string.IsNullOrEmpty(Class)) {
+                    Class += " ";
+                }
+                Class += objectType;
             }
         }
 
@@ -136,8 +241,7 @@ namespace ACadSvg {
         /// property.
         /// </summary>
         /// <param name="entity">The AutoCAD-DWG entity to be converterd.</param>
-        /// <param name="groupsInDefs">The list of blocks and patterns can be used by
-        /// <see cref="Hatch"/> entities.</param>
+        /// <param name="ctx">The conversion context provides several options and data required for the conversion.</param>
         /// <returns>An entity-specific converter object or null if the entity to be
         /// converted is not supported.</returns>
         /// 
@@ -211,28 +315,30 @@ namespace ACadSvg {
         }
 
 
-        public static SvgElementBase CreateSVG(
-            ConversionContext ctx,
-            bool strokeEnabled,
-            string stroke,
-            double strokeWidth,
-            bool fillEnabled,
-            string fill) {
+        /// <summary>
+        /// Creates a <see cref="SvgElement"/> object and sets values for the attributes
+        /// <i>viewbox</i>, <i>stroke</i>, <i>strike-width</i>, and <i>fill</i>.
+        /// </summary>
+        /// <param name="ctx">The conversion context provides several options and the values for the attributes to create.</param>
+        /// <returns>The ctreated <see cref="SvgElement"/>.</returns>
+        public static SvgElement CreateSVG(ConversionContext ctx) {
 
-            SvgElementBase svgElement = new SvgElement()
-                .WithViewbox(
-					ctx.ViewboxData.MinX,
-					ctx.ViewboxData.MinY,
-					ctx.ViewboxData.Width,
-					ctx.ViewboxData.Height)
-				.WithID("svg-element");
+            SvgElement svgElement = new SvgElement() { ID = "svg-element" };
 
-            if (strokeEnabled) {
-                svgElement.WithStroke(stroke, strokeWidth);
+            if (ctx.ViewboxData.Enabled) {
+                svgElement.WithViewbox(
+                    ctx.ViewboxData.MinX,
+                    ctx.ConversionOptions.ReverseY ? ctx.ViewboxData.MinY - ctx.ViewboxData.Height : ctx.ViewboxData.MinY,
+                    ctx.ViewboxData.Width,
+                    ctx.ViewboxData.Height);
             }
 
-            if (fillEnabled) {
-                svgElement.WithFill(fill);
+            if (ctx.GlobalAttributeData.StrokeEnabled) {
+                svgElement.WithStroke(ctx.GlobalAttributeData.Stroke, ctx.GlobalAttributeData.StrokeWidth);
+            }
+
+            if (ctx.GlobalAttributeData.FillEnabled) {
+                svgElement.WithFill(ctx.GlobalAttributeData.Fill);
             }
             else {
                 svgElement.WithFill("none");

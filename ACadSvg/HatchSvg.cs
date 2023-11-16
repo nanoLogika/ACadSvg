@@ -13,9 +13,19 @@ using System.Xml.Linq;
 
 namespace ACadSvg {
 
-	/// <summary>
-	/// Represents an SVG element converted from an ACad <see cref="Hatch"/> entity.
-	/// </summary>
+    /// <summary>
+    /// Represents an SVG element converted from an ACad <see cref="Hatch"/> entity.
+    /// The <see cref="Hatch"/> entity is converted into one complex <i>path</i> element
+    /// for the shape. The contour of the shape is invisible. The pattern to fill the
+    /// shape is referenced by the <i>fill</i> attribute linking to a <i>pattern</i>
+    /// member in the <i>defs</i> section.
+    /// </summary>
+    /// <remarks><para>
+    /// The pattern to fill the shape either has been created before and is found in
+    /// the the <see cref="ConversionContext.BlocksInDefs"/> list in the
+    /// <see cref="ConversionContext"/> or has to be created during the intializtion
+    /// of this object and stored in the <see cref="ConversionContext.BlocksInDefs"/> list.
+    /// </para></remarks>
     internal class HatchSvg : EntitySvg {
 
         private Hatch _hatch;
@@ -27,17 +37,16 @@ namespace ACadSvg {
 		/// for the specified <see cref="Hatch"/> entity.
         /// </summary>
         /// <param name="hatch">The <see cref="Hatch"/> entity to be converted.</param>
-        /// <param name="ctx">The conversion context, contains the list of groups representing
-        /// <see cref="GroupSvg"/> objects representing <see cref="BlockRecords"/>.
-        /// Hatch patterns required by this <see cref="Hatch"/> can be added.
+        /// <param name="ctx">The conversion context; the <see cref="ConversionContext.BlocksInDefs"/>
+        /// in the <see cref="ConversionContext"/> also contains patterns to be used
+        /// to fill the hatch shape.
         /// </param>
         public HatchSvg(Entity hatch, ConversionContext ctx) {
             _hatch = (Hatch)hatch;
-            SetStandardIdAndClassIf(hatch, ctx);
-
             _ctx = ctx;
+            createHatchPattern();
 
-            ToSvgElement();
+            SetStandardIdAndClassIf(hatch, ctx);
         }
 
 
@@ -50,7 +59,6 @@ namespace ACadSvg {
                 IList<Hatch.BoundaryPath.Edge> edges = sortHatchEdges2(boundaryPath.Edges, out Dictionary<Hatch.BoundaryPath.Edge, bool> edgeReverse);
 
                 int ellarcCounter = 0;
-
                 bool first = true;
 
                 foreach (var edge in edges) {
@@ -155,55 +163,30 @@ namespace ACadSvg {
             }
 
             string hatchPatternName = _hatch.Pattern.Name;
+            return path
+                .Close()
+                .WithID(ID)
+                .WithClass(Class)
+                .WithStroke("none").WithFillURL($"#{hatchPatternName}");
+        }
 
-            //  If we did not add the referenced pattern before ...
-            //  -  Add well-known ANSI31 or Concrete Pattern or
-            //  -  create new pattern from data
-            if (!_ctx.BlocksInDefs.Contains(hatchPatternName)) {
-                PatternSvg patternSvg = null;
 
-                if (_hatch.Pattern.Name == "ANSI31") {
-                    patternSvg = new PatternSvg();
-                    patternSvg.ID = _hatch.Pattern.Name;
-                    patternSvg.Width = "16";
-                    patternSvg.Height = "16";
-                    patternSvg.Elements.Add(XElement.Parse($"<path d=\"M -4,4 l 8,-8 M 0,16 l 16,-16 M 12,20 l 8,-8\"></path>"));
-                }
-                else if (hatchPatternName == "CONC") {
-                    patternSvg = new PatternSvg();
-                    patternSvg.ID = _hatch.Pattern.Name;
-                    patternSvg.Width = $"{_hatch.Pattern.Scale}%";
-                    patternSvg.Height = $"{_hatch.Pattern.Scale}%";
-                    patternSvg.Rotation = 45; // TODO: patternTransform
-
-                    string pattern = Resources.concrete_pattern;
-                    using (StringReader stringReader = new StringReader(pattern)) {
-                        string line;
-                        while ((line = stringReader.ReadLine()) != null) {
-                            patternSvg.Elements.Add(XElement.Parse(line));
-                        }
-                    }
-
-                    //  TODO: Check pattern name for concrete
-                    /*
-					hatchPatternSb.AppendLine($"<pattern id=\"{hatchPatternName}\" x=\"0\" y=\"0\" width=\"{_hatch.Pattern.Scale}%\" height=\"{_hatch.Pattern.Scale}%\" patternTransform=\"rotate(45)\">");
-                    hatchPatternSb.AppendLine(Resources.concrete_pattern);
-                    hatchPatternSb.AppendLine("</pattern>");
-                    */
-                }
-                else {
-                    //foreach (HatchPattern.Line line in _hatch.Pattern.Lines) {
-                    //    hatchPatternSb.AppendLine($"    <path transform=\"rotate({_hatch.Pattern.Angle})\" d=\"M {line.BasePoint.X} {line.BasePoint.Y} L {-line.Offset.X} {line.Offset.Y}\"></path>".Replace(",", "."));
-                    //    hatchPatternSb.AppendLine($"    <path transform=\"rotate({45})\" d=\"M {line.BasePoint.X} {line.BasePoint.Y} L {-line.Offset.X * 2} {line.Offset.Y * 2}\" fill=\"url(#" + _hatch.Pattern.Name + ")\"></path>".Replace(",", "."));
-                    //}
-                }
-
-                if (patternSvg != null) {
-                    _ctx.BlocksInDefs.Items.Add(patternSvg);
-                }
+        private void createHatchPattern() {
+            string hatchPatternName = _hatch.Pattern.Name;
+            
+            //  If we added the referenced pattern before ...
+            if (_ctx.BlocksInDefs.Contains(hatchPatternName)) {
+                return;
             }
 
-            return path.Close().WithID(ID).WithStroke("none").WithFillURL($"#{hatchPatternName}");
+            //  otherwise; create the pattern
+            string patternColor = ColorUtils.GetHtmlColor(_hatch, _hatch.Color);
+            PatternSvg patternSvg = new PatternSvg(_hatch.Pattern, patternColor);
+ 
+            //  If the pattern has been successfully created add it into the defs section.
+            if (patternSvg.Valid) {
+                _ctx.BlocksInDefs.Items.Add(patternSvg);
+            }
         }
 
 

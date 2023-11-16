@@ -11,6 +11,10 @@ using SvgElements;
 
 namespace ACadSvg {
 
+    /// <summary>
+    /// Represents an SVG element converted from an ACad <see cref="Insert"/> entity.
+    /// The <see cref="Insert"/> is converted into a <i>use</i> element.
+    /// </summary>
     internal class InsertSvg : EntitySvg {
 
         private Insert _insert;

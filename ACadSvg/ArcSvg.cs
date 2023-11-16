@@ -12,14 +12,21 @@ using SvgElements;
 namespace ACadSvg {
 
 	/// <summary>
-	/// Represents an SVG <i>arc</i> converted from an ACad <see cref="Arc"/> entity.
+	/// Represents an SVG element converted from an ACad <see cref="Arc"/> entity.
+	/// The <see cref="Arc"/> entity is converted into a <i>path</i> element.
 	/// </summary>
 	internal class ArcSvg : EntitySvg {
 
         private Arc _arc;
 
 
-        public ArcSvg(Entity arc, ConversionContext ctx) {
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ArcSvg"/> class
+		/// for the specified <see cref="Arc"/> entity.
+		/// </summary>
+		/// <param name="arc">The <see cref="Arc"/> entity to be converted.</param>
+		/// <param name="ctx">This parameter is not used in this class.</param>
+		public ArcSvg(Entity arc, ConversionContext ctx) {
             _arc = (Arc)arc;
 			SetStandardIdAndClassIf(arc, ctx);
 		}

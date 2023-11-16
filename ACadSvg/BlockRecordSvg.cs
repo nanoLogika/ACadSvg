@@ -11,12 +11,35 @@ using ACadSharp.Tables;
 
 
 namespace ACadSvg {
+    //  TODO refactor
 
-	public class BlockRecordSvg : GroupSvg {
+    /// <summary>
+    /// Represents an SVG element converted from an ACad <see cref="BlockRecord"/> table entry.
+    /// The <see cref="BlockRecord"/> is converted into a <i>g</i> element. A <see cref="BlockRecord"/>
+    /// may be associated wit a <see cref="BlockVisibilityParameter"/> object that defines subsets
+    /// of entities that are converted to subordinate <i>g</i> elements.
+    /// </summary>
+    /// <remarks><para>
+    /// The implementation of ths class is not complete:
+    /// </para>
+    /// <list type="bullet"> <item>
+    /// The conversion is executed in the constructor, the ToSvgElement() method is missing.
+    /// </item><item>
+    /// Currently a fixed pattern for the <see cref="Skip"/> condtion is used:
+    /// Block records are skipped, when the name starts with "*".
+    /// </item></list>
+    /// </remarks>
+    public class BlockRecordSvg : GroupSvg {
 
 		private BlockRecord _blockRecord;
+        private ConversionContext _ctx;
 
-
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="BlockRecord"/> is to be skipped
+        /// and excluded from the conversion. The conversion ist to be skipped when the
+        /// block name matches a pattern, defined in the conversion options
+        /// (<see cref="ConversionContext"/>).
+        /// </summary>
 		public override bool Skip {
 			get { return ID.StartsWith("*"); }
 		}
@@ -25,6 +48,7 @@ namespace ACadSvg {
 		public BlockRecordSvg(BlockRecord blockRecord, ConversionContext ctx) {
 
 			_blockRecord = blockRecord;
+            _ctx = ctx;
 
 			ctx.ConversionInfo.Log($"{_blockRecord.Handle.ToString("X")}: Start Block: {blockRecord.Name}");
 
@@ -53,7 +77,6 @@ namespace ACadSvg {
                 //  It is not known whether all entities of the block record appear in
                 //  the dynamic block. Thus create an additonal group to collect the
                 //  rest. Add the "free-entities subblock" as subgroup.
-                //  NOTE: 
                 foreach (Entity entity in dynamicBLock.Entities) {
                     blockRecordEntities.Remove(entity);
                 }
@@ -61,13 +84,14 @@ namespace ACadSvg {
                     childGroupSvg = new GroupSvg() {
                         ID = $"{ID}_visible"
                     };
+                    //  Add "free-entities subblock" and convert the remaining entities
                     Children.Add(childGroupSvg);
+                    childGroupSvg.Children.AddRange(ConvertEntitiesToSvg(blockRecordEntities, ctx));
                 }
             }
-
-            //  Add the ... TODO see above
-            GroupSvg targetGroupSvg = childGroupSvg == null ? this : childGroupSvg;
-            targetGroupSvg.Children.AddRange(ConvertEntitiesToSvg(blockRecordEntities, ctx));
+            else {
+                this.Children.AddRange(ConvertEntitiesToSvg(blockRecordEntities, ctx));
+            }
 
             if (dynamicBLock != null) {
                 if (blockRecord.Entities.Count > 0) {

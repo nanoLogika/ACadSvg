@@ -11,6 +11,21 @@ using SvgElements;
 
 
 namespace ACadSvg {
+
+	/// <summary>
+	/// Represents an SVG element converted from an ACad <see cref="MText"/> entity.
+	/// The <see cref="MText"/> is converted into a <i>text</i> element, containing
+	/// one or more <i>tspan</i> elements.
+	/// </summary>
+	/// <remarks><para>
+	/// The <see cref="MText"/> entity stores multiline text in a single string property.
+	/// Paragraphs, formatting an styling is coded using a proprietary markup format.
+	/// (See, e.g. https://ezdxf.readthedocs.io/en/stable/dxfinternals/entities/mtext.html).
+	/// </para><para>
+	/// The text is parsed end converted in a series od <i>tespan</i> with attributes
+	/// to reflect the coded formatting and styles as good as possible.
+	/// </para>
+	/// </remarks>
     internal class MTextSvg : EntitySvg {
 
         private MText _mText;
