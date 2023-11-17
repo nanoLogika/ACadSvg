@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs
+/ACadSvg/obj
+/ACadSvg.Test/bin/Debug/net6.0
+/ACadSvg.Test/obj
