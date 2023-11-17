@@ -7,7 +7,6 @@
 
 
 using System.Runtime.Serialization;
-
 using CSMath;
 
 namespace ACadSvg {
@@ -32,16 +31,16 @@ namespace ACadSvg {
             double meanDistance = inputDistances.Last() / (count - 1);
             double[] evenDistances = Enumerable.Range(0, count).Select(x => x * meanDistance).ToArray();
 
-            return Interpolate(inputDistances, xys, evenDistances);
+            return interpolate(inputDistances, xys, evenDistances);
         }
 
 
-        private static XY[] Interpolate(double[] inputDistances, XY[] xyOrig, double[] evenDistances) {
+        private static XY[] interpolate(double[] inputDistances, XY[] xyOrig, double[] evenDistances) {
 
             (double[] xs, double[] ys) = fromXYArray(xyOrig);
 
-            double[] xsOut = Interpolate(inputDistances, xs, evenDistances);
-            double[] ysOut = Interpolate(inputDistances, ys, evenDistances);
+            double[] xsOut = interpolate(inputDistances, xs, evenDistances);
+            double[] ysOut = interpolate(inputDistances, ys, evenDistances);
 
             XY[] xysOut = toXYArray(xsOut, ysOut);
 
@@ -69,7 +68,7 @@ namespace ACadSvg {
         }
 
 
-        private static double[] Interpolate(double[] xOrig, double[] yOrig, double[] xInterp) {
+        private static double[] interpolate(double[] xOrig, double[] yOrig, double[] xInterp) {
             (double[] a, double[] b) = FitMatrix(xOrig, yOrig);
 
             double[] yInterp = new double[xInterp.Length];
