@@ -20,6 +20,7 @@ namespace ACadSvg {
     internal class TextEntitySvg : EntitySvg {
 
         private TextEntity _text;
+		private ConversionContext _ctx;
 
 
 		/// <summary>
@@ -30,6 +31,8 @@ namespace ACadSvg {
 		/// <param name="ctx">This parameter is not used in this class.</param>
 		public TextEntitySvg(Entity text, ConversionContext ctx) {
             _text = (TextEntity)text;
+			_ctx = ctx;
+
 			SetStandardIdAndClassIf(text, ctx);
 		}
 
@@ -46,7 +49,7 @@ namespace ACadSvg {
 				.WithValue(_text.Value)
 				.WithStroke("none")
 				.WithFill(ColorUtils.GetHtmlTextColor(_text, _text.Color))
-				.ReverseY()
+				.ReverseY(_ctx.ConversionOptions.ReverseY)
 				.WithID(ID)
 				.WithClass(Class);
 		}

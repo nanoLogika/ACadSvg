@@ -37,6 +37,8 @@ namespace ACadSvg {
         private MultiLeaderPropertyOverrideFlags _flags;
         private LeaderRoot _leaderRoot;
 
+        private ConversionContext _ctx;
+
 
         /// <summary>
 		/// Initializes a new instance of the <see cref="MultiLeaderSvg"/> class
@@ -46,6 +48,8 @@ namespace ACadSvg {
         /// <param name="ctx">This parameter is not used in this class.</param>
         public MultiLeaderSvg(Entity multiLeader, ConversionContext ctx) {
             _multiLeader = (MultiLeader)multiLeader;
+            _ctx = ctx;
+
             SetStandardIdAndClassIf(multiLeader, ctx);
 
 
@@ -465,7 +469,7 @@ namespace ACadSvg {
                         .WithTextAnchor(textAnchor)
                         .WithTspans(tspans)
                         .WithFill(ColorUtils.GetHtmlTextColor(_multiLeader, textColor))
-                        .ReverseY()
+                        .ReverseY(_ctx.ConversionOptions.ReverseY)
                         .AddRotate(rot, textLocX, textLocY);
                 groupElement.Children.Add(textElement);
 

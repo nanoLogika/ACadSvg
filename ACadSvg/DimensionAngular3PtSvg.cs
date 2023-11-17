@@ -26,6 +26,7 @@ namespace ACadSvg {
     internal class DimensionAngular3PtSvg : EntitySvg {
 
         private DimensionAngular3Pt _ang3PtDim;
+        private ConversionContext _ctx;
 
 
         /// <summary>
@@ -36,6 +37,8 @@ namespace ACadSvg {
         /// <param name="ctx">This parameter is not used in this class.</param>
         public DimensionAngular3PtSvg(Entity ang3PtDim, ConversionContext ctx) {
             _ang3PtDim = (DimensionAngular3Pt)ang3PtDim;
+            _ctx = ctx;
+
             SetStandardIdAndClassIf(ang3PtDim, ctx);
         }
 
@@ -119,7 +122,7 @@ namespace ACadSvg {
                 .WithStroke("none")
                 .WithFill(textColor)
                 .WithComment("DIMENSION_ANG_3_Pt")
-                .ReverseY()
+                .ReverseY(_ctx.ConversionOptions.ReverseY)
                 .AddRotate(rot, midX, midY));
 
             return groupElement;

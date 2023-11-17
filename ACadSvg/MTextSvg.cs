@@ -29,6 +29,7 @@ namespace ACadSvg {
     internal class MTextSvg : EntitySvg {
 
         private MText _mText;
+		private ConversionContext _ctx;
 
 
 		/// <summary>
@@ -39,6 +40,8 @@ namespace ACadSvg {
 		/// <param name="ctx">This parameter is not used in this class.</param>
 		public MTextSvg(Entity mText, ConversionContext ctx) {
             _mText = (MText)mText;
+			_ctx = ctx;
+
 			SetStandardIdAndClassIf(mText, ctx);
 		}
 
@@ -62,7 +65,7 @@ namespace ACadSvg {
 				.WithTspans(TextUtils.ConvertMTextToHtml(iX, iY, _mText.Value, textSize, textStyle))
 				.WithFill(ColorUtils.GetHtmlTextColor(_mText, _mText.Color))
 				.AddRotate(rot, iX, iY)
-				.ReverseY()
+				.ReverseY(_ctx.ConversionOptions.ReverseY)
 				.WithID(ID)
 				.WithClass(Class);
 		}

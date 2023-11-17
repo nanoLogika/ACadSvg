@@ -27,6 +27,7 @@ namespace ACadSvg {
     internal class DimensionLinearSvg : EntitySvg {
 
         private DimensionLinear _linDim;
+        private ConversionContext _ctx;
 
 
         /// <summary>
@@ -37,6 +38,8 @@ namespace ACadSvg {
         /// <param name="ctx">This parameter is not used in this class.</param>
         public DimensionLinearSvg(Entity linDim, ConversionContext ctx) {
             _linDim = (DimensionLinear)linDim;
+            _ctx = ctx;
+
             SetStandardIdAndClassIf(linDim, ctx);
 		}
 
@@ -129,7 +132,7 @@ namespace ACadSvg {
                 .WithValue(text)
                 .WithStroke("none")
                 .WithFill(textColor)
-                .ReverseY()
+                .ReverseY(_ctx.ConversionOptions.ReverseY)
                 .AddRotate(textRot, textMidX, textMidY));
 
             return groupElement;
