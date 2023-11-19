@@ -8,8 +8,37 @@ The converter supports many AutoCAD entities such as Arc, Circle, Dimensions, El
 Use the [ACad SVG Studio](https://github.com/nanoLogika/ACadSvgStudio) to load and convert DWG documents and view the converted SVG.
 
 ## Code Example
+```c#
 
+using ACadSvg;
+using SvgElements;
 
+//  Create conversion context assuming standard conversion options.
+//  The conversion context also receives the conversion log.
+//  See/use ACadSvgStudio to learn more about conversion options.
+ConversionContext ctx = new ConversionContext();
+
+string path = "sample.dwg";
+DocumentSvg docSvg = ACadLoader.LoadDwg(path, ctx);
+
+//  Get an object representing a SVG group containing the converted
+//  entities that are not member of a BlockRecord.
+SvgElementBase mainGroup = docSvg.MainGroupToSvgElement();
+
+//  Get an object representing a SVG defs element containing the converted
+//  BlockRecord objects found in DWG.
+SvgElementBase defs = docSvg.DefsToSvgElement();
+
+//  Create an empty SVG element
+SvgElement svg = DocumentSvg.CreateSVG(ctx);
+
+//  Convert the SVG objects to Text
+string mainGroupSvg = mainGroup.ToString();
+string defsSvg = defs.ToString();
+
+Console.WriteLine(ctx.ConversionInfo.Log);
+Console.WriteLine(ctx.ConversionInfo.OccurringEntitiesLog);
+```
 
 ## WIP
 The converter does not support all AutoCAD entities. Entitiy types that could not be converted, either because the conversion is not implemented in ACad/SVG or the DWG reader is not implemented in ACadSharp are listed in the conversion log.
