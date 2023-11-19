@@ -41,7 +41,7 @@ namespace ACadSvg {
 			/// </summary>
 			Skipped,
 			/// <summary>
-			/// The conversion of an entity could not be supressed because
+			/// The conversion of an entity could not be processed because
 			/// the entity is not supported by ACadSharp.
 			/// </summary>
 			NotSupported
@@ -72,11 +72,26 @@ namespace ACadSvg {
 		public SortedSet<string> OccurringEntities { get; } = new SortedSet<string>();
 
 
-		/// <summary>
-		/// Gets the complete log from the last converion.
-		/// </summary>
-		/// <returns></returns>
-		public string GetLog() {
+        /// <summary>
+        /// Gets the logged of <see cref="OccurringEntities"/> as string.
+        /// </summary>
+        /// <returns>
+        /// A multiline string containing the log logged occurring entities.
+        /// </returns>
+        public string GetOccurringEntitiesLog() {
+			StringBuilder sb = new StringBuilder();
+			foreach (string entity in OccurringEntities) {
+				sb.AppendLine(entity);
+			}
+			return sb.ToString();
+		}
+
+
+        /// <summary>
+        /// Returns the log from the last conversion.
+        /// </summary>
+        /// <returns>A multiline string containing the log entries.</returns>
+        public string GetLog() {
 			return _logSb.ToString();
 		}
 
