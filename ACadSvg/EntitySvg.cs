@@ -313,38 +313,5 @@ namespace ACadSvg {
                 return null;
             }
         }
-
-
-        /// <summary>
-        /// Creates a <see cref="SvgElement"/> object and sets values for the attributes
-        /// <i>viewbox</i>, <i>stroke</i>, <i>strike-width</i>, and <i>fill</i>.
-        /// </summary>
-        /// <param name="ctx">The conversion context provides several options and the values for the attributes to create.</param>
-        /// <returns>The ctreated <see cref="SvgElement"/>.</returns>
-        public static SvgElement CreateSVG(ConversionContext ctx) {
-
-            SvgElement svgElement = new SvgElement() { ID = "svg-element" };
-
-            if (ctx.ViewboxData.Enabled) {
-                svgElement.WithViewbox(
-                    ctx.ViewboxData.MinX,
-                    ctx.ConversionOptions.ReverseY ? ctx.ViewboxData.MinY - ctx.ViewboxData.Height : ctx.ViewboxData.MinY,
-                    ctx.ViewboxData.Width,
-                    ctx.ViewboxData.Height);
-            }
-
-            if (ctx.GlobalAttributeData.StrokeEnabled) {
-                svgElement.WithStroke(ctx.GlobalAttributeData.Stroke, ctx.GlobalAttributeData.StrokeWidth);
-            }
-
-            if (ctx.GlobalAttributeData.FillEnabled) {
-                svgElement.WithFill(ctx.GlobalAttributeData.Fill);
-            }
-            else {
-                svgElement.WithFill("none");
-            }
-
-            return svgElement;
-        }
     }
 }
