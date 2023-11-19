@@ -13,15 +13,16 @@ namespace ACadSvg {
 
     /// <summary>
     /// This loader provides methods to read AutoCAD files and convert
-    /// AutoCAD <see cref="Entities"/> and to a <see cref="DocumentSvg"/>
+    /// AutoCAD <see cref="Entities"/> and related objects
+    /// to a <see cref="DocumentSvg"/>
     /// object. The DocumentSvg returns a XML/SVG structure.
     /// </summary>
     /// <remarks>
     /// Currently only DWG files can be red.
     /// </remarks>
-    public class ACadLoader {
+    public static class ACadLoader {
 
-        public DocumentSvg LoadDwg(string path, ConversionContext ctx) {
+        public static DocumentSvg LoadDwg(string path, ConversionContext ctx) {
             ctx.ConversionInfo.Log($"Loading DWG from \"{path}\" started");
             CadDocument doc = DwgReader.Read(path);
 			DocumentSvg docSvg = new DocumentSvg(doc, ctx);
