@@ -4,6 +4,8 @@ ACad/SVG is a library to convert AutoCAD DWG documents to SVG. DWG documents are
 
 The converter supports many AutoCAD entities such as Arc, Circle, Dimensions, Ellipse, Hatch, Insert, Leader, Line, LwPolyline, MText, Multileader, Spline, TextEntity. The converter focuses on converting the block structure, especially dynamic blocks, rather than just converting a drawing.
 
+SVG text is created using [SvgElements](https://github.com/nanoLogika/SvgElements)
+
 ## Getting Started
 Use the [ACad SVG Studio](https://github.com/nanoLogika/ACadSvgStudio) to load and convert DWG documents and view the converted SVG.
 
