@@ -7,20 +7,42 @@
 
 
 namespace ACadSvg {
+
+    /// <summary>
+    /// Provides a xmin, y-min, width and height for an optional <i>viewbox</i> attribute
+    /// to be added to the <i>svg</i> element. 
+    /// </summary>
     public class ViewboxData {
 
-        public bool Enabled { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicates that a <i>viewbox</i> attribute is to added to the
+        /// <i>svg</i> element.
+        /// </summary>
+        /// <value><b>true</b>, when an <i>viewbox</i> attribute is to be added; otherwise, <b>false</b>.</value>
+        public bool Enabled { get; set; } = false;
 
 
-        public double MinX { get; set; }
+        /// <summary>
+        /// Gets or sets the min-x value for the <i>viewbox</i> attribute.
+        /// </summary>
+        public double MinX { get; set; } = 0;
 
 
-        public double MinY { get; set; }
+        /// <summary>
+        /// Gets or sets the min-y value for the <i>viewbox</i> attribute.
+        /// </summary>
+        public double MinY { get; set; } = 0;
 
 
-        public double Width { get; set; }
+        /// <summary>
+        /// Gets or sets the width value for the <i>viewbox</i> attribute.
+        /// </summary>
+        public double Width { get; set; } = 1000;
 
 
-        public double Height { get; set; }
+        /// <summary>
+        /// Gets or sets the height value for the <i>viewbox</i> attribute.
+        /// </summary>
+        public double Height { get; set; } = 1000;
     }
 }

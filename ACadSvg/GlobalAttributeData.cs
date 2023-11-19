@@ -40,30 +40,5 @@ namespace ACadSvg {
 
 
 		public double Rotation {  get; set; }
-
-
-		public GlobalAttributeData(
-            bool strokeEnabled,
-            Color strokeColor,
-            double strokeWidth,
-            bool fillEnabled,
-            Color fillColor,
-            double transX,
-            double transY,
-            double scaleX,
-            double scaleY,
-            double rot) {
-
-			StrokeEnabled = strokeEnabled;
-			Stroke = strokeColor.Name;
-			StrokeWidth = strokeWidth;
-			FillEnabled = fillEnabled;
-			Fill = fillColor.Name;
-			TransX = transX;
-			TransY = transY;
-			ScaleX = scaleX;
-			ScaleY = scaleY;
-			Rotation = rot;
-        }
 	}
 }
