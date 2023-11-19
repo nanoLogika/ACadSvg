@@ -36,8 +36,8 @@ SvgElement svg = DocumentSvg.CreateSVG(ctx);
 string mainGroupSvg = mainGroup.ToString();
 string defsSvg = defs.ToString();
 
-Console.WriteLine(ctx.ConversionInfo.Log);
-Console.WriteLine(ctx.ConversionInfo.OccurringEntitiesLog);
+Console.WriteLine(ctx.ConversionInfo.GetLog());
+Console.WriteLine(ctx.ConversionInfo.GetOccurringEntitiesLog());
 ```
 
 ## WIP
