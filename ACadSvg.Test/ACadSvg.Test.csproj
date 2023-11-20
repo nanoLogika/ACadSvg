@@ -25,4 +25,13 @@
     <ProjectReference Include="..\ACadSvg\ACadSvg.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="ACadSharp">
+      <HintPath>..\ACadSvg\Imports\ACadSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SvgElements">
+      <HintPath>..\ACadSvg\Imports\SvgElements.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

@@ -1,15 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ACadSharp\ACadSharp\ACadSharp.csproj" />
-    <ProjectReference Include="..\SvgElements\SvgElements.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Resources.Designer.cs">
@@ -24,6 +19,19 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Imports\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ACadSharp">
+      <HintPath>Imports\ACadSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SvgElements">
+      <HintPath>Imports\SvgElements.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
