@@ -81,8 +81,8 @@ namespace ACadSvg {
 
         //  Reserved for future use 
         public static string GetEntityExtendedDataInfo(CadObject entity) {
-            ExtendedDataDictionary extendedData = entity.ExtendedData;
             StringBuilder exdSb = new StringBuilder();
+            ExtendedDataDictionary extendedData = entity.ExtendedData;
             var doc = entity.Document;
             AppIdsTable appIds = doc.AppIds;
             foreach (var appId in appIds) {
