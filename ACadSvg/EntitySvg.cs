@@ -81,8 +81,8 @@ namespace ACadSvg {
 
         //  Reserved for future use 
         public static string GetEntityExtendedDataInfo(CadObject entity) {
-            StringBuilder exdSb = new StringBuilder();
             ExtendedDataDictionary extendedData = entity.ExtendedData;
+            StringBuilder exdSb = new StringBuilder();
             var doc = entity.Document;
             AppIdsTable appIds = doc.AppIds;
             foreach (var appId in appIds) {
@@ -130,8 +130,11 @@ namespace ACadSvg {
         /// desired data are in the next record.
         /// </para>
         /// </remarks>
-        protected ExtendedDataRecord GetExtendedData(Entity entity, string appIdName, string entryName, short field) {
-            ExtendedData extendedData = getExtendedDataDictionary(entity, appIdName, entryName);
+        protected ExtendedDataRecord GetExtendedDataRecord(Entity entity, string appIdName, string entryName, short field) {
+            ExtendedData extendedData = getExtendedData(entity, appIdName, entryName);
+            if (extendedData == null) {
+                return null;
+            }
             bool fieldFound = false;
             foreach (ExtendedDataRecord record in extendedData.Data) {
                 if (record.Code == DxfCode.ExtendedDataInteger16 && (short)record.Value == field) {
@@ -152,7 +155,7 @@ namespace ACadSvg {
         //}
 
 
-        private ExtendedData getExtendedDataDictionary(Entity entity, string appIdName, string entryName) {
+        private ExtendedData getExtendedData(Entity entity, string appIdName, string entryName) {
             ExtendedDataDictionary extendedDataDict = entity.ExtendedData;
             var doc = entity.Document;
             AppIdsTable appIds = doc.AppIds;
