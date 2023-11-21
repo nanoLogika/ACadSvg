@@ -4,5 +4,6 @@
 
 /.vs
 /ACadSvg/obj
-/ACadSvg.Test/bin/Debug/net6.0
+/ACadSvg/bin
 /ACadSvg.Test/obj
+/ACadSvg.Test/bin
