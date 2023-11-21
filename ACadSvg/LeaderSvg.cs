@@ -57,7 +57,7 @@ namespace ACadSvg {
             if (_leader.ArrowHeadEnabled) {
                 var dimStyle = _leader.Style;
                 var arrowColor = lineColor;
-                var record = GetExtendedData(_leader, "ACAD", "DSTYLE", 41);
+                var record = GetExtendedDataRecord(_leader, "ACAD", "DSTYLE", 41);
                 double arrowSize;
                 if (record != null) {
                     arrowSize = (double)record.Value;
