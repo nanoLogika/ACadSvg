@@ -6,6 +6,7 @@
 #endregion
 
 using ACadSharp.Entities;
+using CSMath;
 using SvgElements;
 
 
@@ -34,13 +35,50 @@ namespace ACadSvg {
 
 		/// <inheritdoc />
 		public override SvgElementBase ToSvgElement() {
-			return new PathElement()
-				.AddPoints(Utils.VerticesToArray(_polyline.Vertices))
-				.Close()
+			PathElement pathElement = new PathElement();
+
+			//	-  Allways MOVE to the first vertex
+			//	-  Keep the bulge for the line to the NEXT line.
+			//	-  A line without bulge is a straight line
+			//	-  A line with bulge is a cuircular arc
+
+			bool first = true;
+			XY lastVertexLocation = XY.Zero;
+			double lastVertexBulge = 0;
+			foreach (var vertex in _polyline.Vertices) {
+				XY vertexLocation = vertex.Location;
+				if (first) {
+					pathElement.AddMove(vertexLocation.X, vertexLocation.Y);
+					first = false;
+				}
+				else {
+					if (lastVertexBulge != 0) {
+						XY s = vertexLocation - lastVertexLocation;
+						double l = s.GetLength();
+						double d = l / 2;
+						double sagitta = d * Math.Abs(lastVertexBulge);
+						double r = (Math.Pow(sagitta, 2) + Math.Pow(d, 2)) / 2 / sagitta;
+						bool lf = r < sagitta;
+						bool sf = lastVertexBulge > 0;
+
+                        pathElement.AddArc(r, r, 0, lf, sf, vertexLocation.X, vertexLocation.Y);
+					}
+					else {
+						pathElement.AddLine(vertexLocation.X, vertexLocation.Y);
+					}
+				}
+                lastVertexBulge = vertex.Bulge;
+                lastVertexLocation = vertex.Location;
+            }
+
+            pathElement
+				.Close(_polyline.IsClosed)
 				.WithID(ID)
 				.WithClass(Class)
 				.WithStroke(ColorUtils.GetHtmlColor(_polyline, _polyline.Color))
 				.WithStrokeDashArray(Utils.LineToDashArray(_polyline, _polyline.LineType));
+
+			return pathElement;
 		}
     }
 }
