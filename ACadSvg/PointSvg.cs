@@ -19,22 +19,25 @@ namespace ACadSvg {
     /// </summary>
     internal class PointSvg : EntitySvg {
 
-		[Flags]
 		private enum PointStyle {
 			Dot = 0,
 			Empty = 1,
 			Plus = 2,
 			X = 3,
 			LineUp = 4,
-			Circle = 32,
-			Square = 64
 		}
 
 
-		private Point _point;
+        [Flags]
+        private enum PointDecoration {
+            Circle = 32,
+            Square = 64
+        }
 
 
+        private Point _point;
         private PointStyle _pointStyle;
+        private PointDecoration _pointDecoration;
 
 
         private double _pointDisplaySize;
@@ -51,7 +54,8 @@ namespace ACadSvg {
             SetStandardIdAndClassIf(point, ctx);
 
             short pdMode = point.Document.Header.PointDisplayMode;
-            _pointStyle = (PointStyle)pdMode;
+            _pointStyle = (PointStyle)(pdMode & 0x7);
+            _pointDecoration = (PointDecoration)(pdMode & 0xFFF0);
 
 			_pointDisplaySize = point.Document.Header.PointDisplaySize;
             if (_pointDisplaySize == 0) {
@@ -68,27 +72,26 @@ namespace ACadSvg {
 
             List<SvgElementBase> svgElements = new List<SvgElementBase>();
 
-            if (_pointStyle.HasFlag(PointStyle.Dot)) {
-				addCircle(svgElements, _pointDisplaySize / 10, true);
-			}
-
-            if (_pointStyle.HasFlag(PointStyle.Plus)) {
+            switch (_pointStyle) {
+            case PointStyle.Dot:
+                addCircle(svgElements, _pointDisplaySize / 10, true);
+                break;
+            case PointStyle.Plus:
                 addPlus(svgElements, _pointDisplaySize);
-            }
-
-            if (_pointStyle.HasFlag(PointStyle.X)) {
+                break;
+            case PointStyle.X:
                 addX(svgElements, _pointDisplaySize);
-            }
-
-            if (_pointStyle.HasFlag(PointStyle.LineUp)) {
+                break;
+            case PointStyle.LineUp:
                 addLineUp(svgElements, _pointDisplaySize);
+                break;
             }
 
-            if (_pointStyle.HasFlag(PointStyle.Circle)) {
+            if (_pointDecoration.HasFlag(PointDecoration.Circle)) {
                 addCircle(svgElements, _pointDisplaySize, false);
             }
 
-            if (_pointStyle.HasFlag(PointStyle.Square)) {
+            if (_pointDecoration.HasFlag(PointDecoration.Square)) {
                 addSquare(svgElements, _pointDisplaySize);
             }
 
@@ -98,8 +101,7 @@ namespace ACadSvg {
 				return svgElement;
 			}
 
-			if (svgElements.Count > 1)
-			{
+			if (svgElements.Count > 1) {
 				GroupElement groupElement = new GroupElement();
 				setDefaultProperties(groupElement);
 				groupElement.Children.AddRange(svgElements);
