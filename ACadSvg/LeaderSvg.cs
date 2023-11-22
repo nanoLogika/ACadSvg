@@ -63,8 +63,11 @@ namespace ACadSvg {
                     arrowSize = (double)record.Value;
                 }
                 else {
-                    var sf = dimStyle.ScaleFactor;
-                    arrowSize = dimStyle.ArrowSize * 250;  //  Why is this scaler necessary 
+                    var scaleFactor = dimStyle.ScaleFactor;
+                    if (scaleFactor == 0) {
+                        scaleFactor = 25;  //  Why is this scaler necessary 
+                    }
+                    arrowSize = dimStyle.ArrowSize * scaleFactor * 10;
                 }
                 var arrowDirection = (vertices[0] - vertices[1]).Normalize() * arrowSize;
                 var arrowHead = XElementFactory.CreateStandardArrowHead(vertices[0], arrowDirection, arrowColor);
