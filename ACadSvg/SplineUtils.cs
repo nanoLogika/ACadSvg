@@ -5,9 +5,8 @@
 //  See LICENSE file in the project root for full license information.
 #endregion
 
-
-using System.Runtime.Serialization;
 using CSMath;
+
 
 namespace ACadSvg {
 
