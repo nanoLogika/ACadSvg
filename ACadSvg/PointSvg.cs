@@ -55,7 +55,7 @@ namespace ACadSvg {
 
 			_pointDisplaySize = point.Document.Header.PointDisplaySize;
             if (_pointDisplaySize == 0) {
-                _pointDisplaySize = 100;
+                _pointDisplaySize = 5;
 			}
 		}
 
