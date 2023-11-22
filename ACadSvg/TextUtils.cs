@@ -25,7 +25,11 @@ namespace ACadSvg {
             if (string.IsNullOrEmpty(value)) {
                 return null;
             }
-            
+
+            //  Somtimes text contains simple line breaks ...
+            //  replace by markup line break.
+            value = value.Replace("\n", @"\P");
+
             return parseMText(value, x, -y, textSize);
         }
 
