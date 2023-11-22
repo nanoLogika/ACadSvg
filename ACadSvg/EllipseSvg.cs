@@ -53,11 +53,28 @@ namespace ACadSvg {
 			double sa = _ellipse.StartParameter;
 			double ea = _ellipse.EndParameter;
 
-			return new PathElement()
-				.AddMoveAndArc(cx, cy, sa, ea, rx, ry, rot)
-				.WithID(ID)
-				.WithClass(Class)
-				.WithStroke(ColorUtils.GetHtmlColor(_ellipse, _ellipse.Color));
+			if (sa == ea || sa == ea - Math.PI * 2) {
+				EllipseElement ellipse = new EllipseElement() {
+					Cx = cx,
+					Cy = cy,
+					Rx = rx,
+					Ry = ry
+				};
+				if (rot != 0 && ry != rx) {
+					ellipse.AddRotate(rot, cx, cy);
+				}
+				return ellipse
+					.WithID(ID)
+                    .WithClass(Class)
+                    .WithStroke(ColorUtils.GetHtmlColor(_ellipse, _ellipse.Color));
+            }
+			else {
+				return new PathElement()
+					.AddMoveAndArc(cx, cy, sa, ea, rx, ry, rot)
+					.WithID(ID)
+					.WithClass(Class)
+					.WithStroke(ColorUtils.GetHtmlColor(_ellipse, _ellipse.Color));
+			}
 		}
 	}
 }
