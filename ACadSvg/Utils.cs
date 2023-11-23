@@ -98,46 +98,5 @@ namespace ACadSvg {
 				return entity.ObjectType.ToString();
 			}
 		}
-
-
-		public static string LineToDashArray(Entity entity, LineType lineType) {
-			List<double> result = new List<double>();
-
-			LineType lType = lineType;
-			if (lType.Name == "ByLayer") {
-				lType = entity.Layer.LineType;
-			}
-
-            if (lType.Segments.Count() <= 0) {
-				return String.Empty;
-            }
-
-            foreach (LineType.Segment segment in lType.Segments) {
-                if (segment.Length == 0) {
-                    result.Add(1);
-                }
-                else if (segment.Length > 0) {
-                    result.Add(segment.Length);
-                }
-                else {
-                    result.Add(Math.Abs(segment.Length));
-                }
-            }
-
-            while (result.Count % 2 != 2 && result.Count < 4) {
-                result.Add(result[result.Count - 2]);
-            }
-
-            if (result[result.Count - 1] == 0) {
-                result.Add(result[result.Count - 2]);
-            }
-
-            StringBuilder sb = new StringBuilder();
-			foreach (double item in result) {
-				sb.Append(SvgElementBase.Cd(item)).Append(" ");
-			}
-
-			return sb.ToString().Trim();
-		}
 	}
 }

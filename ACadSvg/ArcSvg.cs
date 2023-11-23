@@ -26,7 +26,7 @@ namespace ACadSvg {
 		/// </summary>
 		/// <param name="arc">The <see cref="Arc"/> entity to be converted.</param>
 		/// <param name="ctx">This parameter is not used in this class.</param>
-		public ArcSvg(Entity arc, ConversionContext ctx) {
+		public ArcSvg(Entity arc, ConversionContext ctx) : base(ctx) {
             _arc = (Arc)arc;
 			SetStandardIdAndClassIf(arc, ctx);
 		}
@@ -39,11 +39,14 @@ namespace ACadSvg {
 			var ea = _arc.EndAngle;
 			var r = _arc.Radius;
 
-			return new PathElement()
+			SvgElementBase pathElement = new PathElement()
 				.AddMoveAndArc(c.X, c.Y, sa, ea, r)
 				.WithID(ID)
 				.WithClass(Class)
-				.WithStroke(ColorUtils.GetHtmlColor(_arc, _arc.Color));
+				.WithStroke(ColorUtils.GetHtmlColor(_arc, _arc.Color))
+				.WithStrokeWidth(LineUtils.GetLineWeight(_arc.LineWeight, _arc, _ctx));
+
+			return pathElement;
 		}
     }
 }
