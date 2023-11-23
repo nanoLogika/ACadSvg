@@ -51,8 +51,8 @@ namespace ACadSvg {
 
             var leaderLine = new PathElement()
                 .AddPoints(Utils.VerticesToArray(_leader.Vertices))
-                .WithStroke(lineColor);
-            //  TODO line weight!
+                .WithStroke(lineColor)
+                .WithStrokeWidth(LineUtils.GetLineWeight(_leader.LineWeight, _leader, _ctx));
             groupElement.Children.Add(leaderLine);
 
             if (_leader.ArrowHeadEnabled) {
