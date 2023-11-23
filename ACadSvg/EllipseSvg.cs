@@ -29,7 +29,7 @@ namespace ACadSvg {
 		/// </summary>
 		/// <param name="ellipse">The <see cref="Ellipse"/> entity to be converted.</param>
 		/// <param name="ctx">This parameter is not used in this class.</param>
-		public EllipseSvg(Entity ellipse, ConversionContext ctx) {
+		public EllipseSvg(Entity ellipse, ConversionContext ctx) : base(ctx) {
 			_ellipse = (Ellipse)ellipse;
 			SetStandardIdAndClassIf(ellipse, ctx);
 		}
@@ -40,10 +40,9 @@ namespace ACadSvg {
 
 			var ec = _ellipse.Center;
 			var rr = _ellipse.RadiusRatio;
+			//  ep defines the length and rotation of the large axis
 			var ep = _ellipse.EndPoint;
 			var ep2 = new XY(ep.X, ep.Y);
-
-			//  ep defines the length and rolation of the large axis
 
 			var cx = ec.X;
 			var cy = ec.Y;
@@ -54,26 +53,30 @@ namespace ACadSvg {
 			double ea = _ellipse.EndParameter;
 
 			if (sa == ea || sa == ea - Math.PI * 2) {
-				EllipseElement ellipse = new EllipseElement() {
+				EllipseElement ellipseElement = new EllipseElement() {
 					Cx = cx,
 					Cy = cy,
 					Rx = rx,
 					Ry = ry
 				};
 				if (rot != 0 && ry != rx) {
-					ellipse.AddRotate(rot, cx, cy);
+                    ellipseElement.AddRotate(rot, cx, cy);
 				}
-				return ellipse
+				ellipseElement
 					.WithID(ID)
                     .WithClass(Class)
-                    .WithStroke(ColorUtils.GetHtmlColor(_ellipse, _ellipse.Color));
-            }
+                    .WithStroke(ColorUtils.GetHtmlColor(_ellipse, _ellipse.Color))
+					.WithStrokeWidth(LineUtils.GetLineWeight(_ellipse.LineWeight, _ellipse, _ctx));
+
+				return ellipseElement;
+			}
 			else {
 				return new PathElement()
-					.AddMoveAndArc(cx, cy, sa, ea, rx, ry, rot)
-					.WithID(ID)
-					.WithClass(Class)
-					.WithStroke(ColorUtils.GetHtmlColor(_ellipse, _ellipse.Color));
+				    .AddMoveAndArc(cx, cy, sa, ea, rx, ry, rot)
+				    .WithID(ID)
+				    .WithClass(Class)
+				    .WithStroke(ColorUtils.GetHtmlColor(_ellipse, _ellipse.Color))
+				    .WithStrokeWidth(LineUtils.GetLineWeight(_ellipse.LineWeight, _ellipse, _ctx));
 			}
 		}
 	}

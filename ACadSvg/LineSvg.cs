@@ -26,7 +26,7 @@ namespace ACadSvg {
         /// </summary>
         /// <param name="line">The <see cref="Line"/> entity to be converted.</param>
         /// <param name="ctx">This parameter is not used in this class.</param>
-        public LineSvg(Entity line, ConversionContext ctx) {
+        public LineSvg(Entity line, ConversionContext ctx) : base(ctx) {
             _line = (Line)line;
             SetStandardIdAndClassIf(line, ctx);
         }
@@ -39,7 +39,8 @@ namespace ACadSvg {
                 .WithID(ID)
                 .WithClass(Class)
                 .WithStroke(ColorUtils.GetHtmlColor(_line, _line.Color))
-				.WithStrokeDashArray(Utils.LineToDashArray(_line, _line.LineType));
+				.WithStrokeDashArray(LineUtils.LineToDashArray(_line, _line.LineType))
+				.WithStrokeWidth(LineUtils.GetLineWeight(_line.LineWeight, _line, _ctx));
 		}
     }
 }

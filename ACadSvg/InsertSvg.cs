@@ -31,7 +31,7 @@ namespace ACadSvg {
 		/// without reference to a <see cref="Insert"/> entity. This is used
         /// to create a <i>use</i> element for an arbitrary SVG group.
         /// </summary>
-        private InsertSvg() {
+        private InsertSvg() : base(null) {
         }
 
 
@@ -41,7 +41,7 @@ namespace ACadSvg {
         /// </summary>
         /// <param name="insert">The <see cref="Circle"/> entity to be converted.</param>
         /// <param name="ctx">This parameter is not used in this class.</param>
-        public InsertSvg(Entity insert, ConversionContext ctx) {
+        public InsertSvg(Entity insert, ConversionContext ctx) : base(ctx) {
             _insert = (Insert)insert;
 		}
 

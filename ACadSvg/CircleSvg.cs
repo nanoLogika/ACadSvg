@@ -25,7 +25,7 @@ namespace ACadSvg {
 		/// /// </summary>
 		/// <param name="circle">The <see cref="Circle"/> entity to be converted.</param>
 		/// <param name="ctx">This parameter is not used in this class.</param>
-		public CircleSvg(Entity circle, ConversionContext ctx) {
+		public CircleSvg(Entity circle, ConversionContext ctx) : base(ctx) {
             _circle = (Circle)circle;
 			SetStandardIdAndClassIf(circle, ctx);
 		}
@@ -40,7 +40,8 @@ namespace ACadSvg {
 			}
 			.WithID(ID)
 			.WithClass(Class)
-			.WithStroke(ColorUtils.GetHtmlColor(_circle, _circle.Color));
+			.WithStroke(ColorUtils.GetHtmlColor(_circle, _circle.Color))
+			.WithStrokeWidth(LineUtils.GetLineWeight(_circle.LineWeight, _circle, _ctx));
 		}
     }
 }

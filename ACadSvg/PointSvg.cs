@@ -39,7 +39,6 @@ namespace ACadSvg {
         private PointStyle _pointStyle;
         private PointDecoration _pointDecoration;
 
-
         private double _pointDisplaySize;
 
 
@@ -49,7 +48,7 @@ namespace ACadSvg {
 		/// </summary>
 		/// <param name="point">The <see cref="Circle"/> entity to be converted.</param>
 		/// <param name="ctx">This parameter is not used in this class.</param>
-		public PointSvg(Entity point, ConversionContext ctx) {
+		public PointSvg(Entity point, ConversionContext ctx) : base(ctx) {
             _point = (Point)point;
             SetStandardIdAndClassIf(point, ctx);
 
@@ -116,7 +115,8 @@ namespace ACadSvg {
             svgElement
                 .WithID(ID)
 			    .WithClass(Class)
-			    .WithStroke(ColorUtils.GetHtmlColor(_point, _point.Color));
+			    .WithStroke(ColorUtils.GetHtmlColor(_point, _point.Color))
+                .WithStrokeWidth(LineUtils.GetLineWeight(_point.LineWeight, _point, _ctx));
 		}
 
 

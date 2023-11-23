@@ -10,5 +10,6 @@ namespace ACadSvg {
 
     public class MainGroupSvg : GroupSvg {
 
+        public MainGroupSvg(ConversionContext ctx) : base(ctx) { }
     }
 }

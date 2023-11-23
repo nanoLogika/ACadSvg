@@ -21,7 +21,6 @@ namespace ACadSvg {
 	public class DocumentSvg : EntitySvg {
 
 		private CadDocument _doc;
-		private ConversionContext _ctx;
 
 		//private BlockRecordsSvg _blockRecordSvg;
         private IList<EntitySvg> _convertedEntities;
@@ -35,9 +34,8 @@ namespace ACadSvg {
         /// <param name="doc">The <see cref="CadDocument" /> to be converted.</param>
         /// <param name="ctx">The <see cref="ConversionContext"/> specifys conversion
         /// options and receives the conversion log.</param>
-        public DocumentSvg(CadDocument doc, ConversionContext ctx) {
+        public DocumentSvg(CadDocument doc, ConversionContext ctx) : base(ctx) {
 			_doc = doc;
-			_ctx = ctx;
 
             int layerCount = _doc.Layers.Count;
             _ctx.ConversionInfo.Log($"Layer count: {layerCount}");
@@ -62,7 +60,7 @@ namespace ACadSvg {
         public SvgElementBase MainGroupToSvgElement() {
             createDummyInsertIfMainGroupIsEmpty();
 
-            MainGroupSvg mainGroup = new MainGroupSvg();
+            MainGroupSvg mainGroup = new MainGroupSvg(_ctx);
 
             List<EntitySvg> children = mainGroup.Children;
             children.AddRange(_convertedEntities);
@@ -96,7 +94,7 @@ namespace ACadSvg {
 
             createDummyInsertIfMainGroupIsEmpty();
 
-            MainGroupSvg mainGroup = new MainGroupSvg();
+            MainGroupSvg mainGroup = new MainGroupSvg(_ctx);
 
             List<EntitySvg> children = mainGroup.Children;
             children.AddRange(_convertedEntities);
@@ -175,7 +173,11 @@ namespace ACadSvg {
             }
 
             if (ctx.GlobalAttributeData.StrokeEnabled) {
-                svgElement.WithStroke(ctx.GlobalAttributeData.Stroke, ctx.GlobalAttributeData.StrokeWidth);
+                svgElement.WithStroke(ctx.GlobalAttributeData.Stroke);
+            }
+
+            if (ctx.GlobalAttributeData.StrokeWidthEnabled) {
+                svgElement.WithStrokeWidth(ctx.GlobalAttributeData.StrokeWidth);
             }
 
             if (ctx.GlobalAttributeData.FillEnabled) {

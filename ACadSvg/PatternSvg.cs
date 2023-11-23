@@ -31,7 +31,7 @@ namespace ACadSvg {
         private List<XElement> _elements = new List<XElement>();
 
 
-        public PatternSvg(HatchPattern pattern, string patternColor) {
+        public PatternSvg(HatchPattern pattern, string patternColor, ConversionContext ctx) : base(ctx) {
 
             switch (pattern.Name) {
             case "ANSI31":

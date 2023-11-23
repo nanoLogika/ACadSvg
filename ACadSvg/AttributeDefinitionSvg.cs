@@ -26,7 +26,7 @@ namespace ACadSvg {
         /// </summary>
         /// <param name="attributeDefinition">The <see cref="AttributeDefinition"/> entity to be converted.</param>
         /// <param name="ctx">This parameter is not used in this class.</param>
-        public AttributeDefinitionSvg(Entity attributeDefinition, ConversionContext ctx) {
+        public AttributeDefinitionSvg(Entity attributeDefinition, ConversionContext ctx) : base(ctx) {
             _attributeDefinition = (AttributeDefinition)attributeDefinition;
         }
 

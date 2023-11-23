@@ -20,6 +20,9 @@ namespace ACadSvg {
 		public SortedSet<GroupSvg> Items = new SortedSet<GroupSvg>(Comparer<GroupSvg>.Create((x, y) => x.ID.CompareTo(y.ID)));
 
 
+		public BlockRecordsSvg(ConversionContext ctx) : base(ctx) { }
+
+
 		public bool Contains(string id) {
 			foreach (GroupSvg group in Items) {
 				if (group.ID == id) {

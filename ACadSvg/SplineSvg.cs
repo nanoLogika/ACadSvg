@@ -30,7 +30,7 @@ namespace ACadSvg {
 		/// </summary>
 		/// <param name="spline">The <see cref="Spline"/> entity to be converted.</param>
 		/// <param name="ctx">This parameter is not used in this class.</param>
-		public SplineSvg(Entity spline, ConversionContext ctx) {
+		public SplineSvg(Entity spline, ConversionContext ctx) : base(ctx) {
             _spline = (Spline)spline;
 			SetStandardIdAndClassIf(spline, ctx);
 		}
@@ -38,6 +38,7 @@ namespace ACadSvg {
 
 		/// <inheritdoc />
 		public override SvgElementBase ToSvgElement() {
+
 			if (_spline.ControlPoints.Count > 0) {
 				switch (_spline.ControlPoints.Count) {
 				case 3:
@@ -46,23 +47,27 @@ namespace ACadSvg {
                         .WithID(ID)
                         .WithClass(Class)
                         .WithStroke(ColorUtils.GetHtmlColor(_spline, _spline.Color))
-                        .WithStrokeDashArray(Utils.LineToDashArray(_spline, _spline.LineType));
-				
+	                    .WithStrokeWidth(LineUtils.GetLineWeight(_spline.LineWeight, _spline, _ctx))
+                        .WithStrokeDashArray(LineUtils.LineToDashArray(_spline, _spline.LineType));
+
 				case 4:
                     return new PathElement()
                         .AddMoveAndCSpline(Utils.VerticesToArray(_spline.ControlPoints))
                         .WithID(ID)
                         .WithClass(Class)
                         .WithStroke(ColorUtils.GetHtmlColor(_spline, _spline.Color))
-                        .WithStrokeDashArray(Utils.LineToDashArray(_spline, _spline.LineType));
-                
+                        .WithStrokeWidth(LineUtils.GetLineWeight(_spline.LineWeight, _spline, _ctx))
+                        .WithStrokeDashArray(LineUtils.LineToDashArray(_spline, _spline.LineType));
+						
 				default:
                     return new PathElement()
                         .AddPoints(Utils.VerticesToArray(_spline.ControlPoints))
                         .WithID(ID)
                         .WithClass(Class)
                         .WithStroke(ColorUtils.GetHtmlColor(_spline, _spline.Color))
-                        .WithStrokeDashArray(Utils.LineToDashArray(_spline, _spline.LineType));
+                        .WithStrokeWidth(LineUtils.GetLineWeight(_spline.LineWeight, _spline, _ctx))
+                        .WithStrokeDashArray(LineUtils.LineToDashArray(_spline, _spline.LineType));
+
                 }
             }
 			else if (_spline.FitPoints != null) {
@@ -73,7 +78,8 @@ namespace ACadSvg {
 					.WithID(ID)
 					.WithClass(Class)
 					.WithStroke(ColorUtils.GetHtmlColor(_spline, _spline.Color))
-					.WithStrokeDashArray(Utils.LineToDashArray(_spline, _spline.LineType));
+					.WithStrokeWidth(LineUtils.GetLineWeight(_spline.LineWeight, _spline, _ctx))
+					.WithStrokeDashArray(LineUtils.LineToDashArray(_spline, _spline.LineType));
 			}
 
 			return null;

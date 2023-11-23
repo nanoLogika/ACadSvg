@@ -37,8 +37,6 @@ namespace ACadSvg {
         private MultiLeaderPropertyOverrideFlags _flags;
         private LeaderRoot _leaderRoot;
 
-        private ConversionContext _ctx;
-
 
         /// <summary>
 		/// Initializes a new instance of the <see cref="MultiLeaderSvg"/> class
@@ -46,10 +44,8 @@ namespace ACadSvg {
         /// </summary>
         /// <param name="multiLeader">The <see cref="MultiLeader"/> entity to be converted.</param>
         /// <param name="ctx">This parameter is not used in this class.</param>
-        public MultiLeaderSvg(Entity multiLeader, ConversionContext ctx) {
+        public MultiLeaderSvg(Entity multiLeader, ConversionContext ctx) : base(ctx) {
             _multiLeader = (MultiLeader)multiLeader;
-            _ctx = ctx;
-
             SetStandardIdAndClassIf(multiLeader, ctx);
 
 
@@ -394,14 +390,16 @@ namespace ACadSvg {
             var textRightAttachment = getTextRightAttachment();
             var textTopAttachment = getTextTopAttachment();
             var textBottomAttachment = getTextBottomAttachment();
+            double? dogLegLineWeight = null;
 
             Color leaderLineColor = Color.ByLayer;
             foreach (LeaderRoot leaderRoot in _multiLeader.ContextData.LeaderRoots) {
                 foreach (LeaderLine leaderLine in leaderRoot.Lines) {
                     var pathType = getPathType(leaderLine);
                     var leaderLineType = getLeaderLineType(leaderLine);
+                    double? leaderLineWeight = LineUtils.GetLineWeight(getLeaderLineWeight(leaderLine), _multiLeader, _ctx);
+                    dogLegLineWeight = leaderLineWeight;
                     leaderLineColor = getLeaderLineColor(leaderLine);
-                    var leaderLineWeight = getLeaderLineWeight(leaderLine);
 
                     switch (pathType) {
                     case MultiLeaderPathType.Spline:
@@ -412,7 +410,8 @@ namespace ACadSvg {
                             new PathElement()
                             .AddPoints(Utils.VerticesToArray(leaderLine.Points))
                             .AddLine(leaderEndPoint.X, leaderEndPoint.Y)
-                            .WithStroke(ColorUtils.GetHtmlColor(_multiLeader, leaderLineColor)));
+                            .WithStroke(ColorUtils.GetHtmlColor(_multiLeader, leaderLineColor))
+                            .WithStrokeWidth(leaderLineWeight));
                         break;
                     case MultiLeaderPathType.Invisible:
                     default:
@@ -444,7 +443,8 @@ namespace ACadSvg {
             if (drawDogleg) {
 				groupElement.Children.Add(new PathElement()
                     .AddLine(leaderEndPoint.X, leaderEndPoint.Y, contentBasePoint.X, contentBasePoint.Y)
-                    .WithStroke(ColorUtils.GetHtmlColor(_multiLeader, leaderLineColor)));
+                    .WithStroke(ColorUtils.GetHtmlColor(_multiLeader, leaderLineColor))
+                    .WithStrokeWidth(dogLegLineWeight));
             }
 
             //groupElement.Comment = buildPropertiesComment();

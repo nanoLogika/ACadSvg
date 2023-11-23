@@ -27,7 +27,6 @@ namespace ACadSvg {
     internal class DimensionLinearSvg : EntitySvg {
 
         private DimensionLinear _linDim;
-        private ConversionContext _ctx;
 
 
         /// <summary>
@@ -36,7 +35,7 @@ namespace ACadSvg {
         /// </summary>
         /// <param name="linDim">The <see cref="DimensionLinear"/> entity to be converted.</param>
         /// <param name="ctx">This parameter is not used in this class.</param>
-        public DimensionLinearSvg(Entity linDim, ConversionContext ctx) {
+        public DimensionLinearSvg(Entity linDim, ConversionContext ctx) : base(ctx) {
             _linDim = (DimensionLinear)linDim;
             _ctx = ctx;
 
@@ -98,24 +97,24 @@ namespace ACadSvg {
             string dimensionLineColor = ColorUtils.GetHtmlColor(_linDim, _linDim.Style.DimensionLineColor);
             string arrowColor = dimensionLineColor;
             string textColor = ColorUtils.GetHtmlTextColor(_linDim, _linDim.Style.TextColor);
-            double extensionLineWidth = 1.5;
-            double dimensionLineWidth = 1.5;
-            double arrowLineWidth = 1.5;
+            double? extensionLineWidth = LineUtils.GetLineWeight(dimStyle.ExtensionLineWeight, _linDim, _ctx);
+            double? dimensionLineWidth = LineUtils.GetLineWeight(dimStyle.DimensionLineWeight, _linDim, _ctx);
+            double? arrowLineWidth = dimensionLineWidth;
 
 			//  Extension Lines
-			groupElement.Children.Add(new PathElement().AddLine(x1, y1, xd1 + extLineExt, yd1).WithStroke(extensionLineColor, extensionLineWidth));
-			groupElement.Children.Add(new PathElement().AddLine(x2, y2, xd2 + extLineExt, yd2).WithStroke(extensionLineColor, extensionLineWidth));
+			groupElement.Children.Add(new PathElement().AddLine(x1, y1, xd1 + extLineExt, yd1).WithStroke(extensionLineColor).WithStrokeWidth(extensionLineWidth));
+			groupElement.Children.Add(new PathElement().AddLine(x2, y2, xd2 + extLineExt, yd2).WithStroke(extensionLineColor).WithStrokeWidth(extensionLineWidth));
 
 			//  Dimension Line
-			groupElement.Children.Add(new PathElement().AddLine(xd1, yd1, xd2, yd2).WithStroke(dimensionLineColor, dimensionLineWidth));
+			groupElement.Children.Add(new PathElement().AddLine(xd1, yd1, xd2, yd2).WithStroke(dimensionLineColor).WithStrokeWidth(dimensionLineWidth));
 
 			//  Arrows
 			groupElement.Children.Add(new PathElement()
                 .AddLine(xd1, yd1, xd1, yd1 - 1.6 * arrowSize)
-                .WithStroke(arrowColor, arrowLineWidth));
+                .WithStroke(arrowColor).WithStrokeWidth(arrowLineWidth));
 			groupElement.Children.Add(new PathElement()
                 .AddLine(xd2, yd2, xd2, yd2 + 1.6 * arrowSize)
-                .WithStroke(arrowColor, arrowLineWidth));
+                .WithStroke(arrowColor).WithStrokeWidth(arrowLineWidth));
 
             XYZ arrow1Direction = new XYZ(0, arrowSize, 0);
             XYZ arrow2Direction = new XYZ(0, -arrowSize, 0);

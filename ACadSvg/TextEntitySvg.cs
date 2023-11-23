@@ -20,7 +20,6 @@ namespace ACadSvg {
     internal class TextEntitySvg : EntitySvg {
 
         private TextEntity _text;
-		private ConversionContext _ctx;
 
 
 		/// <summary>
@@ -29,10 +28,8 @@ namespace ACadSvg {
 		/// </summary>
 		/// <param name="text">The <see cref="TextEntity"/> to be converted.</param>
 		/// <param name="ctx">This parameter is not used in this class.</param>
-		public TextEntitySvg(Entity text, ConversionContext ctx) {
+		public TextEntitySvg(Entity text, ConversionContext ctx) : base(ctx) {
             _text = (TextEntity)text;
-			_ctx = ctx;
-
 			SetStandardIdAndClassIf(text, ctx);
 		}
 

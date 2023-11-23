@@ -27,7 +27,7 @@ namespace ACadSvg {
 		/// </summary>
 		/// <param name="solid">The <see cref="Solid"/> entity to be converted.</param>
 		/// <param name="ctx">This parameter is not used in this class.</param>
-        public SolidSvg(Entity solid, ConversionContext ctx) {
+        public SolidSvg(Entity solid, ConversionContext ctx) : base(ctx) {
             _solid = (Solid)solid;
 			SetStandardIdAndClassIf(solid, ctx);
 		}
@@ -42,7 +42,8 @@ namespace ACadSvg {
 				.AddLine(_solid.FirstCorner.X, _solid.FirstCorner.Y)
 				.WithID(ID)
 				.WithClass(Class)
-				.WithFill("white");
+				.WithFill(ColorUtils.GetHtmlColor(_solid, _solid.Color))
+				.WithStroke("none");
 		}
     }
 }

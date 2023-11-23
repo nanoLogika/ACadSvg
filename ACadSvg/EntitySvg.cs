@@ -22,6 +22,14 @@ namespace ACadSvg {
     /// </summary>
     public abstract class EntitySvg {
 
+        protected ConversionContext _ctx;
+
+
+        public EntitySvg(ConversionContext ctx) {
+            _ctx = ctx;
+        }
+
+
         /// <summary>
         /// Gets or sets a value for the <i>id</i> attribute
         /// </summary>
