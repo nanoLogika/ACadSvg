@@ -31,28 +31,28 @@ namespace ACadSvg {
 		/// used by <see cref="HatchSvg"/> objects. This list is filled during the
 		/// conversion.
 		/// </summary>
-		internal BlockRecordsSvg BlocksInDefs { get; } = new BlockRecordsSvg();
+		internal BlockRecordsSvg BlocksInDefs { get; }
 
 
         /// <summary>
         /// Gets a <see cref="ACadSvg.ConversionInfo"/> object receifing the conversion
         /// log and the summary of occurring entities.
         /// </summary>
-        public ConversionInfo ConversionInfo { get; } = new ConversionInfo();
+        public ConversionInfo ConversionInfo { get; }
 
 
 		/// <summary>
 		/// Gets or sets a <see cref="ACadSvg.ConversionOptions"/> object providing
 		/// various options for the conversion process.
 		/// </summary>
-		public ConversionOptions ConversionOptions { get; set; } = new ConversionOptions();
+		public ConversionOptions ConversionOptions { get; set; }
 
 
         /// <summary>
         /// Gets or sets a <see cref="ACadSvg.ViewboxData"/> object providung data for an
         /// optional <i>viewbox</i> attribute for the <i>svg</i> element.
         /// </summary>
-        public ViewboxData ViewboxData { get; set; } = new ViewboxData();
+        public ViewboxData ViewboxData { get; set; }
 
 
 		/// <summary>
@@ -60,6 +60,15 @@ namespace ACadSvg {
 		/// setings to create attributes for the main group and the <i>svg</i> element.
 		/// </summary>
 		public GlobalAttributeData GlobalAttributeData { get; set; } = new GlobalAttributeData();
+
+
+		public ConversionContext() {
+			BlocksInDefs = new BlockRecordsSvg(this);
+			ConversionInfo = new ConversionInfo();
+			ConversionOptions = new ConversionOptions();
+			ViewboxData = new ViewboxData();
+			GlobalAttributeData = new GlobalAttributeData();
+		}
 
 
 		/// <summary>

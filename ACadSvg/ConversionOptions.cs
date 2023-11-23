@@ -6,6 +6,8 @@
 #endregion
 
 
+using ACadSharp;
+
 namespace ACadSvg {
 
     /// <summary>
@@ -59,12 +61,8 @@ namespace ACadSvg {
 
 
         /// <summary>
-        /// Gets or sets a value indicating that a comment is to be created
-        /// for every converted AutoCAD Entity. This option is not yet implemented.
+        /// Gets or sets the default line weight in hundreths of mm.
         /// </summary>
-        /// <value>
-        /// <b>true</b>, when ; otherwise, <b>false</b>.
-        /// </value>
-		public bool EnableComments { get; set; } = false;
+        public LineweightType DefaultLineWeight { get; set; } = LineweightType.W25;
 	}
 }

@@ -5,8 +5,6 @@
 //  See LICENSE file in the project root for full license information.
 #endregion
 
-using System.Drawing;
-
 
 namespace ACadSvg {
 
@@ -18,7 +16,10 @@ namespace ACadSvg {
 		public string Stroke {  get; set; }
 
 
-		public double StrokeWidth { get; set; }
+        public bool StrokeWidthEnabled { get; set; }
+
+
+        public double StrokeWidth { get; set; }
 
 
 		public bool FillEnabled { get; set; }
@@ -40,5 +41,5 @@ namespace ACadSvg {
 
 
 		public double Rotation {  get; set; }
-	}
+    }
 }
