@@ -29,7 +29,6 @@ namespace ACadSvg {
     internal class HatchSvg : EntitySvg {
 
         private Hatch _hatch;
-        private ConversionContext _ctx;
 
 
         /// <summary>
@@ -41,9 +40,8 @@ namespace ACadSvg {
         /// in the <see cref="ConversionContext"/> also contains patterns to be used
         /// to fill the hatch shape.
         /// </param>
-        public HatchSvg(Entity hatch, ConversionContext ctx) {
+        public HatchSvg(Entity hatch, ConversionContext ctx) : base(ctx) {
             _hatch = (Hatch)hatch;
-            _ctx = ctx;
             createHatchPattern();
 
             SetStandardIdAndClassIf(hatch, ctx);
@@ -181,7 +179,7 @@ namespace ACadSvg {
 
             //  otherwise; create the pattern
             string patternColor = ColorUtils.GetHtmlColor(_hatch, _hatch.Color);
-            PatternSvg patternSvg = new PatternSvg(_hatch.Pattern, patternColor);
+            PatternSvg patternSvg = new PatternSvg(_hatch.Pattern, patternColor, _ctx);
  
             //  If the pattern has been successfully created add it into the defs section.
             if (patternSvg.Valid) {

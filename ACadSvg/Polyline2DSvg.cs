@@ -26,7 +26,7 @@ namespace ACadSvg {
 		/// </summary>
 		/// <param name="polyline">The <see cref="Polyline2D"/> entity to be converted.</param>
 		/// <param name="ctx">This parameter is not used in this class.</param>
-		public Polyline2DSvg(Entity polyline, ConversionContext ctx) {
+		public Polyline2DSvg(Entity polyline, ConversionContext ctx) : base(ctx) {
             _polyline = (Polyline2D)polyline;
 			SetStandardIdAndClassIf(polyline, ctx);
 		}
@@ -45,7 +45,8 @@ namespace ACadSvg {
 				.WithID(ID)
 				.WithClass(Class)
 				.WithStroke(ColorUtils.GetHtmlColor(_polyline, _polyline.Color))
-				.WithStrokeDashArray(Utils.LineToDashArray(_polyline, _polyline.LineType));
+				.WithStrokeDashArray(LineUtils.LineToDashArray(_polyline, _polyline.LineType))
+				.WithStrokeWidth(LineUtils.GetLineWeight(_polyline.LineWeight, _polyline, _ctx));
 		}
     }
 }

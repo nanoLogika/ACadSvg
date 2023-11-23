@@ -20,6 +20,9 @@ namespace ACadSvg {
 		public List<EntitySvg> Children = new List<EntitySvg>();
 
 
+        public GroupSvg(ConversionContext ctx) : base(ctx) { }
+
+
         /// <inheritdoc />
         public override SvgElementBase ToSvgElement() {
             GroupElement groupElement = new GroupElement();

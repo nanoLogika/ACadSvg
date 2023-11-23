@@ -35,7 +35,7 @@ namespace ACadSvg {
         /// </summary>
         /// <param name="leader">The <see cref="Leader"/> entity to be converted.</param>
         /// <param name="ctx">This parameter is not used in this class.</param>
-        public LeaderSvg(Entity leader, ConversionContext ctx) {
+        public LeaderSvg(Entity leader, ConversionContext ctx) : base(ctx) {
             _leader = (Leader)leader;
             SetStandardIdAndClassIf(leader, ctx);
         }
@@ -52,6 +52,7 @@ namespace ACadSvg {
             var leaderLine = new PathElement()
                 .AddPoints(Utils.VerticesToArray(_leader.Vertices))
                 .WithStroke(lineColor);
+            //  TODO line weight!
             groupElement.Children.Add(leaderLine);
 
             if (_leader.ArrowHeadEnabled) {

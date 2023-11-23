@@ -27,7 +27,7 @@ namespace ACadSvg {
 		/// </summary>
 		/// <param name="polyline">The <see cref="LwPolyline"/> entity to be converted.</param>
 		/// <param name="ctx">This parameter is not used in this class.</param>
-		public LwPolylineSvg(Entity polyline, ConversionContext ctx) {
+		public LwPolylineSvg(Entity polyline, ConversionContext ctx) : base(ctx) {
             _polyline = (LwPolyline)polyline;
 			SetStandardIdAndClassIf(polyline, ctx);
 		}
@@ -71,12 +71,13 @@ namespace ACadSvg {
                 lastVertexLocation = vertex.Location;
             }
 
-            pathElement
-				.Close(_polyline.IsClosed)
+			pathElement
+				.Close()
 				.WithID(ID)
 				.WithClass(Class)
 				.WithStroke(ColorUtils.GetHtmlColor(_polyline, _polyline.Color))
-				.WithStrokeDashArray(Utils.LineToDashArray(_polyline, _polyline.LineType));
+				.WithStrokeDashArray(LineUtils.LineToDashArray(_polyline, _polyline.LineType))
+				.WithStrokeWidth(LineUtils.GetLineWeight(_polyline.LineWeight, _polyline, _ctx));
 
 			return pathElement;
 		}
