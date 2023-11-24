@@ -72,7 +72,7 @@ namespace ACadSvg {
             }
 
 			pathElement
-				.Close()
+				.Close(_polyline.IsClosed)
 				.WithID(ID)
 				.WithClass(Class)
 				.WithStroke(ColorUtils.GetHtmlColor(_polyline, _polyline.Color))
