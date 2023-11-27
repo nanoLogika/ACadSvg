@@ -63,6 +63,40 @@ namespace ACadSvg {
         /// <summary>
         /// Gets or sets the default line weight in hundreths of mm.
         /// </summary>
-        public LineweightType DefaultLineWeight { get; set; } = LineweightType.W25;
-	}
+        public LineweightType DefaultLineweight { get; set; } = LineweightType.W25;
+
+
+        /// <summary>
+        /// Gets or sets the lineweight scale factor.
+        /// </summary>
+        /// <value>
+        /// The lineweight factor or zero if the lineweight values shall be useded as
+        /// read from AutoCAD.
+        /// </value>
+        /// <remarks>
+        /// The lineweight value specified in mm in WCS is to be multiplied with a scale
+        /// factor to create reasonable stroke-width attributes in SVG.
+        /// </remarks>
+        public double LineweightScaleFactor { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether a rectangle element representing the
+        /// model-space extent is to be created and stored in the Scales editor.
+        /// </summary>
+        /// <value>
+        /// <b>true</b> if a rectangle element is to be created; otherwise, <b>false</b>.
+        /// </value>
+        public bool CreateScaleFromModelSpaceExtent { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the viewbox limits shall be set
+        /// according to the model-space extent.
+        /// </summary>
+        /// <value>
+        /// <b>true</b> if the viewbox limits shall be set; otherwise, <b>false</b>.
+        /// </value>
+        public bool CreateViewboxFromModelSpaceExtent { get; set; }
+    }
 }
