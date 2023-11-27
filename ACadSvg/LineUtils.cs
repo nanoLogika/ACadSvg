@@ -7,6 +7,7 @@
 
 using ACadSharp;
 using ACadSharp.Entities;
+using ACadSharp.Header;
 using ACadSharp.Tables;
 
 using SvgElements;
@@ -23,11 +24,11 @@ namespace ACadSvg {
             switch (lineWeightType) {
             case LineweightType.ByDIPs:
             case LineweightType.Default:
-                return getLineWeightValue(ctx.ConversionOptions.DefaultLineWeight);
+                return getLineWeightValue(ctx.ConversionOptions.DefaultLineweight, entity, ctx);
             case LineweightType.ByBlock:
                 BlockRecord block = entity.Owner as BlockRecord;
                 if (block == null) {
-                    return getLineWeightValue(ctx.ConversionOptions.DefaultLineWeight);
+                    return getLineWeightValue(ctx.ConversionOptions.DefaultLineweight, entity, ctx);
                 }
 
                 var lineweightByBlock = block.BlockEntity.LineWeight;
@@ -35,25 +36,30 @@ namespace ACadSvg {
                     lineweightByBlock = block.BlockEntity.Layer.LineWeight;
                 }
                 if (lineweightByBlock == LineweightType.Default || lineweightByBlock == LineweightType.ByDIPs) {
-                    return getLineWeightValue(ctx.ConversionOptions.DefaultLineWeight);
+                    return getLineWeightValue(ctx.ConversionOptions.DefaultLineweight, entity, ctx);
                 }
 
-                return getLineWeightValue(lineweightByBlock);
+                return getLineWeightValue(lineweightByBlock, entity, ctx);
             case LineweightType.ByLayer:
                 var lv = entity.Layer.LineWeight;
                 if (lv == LineweightType.Default) {
-                    return getLineWeightValue(ctx.ConversionOptions.DefaultLineWeight);
+                    return getLineWeightValue(ctx.ConversionOptions.DefaultLineweight, entity, ctx);
                 }
-                return getLineWeightValue(entity.Layer.LineWeight);
+                return getLineWeightValue(entity.Layer.LineWeight, entity, ctx);
             default:
-                return getLineWeightValue(lineWeightType);
+                return getLineWeightValue(lineWeightType, entity, ctx);
             }
         }
 
 
-        // Convert to millimeters
-        private static double? getLineWeightValue(LineweightType lineweightType) {
-            return (int)lineweightType * 0.01;
+        // Convert to millimeters/pixels
+        private static double? getLineWeightValue(LineweightType lineweightType, Entity entity, ConversionContext ctx) {
+            CadHeader header = entity.Document.Header;
+            double scaleFactor = ctx.ConversionOptions.LineweightScaleFactor;
+            if (scaleFactor <= 0) {
+                scaleFactor = Math.Max(header.ModelSpaceExtMax.X - header.ModelSpaceExtMin.X, header.ModelSpaceExtMax.Y - header.ModelSpaceExtMin.Y) / 2500;
+            }
+            return (int)lineweightType * 0.01 * scaleFactor;
         }
 
 

@@ -6,6 +6,7 @@
 #endregion
 
 using ACadSharp;
+using ACadSharp.Header;
 using ACadSharp.Tables;
 using SvgElements;
 
@@ -45,7 +46,11 @@ namespace ACadSvg {
             //	Convert all entities directly placed in the document
             _convertedEntities = ConvertEntitiesToSvg(_doc.Entities.ToList(), _ctx);
             _convertedInserts = new List<InsertSvg>();
-            //placeInsertSvgToTheEnd(); //  TODO This shall be controlle by a conversion option.
+            //placeInsertSvgToTheEnd(); //  TODO This should be controlled by a conversion option.
+
+            if (_ctx.ConversionOptions.CreateViewboxFromModelSpaceExtent ) {
+                createViewboxFromModelSpaceExtent();
+            }
 
             _ctx.ConversionInfo.Log($"Loading finished");
             _ctx.ConversionInfo.Log($"Converted {_ctx.ConversionInfo.SuccessfulEntityConversions} of {_ctx.ConversionInfo.TotalEntities} entities");
@@ -109,6 +114,37 @@ namespace ACadSvg {
         }
 
 
+        /// <summary>
+        /// Returns a <see cref="SvgElementBase"/> representing an SVG <i>rect</i> element
+        /// with the limits of the model-space extent read from the document header.
+        /// If the ReverseY conversion option is set the <i>rect</i> element is enclosed
+        /// by a <see cref="GroupElement"/> representing SVG <i>g</i> element with a
+        /// <i>transform=scale(1, -1)</i> attribute.
+        /// </summary>
+        public SvgElementBase GetModelSpaceRectangle() {
+
+            CadHeader header = _doc.Header;
+            RectangleElement modelSpaceRectangle = new RectangleElement() {
+                X = header.ModelSpaceExtMin.X,
+                Y = header.ModelSpaceExtMin.Y,
+                Width = header.ModelSpaceExtMax.X - header.ModelSpaceExtMin.X,
+                Height = header.ModelSpaceExtMax.Y - header.ModelSpaceExtMin.Y
+            };
+            modelSpaceRectangle.StrokeWidth = (modelSpaceRectangle.Width + modelSpaceRectangle.Height) / 25000;
+            modelSpaceRectangle.Stroke = "red";
+
+            if (!_ctx.ConversionOptions.ReverseY) {
+                return modelSpaceRectangle;
+            }
+
+            GroupElement group = new GroupElement();
+            group.AddScale(1, -1);
+            group.Children.Add(modelSpaceRectangle);
+
+            return group;
+        }
+
+
         //	Creates a container for all BlockRecord objects listed in the
         //	document header. Hatch patterns will be added to too when Hatch
         //	entities are converted. These elements will be appear under the
@@ -151,6 +187,16 @@ namespace ACadSvg {
                 _convertedInserts.Add(InsertSvg.Dummy(blockName));
                 _ctx.ConversionInfo.Log($"Dummy use of first block {blockName} added.");
             }
+        }
+
+
+        private void createViewboxFromModelSpaceExtent() {
+            CadHeader header = _doc.Header;
+            _ctx.ViewboxData.MinX = header.ModelSpaceExtMin.X;
+            _ctx.ViewboxData.MinY = header.ModelSpaceExtMin.Y;
+            _ctx.ViewboxData.Width = header.ModelSpaceExtMax.X - header.ModelSpaceExtMin.X;
+            _ctx.ViewboxData.Height = header.ModelSpaceExtMax.Y - header.ModelSpaceExtMin.Y;
+            _ctx.ViewboxData.Enabled = true;
         }
 
 
