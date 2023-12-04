@@ -7,17 +7,13 @@
 
 using ACadSharp;
 using ACadSharp.Entities;
-using ACadSharp.Tables;
+
 using CSMath;
-
-using SvgElements;
-
-using System.Text;
 
 
 namespace ACadSvg {
 
-	internal static class Utils {
+    internal static class Utils {
 
         public static XY[] XYZToXYArray(XYZ[] xyzs) {
             XY[] xys = new XY[xyzs.Length];
@@ -28,10 +24,10 @@ namespace ACadSvg {
         }
 
 
-        public static XYZ[] XYToXYZArray(XY[] xysOut) {
-            XYZ[] xyzsOut = new XYZ[xysOut.Length];
-            for (int i = 0; i < xysOut.Length; i++) {
-                xyzsOut[i] = new XYZ(xysOut[i].X, xysOut[i].Y, 0);
+        public static XYZ[] XYToXYZArray(XY[] xys) {
+            XYZ[] xyzsOut = new XYZ[xys.Length];
+            for (int i = 0; i < xys.Length; i++) {
+                xyzsOut[i] = new XYZ(xys[i].X, xys[i].Y, 0);
             }
             return xyzsOut;
         }
@@ -40,7 +36,7 @@ namespace ACadSvg {
         public static double[] VerticesToArray(IList<XY> list) {
             List<double> result = new List<double>();
 
-            foreach (XYZ v in list) {
+            foreach (XY v in list) {
                 result.Add(v.X);
                 result.Add(v.Y);
             }
@@ -98,5 +94,30 @@ namespace ACadSvg {
 				return entity.ObjectType.ToString();
 			}
 		}
-	}
+
+
+        internal static XY ToXY(XYZ xyz) {
+            return new XY(xyz.X, xyz.Y);
+        }
+
+
+        internal static void XYZToDoubles(List<XYZ>xyzs, out double[] xs, out double[] ys) {
+            xs = new double[xyzs.Count];
+            ys = new double[xyzs.Count];
+            for (int i = 0; i < xyzs.Count; i++) {
+                XYZ xyz = xyzs[i];
+                xs[i] = xyz.X;
+                ys[i] = xyz.Y;
+            }
+        }
+
+
+        internal static XY[] DoublesToXYx(double[] xs, double[] ys) {
+            XY[] xYs = new XY[xs.Length];
+            for (int i = 0; i < xs.Length; i++) {
+                xYs[i] = new XY(xs[i], ys[i]);
+            }
+            return xYs;
+        }
+    }
 }

@@ -8,20 +8,25 @@
 using CSMath;
 
 
-namespace ACadSvg {
+namespace ACadSvg.SplineUtils
+{
 
-    internal static class SplineUtils {
+    internal static class SplineUtils
+    {
 
         /// <summary>
-        /// Generate a smooth (interpolated) curve that follows the path of the given XY points.
+        /// Generate a smooth (interpolated) curve that follows the path of the
+        /// given XY points.
         /// </summary>
-        public static XY[] InterpolateXY(XY[] xys, int count) {
+        public static XY[] InterpolateXY(XY[] xys, int count)
+        {
             if (xys is null || xys.Length == 0)
                 throw new ArgumentException($"{nameof(xys)} must not be null, or have zero length.");
 
             int inputPointCount = xys.Length;
             double[] inputDistances = new double[inputPointCount];
-            for (int i = 1; i < inputPointCount; i++) {
+            for (int i = 1; i < inputPointCount; i++)
+            {
                 XY dxy = xys[i] - xys[i - 1];
                 double distance = dxy.GetLength();
                 inputDistances[i] = inputDistances[i - 1] + distance;
@@ -34,7 +39,8 @@ namespace ACadSvg {
         }
 
 
-        private static XY[] interpolate(double[] inputDistances, XY[] xyOrig, double[] evenDistances) {
+        private static XY[] interpolate(double[] inputDistances, XY[] xyOrig, double[] evenDistances)
+        {
 
             (double[] xs, double[] ys) = fromXYArray(xyOrig);
 
@@ -47,10 +53,12 @@ namespace ACadSvg {
         }
 
 
-        private static (double[] xs, double[] ys) fromXYArray(XY[] xys) {
+        private static (double[] xs, double[] ys) fromXYArray(XY[] xys)
+        {
             double[] xsOut = new double[xys.Length];
             double[] ysOut = new double[xys.Length];
-            for (int i = 0; i < xsOut.Length; i++) {
+            for (int i = 0; i < xsOut.Length; i++)
+            {
                 xsOut[i] = xys[i].X;
                 ysOut[i] = xys[i].Y;
             }
@@ -58,20 +66,24 @@ namespace ACadSvg {
         }
 
 
-        private static XY[] toXYArray(double[] xsOut, double[] ysOut) {
+        private static XY[] toXYArray(double[] xsOut, double[] ysOut)
+        {
             XY[] xysOut = new XY[xsOut.Length];
-            for (int i = 0; i < xsOut.Length; i++) {
+            for (int i = 0; i < xsOut.Length; i++)
+            {
                 xysOut[i] = new XY(xsOut[i], ysOut[i]);
             }
             return xysOut;
         }
 
 
-        private static double[] interpolate(double[] xOrig, double[] yOrig, double[] xInterp) {
+        private static double[] interpolate(double[] xOrig, double[] yOrig, double[] xInterp)
+        {
             (double[] a, double[] b) = FitMatrix(xOrig, yOrig);
 
             double[] yInterp = new double[xInterp.Length];
-            for (int i = 0; i < yInterp.Length; i++) {
+            for (int i = 0; i < yInterp.Length; i++)
+            {
                 int j;
                 for (j = 0; j < xOrig.Length - 2; j++)
                     if (xInterp[i] <= xOrig[j + 1])
@@ -88,7 +100,8 @@ namespace ACadSvg {
         }
 
 
-        private static (double[] a, double[] b) FitMatrix(double[] x, double[] y) {
+        private static (double[] a, double[] b) FitMatrix(double[] x, double[] y)
+        {
             int n = x.Length;
             double[] a = new double[n - 1];
             double[] b = new double[n - 1];
@@ -104,7 +117,8 @@ namespace ACadSvg {
             B[0] = 2.0f * C[0];
             r[0] = 3 * (y[1] - y[0]) / (dx1 * dx1);
 
-            for (int i = 1; i < n - 1; i++) {
+            for (int i = 1; i < n - 1; i++)
+            {
                 dx1 = x[i] - x[i - 1];
                 dx2 = x[i + 1] - x[i];
                 A[i] = 1.0f / dx1;
@@ -136,7 +150,8 @@ namespace ACadSvg {
             for (int i = n - 2; i >= 0; i--)
                 k[i] = dPrime[i] - cPrime[i] * k[i + 1];
 
-            for (int i = 1; i < n; i++) {
+            for (int i = 1; i < n; i++)
+            {
                 dx1 = x[i] - x[i - 1];
                 dy1 = y[i] - y[i - 1];
                 a[i - 1] = k[i - 1] * dx1 - dy1;
