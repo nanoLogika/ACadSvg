@@ -312,6 +312,12 @@ namespace ACadSvg {
             case ObjectType.SOLID:
                 return new SolidSvg(entity, ctx);
 
+            case ObjectType.XLINE:
+                return new XLineSvg(entity, ctx);
+
+            case ObjectType.RAY:
+                return new RaySvg(entity, ctx);
+
             case ObjectType.UNLISTED:
                 switch (entity.ObjectName) {
                 case "MLEADER":
