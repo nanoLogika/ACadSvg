@@ -7,11 +7,24 @@
 
 using SvgElements;
 using CSMath;
+using ACadSharp.Tables;
 
 
 namespace ACadSvg {
 
     public static class XElementFactory {
+
+        public static SvgElementBase CreateArrowhead(BlockRecord arrowHead, XYZ arrowPoint, double arrowHeadSize, XYZ arrowDirection) {
+			string blockName = Utils.CleanBlockName(arrowHead.Name);
+
+			return
+				new UseElement()
+				.WithGroupId(blockName)
+				.AddTranslate(arrowPoint.X, arrowPoint.Y)
+				.AddScale(arrowHeadSize)
+				.AddRotate(Utils.ToXY(arrowDirection).GetAngle() * 180 / Math.PI);
+		}
+
 
         public static SvgElementBase CreateStandardArrowHead(XYZ arrowPoint, XYZ arrowDirection, string arrowColor) {
             XYZ arrowBase = new XYZ(arrowDirection.Y, -arrowDirection.X, 0) * 0.2;
