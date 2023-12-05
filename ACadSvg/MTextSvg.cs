@@ -22,7 +22,7 @@ namespace ACadSvg {
 	/// Paragraphs, formatting an styling is coded using a proprietary markup format.
 	/// (See, e.g. https://ezdxf.readthedocs.io/en/stable/dxfinternals/entities/mtext.html).
 	/// </para><para>
-	/// The text is parsed end converted in a series od <i>tespan</i> with attributes
+	/// The text is parsed end converted in a series od <i>tspan</i> with attributes
 	/// to reflect the coded formatting and styles as good as possible.
 	/// </para>
 	/// </remarks>

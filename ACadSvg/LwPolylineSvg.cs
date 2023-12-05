@@ -53,8 +53,7 @@ namespace ACadSvg {
 				}
 				else {
 					if (lastVertexBulge != 0) {
-						XY s = vertexLocation - lastVertexLocation;
-						double l = s.GetLength();
+						double l = vertexLocation.DistanceFrom(lastVertexLocation);
 						double d = l / 2;
 						double sagitta = d * Math.Abs(lastVertexBulge);
 						double r = (Math.Pow(sagitta, 2) + Math.Pow(d, 2)) / 2 / sagitta;
