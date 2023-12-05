@@ -426,12 +426,7 @@ namespace ACadSvg {
                     XYZ arrowDirection = (points.Count > 1 ? points[0] - points[1] : points[0] - leaderEndPoint).Normalize() * arrowHeadSize;
 
                     if (arrowHead != null) {
-                        var xs = arrowPoint.X;
-                        var ys = arrowPoint.Y;
-
-                        string blockName = Utils.CleanBlockName(arrowHead.Name);
-
-						groupElement.Children.Add(new UseElement().WithGroupId(blockName).AddTranslate(xs, ys).AddScale(arrowHeadSize));
+						groupElement.Children.Add(XElementFactory.CreateArrowhead(arrowHead, arrowPoint, arrowHeadSize, arrowDirection));
                     }
                     else {
                         var arrowColor = leaderLineColor;
