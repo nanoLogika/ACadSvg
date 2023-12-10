@@ -61,9 +61,9 @@ namespace ACadSvg {
 				.WithFont(fontFamily, fontSize, bold, italic)
 				.WithTspans(TextUtils.ConvertMTextToHtml(iX, iY, _mText.Value, textSize, textStyle))
 				.WithFill(ColorUtils.GetHtmlTextColor(_mText, _mText.Color))
-				.AddRotate(rot, iX, iY)
 				.ReverseY(_ctx.ConversionOptions.ReverseY)
-				.WithID(ID)
+                .AddRotate(rot, iX, iY)
+                .WithID(ID)
 				.WithClass(Class);
 		}
     }
