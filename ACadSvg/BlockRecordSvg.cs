@@ -8,7 +8,7 @@
 using ACadSharp.Entities;
 using ACadSharp.Objects;
 using ACadSharp.Tables;
-
+using System.Text.RegularExpressions;
 
 namespace ACadSvg {
     //  TODO refactor
@@ -40,7 +40,18 @@ namespace ACadSvg {
         /// (<see cref="ConversionContext"/>).
         /// </summary>
 		public override bool Skip {
-			get { return ID.StartsWith("*"); }
+			get {
+                ConversionOptions options = _ctx.ConversionOptions;
+                if (options.GroupFilterMode == ConversionOptions.FilterMode.Include) {
+					return !new Regex(options.GroupFilterRegex).IsMatch(ID);
+				}
+                else if (options.GroupFilterMode == ConversionOptions.FilterMode.Exclude) {
+					return new Regex(options.GroupFilterRegex).IsMatch(ID);
+				}
+                else {
+                    return false;
+                }
+            }
 		}
 
 
