@@ -16,7 +16,19 @@ namespace ACadSvg {
     public class ConversionOptions {
 
         /// <summary>
-        /// Get or sets a value indication that the y-direction is to be reversed, i.e.
+        /// Defines values for the <see cref="GroupFilterMode"/> property indicating
+        /// whether the filter expresion for blocks is to be applied as an exlude filter,
+        /// an include filter, or the filter is off.
+        /// </summary>
+        public enum FilterMode : int {
+            Exclude = 2,
+            Include = 1,
+            Off = 0
+        }
+
+
+        /// <summary>
+        /// Get or sets a value indicating that the y-direction is to be reversed, i.e.
         /// y-coordinates grow from bottom to top.
         /// </summary>
         /// <remarks>
@@ -27,7 +39,7 @@ namespace ACadSvg {
         /// <value>
         /// <b>true</b>, when the y-direction is to be reversed; otherwise, <b>false</b>.
         /// </value>
-        public bool ReverseY {  get; set; } = true;
+        public bool ReverseY { get; set; } = true;
 
 
         /// <summary>
@@ -98,5 +110,19 @@ namespace ACadSvg {
         /// <b>true</b> if the viewbox limits shall be set; otherwise, <b>false</b>.
         /// </value>
         public bool CreateViewboxFromModelSpaceExtent { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets a regular expression that is to be used to filter the Blocks read
+        /// from the AutoCAD file by their name. 
+        /// </summary>
+        public string GroupFilterRegex { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the filter expresion for blocks is to be
+        /// applied as exlude filter, as include filter, or the filter is off.
+        /// </summary>
+        public FilterMode GroupFilterMode { get; set; } = FilterMode.Off;
     }
 }
