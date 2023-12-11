@@ -52,26 +52,17 @@ namespace ACadSvg {
 					first = false;
 				}
 				else {
-					if (lastVertexBulge != 0) {
-						double l = vertexLocation.DistanceFrom(lastVertexLocation);
-						double d = l / 2;
-						double sagitta = d * Math.Abs(lastVertexBulge);
-						double r = (Math.Pow(sagitta, 2) + Math.Pow(d, 2)) / 2 / sagitta;
-						bool lf = r < sagitta;
-						bool sf = lastVertexBulge > 0;
-
-                        pathElement.AddArc(r, r, 0, lf, sf, vertexLocation.X, vertexLocation.Y);
-					}
-					else {
-						pathElement.AddLine(vertexLocation.X, vertexLocation.Y);
-					}
-				}
+                    addLineOrBulge(pathElement, vertexLocation, lastVertexLocation, lastVertexBulge);
+                }
                 lastVertexBulge = vertex.Bulge;
                 lastVertexLocation = vertex.Location;
             }
 
+			if (_polyline.IsClosed) {
+				addLineOrBulge(pathElement, _polyline.Vertices[0].Location, lastVertexLocation, lastVertexBulge);
+            }
+
 			pathElement
-				.Close(_polyline.IsClosed)
 				.WithID(ID)
 				.WithClass(Class)
 				.WithStroke(ColorUtils.GetHtmlColor(_polyline, _polyline.Color))
@@ -80,5 +71,22 @@ namespace ACadSvg {
 
 			return pathElement;
 		}
+
+
+        private static void addLineOrBulge(PathElement pathElement, XY vertexLocation, XY lastVertexLocation, double lastVertexBulge) {
+            if (lastVertexBulge != 0) {
+                double l = vertexLocation.DistanceFrom(lastVertexLocation);
+                double d = l / 2;
+                double sagitta = d * Math.Abs(lastVertexBulge);
+                double r = (Math.Pow(sagitta, 2) + Math.Pow(d, 2)) / 2 / sagitta;
+                bool lf = r < sagitta;
+                bool sf = lastVertexBulge > 0;
+
+                pathElement.AddArc(r, r, 0, lf, sf, vertexLocation.X, vertexLocation.Y);
+            }
+            else {
+                pathElement.AddLine(vertexLocation.X, vertexLocation.Y);
+            }
+        }
     }
 }
