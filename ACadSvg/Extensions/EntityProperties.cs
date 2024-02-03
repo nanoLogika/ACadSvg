@@ -75,6 +75,10 @@ namespace ACadSvg.Extensions {
                         return (T)value;
                     }
                 }
+                if (type == typeof(bool)) {
+                    T tbValue = (T)Convert.ChangeType((short)rec.Value != 0, typeof(bool));
+                    return tbValue;
+                }
                 if (rec.Value is T tValue) {
                     return tValue;
                 }
@@ -88,7 +92,7 @@ namespace ACadSvg.Extensions {
         /// <see cref="AppId"/> (<paramref name="appIdName"/>) and <paramref name="entryName"/>,
         /// then tries to find a record containing the group code specified by the <paramref name="field"/>
         /// parameter. If the specified record was found the value of the next record is a handle.
-        /// The the resective <see cref="CadObject"/> is looked up and returned.
+        /// The the respective <see cref="CadObject"/> is looked up and returned.
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="appIdName"></param>

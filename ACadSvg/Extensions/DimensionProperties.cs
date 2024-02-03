@@ -158,6 +158,50 @@ namespace ACadSvg.Extensions {
             }
         }
 
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.SuppressFirstDimensionLine"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public bool SuppressFirstDimensionLine {
+            get {
+                return GetExtendedDataValue<bool>(_entity, "ACAD", "DSTYLE", 281, _dimStyle.SuppressFirstDimensionLine);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.SuppressSecondDimensionLine"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public bool SuppressSecondDimensionLine {
+            get {
+                return GetExtendedDataValue<bool>(_entity, "ACAD", "DSTYLE", 282, _dimStyle.SuppressSecondDimensionLine);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.SuppressFirstExtensionLine"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public bool SuppressFirstExtensionLine {
+            get {
+                return GetExtendedDataValue<bool>(_entity, "ACAD", "DSTYLE", 75, _dimStyle.SuppressFirstExtensionLine);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.SuppressSecondExtensionLine"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public bool SuppressSecondExtensionLine {
+            get {
+                return GetExtendedDataValue<bool>(_entity, "ACAD", "DSTYLE", 76, _dimStyle.SuppressSecondExtensionLine);
+            }
+        }
+
         #endregion
         #region -  Arrow properties
 
@@ -314,6 +358,17 @@ namespace ACadSvg.Extensions {
         #region -  Text formatting
 
         /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.LinearScaleFactor"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public double LinearScaleFactor {
+            get {
+                return GetExtendedDataValue<double>(_entity, "ACAD", "DSTYLE", 144, _dimStyle.LinearScaleFactor);
+            }
+        }
+
+
+        /// <summary>
         /// Gets the value of the <see cref="DimensionStyle.DecimalSeparator"/> property or the
         /// overriden value from the entity's extended data.
         /// </summary>
@@ -336,6 +391,39 @@ namespace ACadSvg.Extensions {
 
 
         /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.LinearUnitFormat"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public LinearUnitFormat LinearUnitFormat {
+            get {
+                return GetExtendedDataValue<LinearUnitFormat>(_entity, "ACAD", "DSTYLE", 277, _dimStyle.LinearUnitFormat);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.Rounding"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public double Rounding {
+            get {
+                return GetExtendedDataValue<double>(_entity, "ACAD", "DSTYLE", 45, _dimStyle.Rounding);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.ZeroHandling"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public ZeroHandling ZeroHandling {
+            get {
+                return GetExtendedDataValue<ZeroHandling>(_entity, "ACAD", "DSTYLE", 78, _dimStyle.ZeroHandling);
+            }
+        }
+
+
+        /// <summary>
         /// Gets the value of the <see cref="DimensionStyle.PostFix"/> property or the
         /// overriden value from the entity's extended data.
         /// </summary>
@@ -346,7 +434,97 @@ namespace ACadSvg.Extensions {
         }
 
         #endregion
-        #region Alternate Dimension Text formatting
+        #region -  Tolerances
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.GenerateTolerances"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public bool GenerateTolerances {
+            get {
+                return GetExtendedDataValue<bool>(_entity, "ACAD", "DSTYLE", 71, _dimStyle.GenerateTolerances);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.LimitsGeneration"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public bool LimitsGeneration {
+            get {
+                return GetExtendedDataValue<bool>(_entity, "ACAD", "DSTYLE", 72, _dimStyle.LimitsGeneration);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.ToleranceAlignment"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public ToleranceAlignment ToleranceAlignment {
+            get {
+                return GetExtendedDataValue<ToleranceAlignment>(_entity, "ACAD", "DSTYLE", 283, _dimStyle.ToleranceAlignment);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.ToleranceZeroHandling"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public ZeroHandling ToleranceZeroHandling {
+            get {
+                return GetExtendedDataValue<ZeroHandling>(_entity, "ACAD", "DSTYLE", 286, _dimStyle.ToleranceZeroHandling);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.ToleranceDecimalPlaces"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public short ToleranceDecimalPlaces {
+            get {
+                return GetExtendedDataValue<short>(_entity, "ACAD", "DSTYLE", 272, _dimStyle.ToleranceDecimalPlaces);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.PlusTolerance"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public double PlusTolerance {
+            get {
+                return GetExtendedDataValue<double>(_entity, "ACAD", "DSTYLE", 47, _dimStyle.PlusTolerance);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.MinusTolerance"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public double MinusTolerance {
+            get {
+                return GetExtendedDataValue<double>(_entity, "ACAD", "DSTYLE", 48, _dimStyle.MinusTolerance);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value of the <see cref="DimensionStyle.ToleranceScaleFactor"/> property or the
+        /// overriden value from the entity's extended data.
+        /// </summary>
+        public double ToleranceScaleFactor {
+            get {
+                return GetExtendedDataValue<double>(_entity, "ACAD", "DSTYLE", 146, _dimStyle.ToleranceScaleFactor);
+            }
+        }
+
+        #endregion
+        #region -  Alternate Dimension Text formatting
 
         /// <summary>
         /// Gets the value of the <see cref="DimensionStyle.AlternateUnitDimensioning"/> property or the
