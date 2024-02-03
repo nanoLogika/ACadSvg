@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<docTokens>
+
+  <docToken name="valueParameter">
+    <param name="value">The value to be converted.</param>
+  </docToken>
+  <docToken name="decimalPlacesParameter">
+    <param name="decimalplaces">A value indicating the precision of the converted value.</param>
+  </docToken>
+  <docToken name="decimalPlacesParameterFraction">
+    <param name="precision">
+      Indicates the precision of the converted value. This
+      parameter specifies the denominator of the fraction (1: 1/2, 2: 1/4, 3: 1/8, etc.).
+    </param>
+  </docToken>
+  <docToken name="zeroHandlingParameter">
+    <param name="zeroHandling">A value indicating how the leading and trailing zeroes are to be handled.</param>
+  </docToken>
+
+  <docToken name="linearScaledAndRoundedTo">
+    is scaled with the <see cref="DimensionProperties.LinearScaleFactor" />
+    and rounded using <see cref="DimensionProperties.Rounding" />
+  </docToken>
+
+  <docToken name="linearAlternateScaledAndRoundedTo">
+    scaled with the <see cref="DimensionProperties.LinearScaleFactor" /> is scaled
+    to alternate units with <see cref="DimensionProperties.AlternateUnitScaleFactor" />.
+    The scaled value is rounded using <see cref="DimensionProperties.Rounding" />
+  </docToken>
+
+  <docToken name="linearScaledAndRoundedToPlural">
+    are scaled with the <see cref="DimensionProperties.LinearScaleFactor" />
+    and rounded using <see cref="DimensionProperties.Rounding" />
+  </docToken>
+
+  <docToken name="linearAlternateScaledAndRoundedToPlural">
+    scaled with the <see cref="DimensionProperties.LinearScaleFactor" /> are scaled
+    to alternate units with <see cref="DimensionProperties.AlternateUnitScaleFactor" />.
+    The scaled values are rounded using <see cref="DimensionProperties.Rounding" />
+  </docToken>
+
+
+  <docToken name="linearFormattedAs">
+    and formatted to the specific linear format (<see cref="FormatValue" />) using
+  </docToken>
+
+  <docToken name="angularScaledTo">
+    from AutoCAD in radians is scaled to the specific angular unit (<see cref="GetDisplayValue" />)
+  </docToken>
+  <docToken name="angularScaledToPlural">
+    from AutoCAD in radians are scaled to the specific angular unit (<see cref="GetDisplayValue" />)
+  </docToken>
+
+  <docToken name="angularFormattedAs">
+    and formatted to the specific angular format (<see cref="FormatValue" />)
+  </docToken>
+
+
+  <docToken name="primaryPostFix">
+    Prefix and/or suffix (<see cref="DimensionProperties.PostFix" />) or,
+    if not specified, the default PostFix is added.
+  </docToken>
+
+  <docToken name="alternatePostFix">
+    Prefix and/or suffix (<see cref="DimensionProperties.AlternateDimensioningSuffix" />) or,
+    if not specified, the default PostFix is added.
+  </docToken>
+
+</docTokens>
