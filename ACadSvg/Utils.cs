@@ -122,7 +122,7 @@ namespace ACadSvg {
 
 
         internal static double GetInfinity(Entity entity) {
-            return 10 * Math.Max(
+            return Math.Max(
                 entity.Document.Header.ModelSpaceExtMax.X - entity.Document.Header.ModelSpaceExtMin.X,
                 entity.Document.Header.ModelSpaceExtMax.Y - entity.Document.Header.ModelSpaceExtMin.Y);
         }

@@ -5,6 +5,7 @@
 //  See LICENSE file in the project root for full license information.
 #endregion
 
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 using ACadSharp;
@@ -166,13 +167,21 @@ namespace ACadSvg {
         }
 
 
+        public static double GetTextLength(string text, double textSize) {
+            int characterCount = text.Length;
+            double textLength = characterCount * textSize * 0.6;
+            return textLength;
+        }
+
+
         private static IList<TspanElement> parseMText(string text, double x, double y, double textSize) {
 
             string pattern = @"(?<leadingText>[^\\{}]*)" +
                 @"(?<code>" +
                 @"\\A[0-2];" +
                 @"|\\[f,F](?<font>[^{}]+)\|b(?<bold>(0|1))\|i(?<italic>(0|1))\|c(?<codePage>\d)\|p(?<pitch>\d+);" +
-                @"|\\H\d+;" +
+                @"|\\H[\.\d]+;" +
+                @"|\\H[\.\d]+x;" +
                 @"|\\W\d+;" +
                 @"|\\[c,C][1-7];" +
                 @"|\\Q\d;" +
@@ -181,6 +190,8 @@ namespace ACadSvg {
                 @"|\\O|\\o" +
                 @"|\\L|\\l" +
                 @"|\\K|\\k" +
+                @"|\\S(?<a>[\+\-\,\.0-9]+)(?<div>\^ |\^|\/|#)(?<b>[\+\-\,\.0-9]+);" +
+                @"|\\U\+(?<uniCode>[0-9,ABCDEabcde]{4})" +
                 @"|{" +
                 @"|}" +
                 @")?" +
@@ -211,7 +222,9 @@ namespace ACadSvg {
                     else if (currentTspan.Tspans.Count > 0){
                         TspanElement tspan = new TspanElement();
                         tspan.Value = leadingText;
-                        currentTspan.AddChild(tspan);
+                        tspan.ParentElement = currentTspan;
+                        tspans.Add(tspan);
+                        currentTspan = tspan;
                     }
                     else if (!string.IsNullOrEmpty(currentTspan.Value)) {
 
@@ -234,25 +247,33 @@ namespace ACadSvg {
                         //  --> create <tspan> add it to current (if not null)
                         //      set sub-tspan as current
                         TspanElement tspan = new TspanElement();
+                        tspans.Add(tspan);
                         if (currentTspan != null) {
-                            currentTspan.AddChild(tspan);
-                        }
-                        else {
-                            tspans.Add(tspan);
+                            tspan.ParentElement = currentTspan;
                         }
                         currentTspan = tspan;
                         break;
                     case "}":
                         //  close sub-tspan token and return to parent token
                         //  --> If current token was null, this code is ignored.
-                        currentTspan = currentTspan.ParentElement;
+                        TspanElement newtspan;
+                        if (currentTspan.ParentElement != null) {
+                            newtspan = currentTspan.ParentElement.Clone();
+                        }
+                        else {
+                            newtspan = new TspanElement();
+                        }
+                        newtspan.Dy = 0;
+                        newtspan.Dx = 0;
+                        tspans.Add(newtspan);
+                        currentTspan = newtspan;
                         break;
                     }
                 }
                 else {
                     string code2 = code.Substring(0, 2);
                     switch (code2) {
-                    case @"\O":
+                    case @"\O":     //  Start overstrike
                         //  start sub-tspan token
                         //  - ensure current tspan has no text, ceate sub-tspan with current text
                         //  - create new sub-tspan with Overstrike
@@ -325,13 +346,72 @@ namespace ACadSvg {
                     case @"\H":     //  \H#.#;
                         //  set current-token attribute Height
                         currentTspan = ensureTspanForNextCommand(tspans, currentTspan, lineHeight);
-                        currentTspan.Height = parseDouble(code);
+                        double newHeight = parseDouble(code.Substring(2), out bool relativeH);
+                        if (relativeH) {
+                            double currentTextSize = textSize;
+                            if (currentTspan.ParentElement != null && currentTspan.ParentElement.FontSize != 0) {
+                                currentTextSize = currentTspan.ParentElement.FontSize;
+                            }
+                            currentTspan.FontSize = currentTextSize * newHeight;
+                        }
+                        else {
+                            currentTspan.FontSize = newHeight * 1.5;
+                        }
                         break;
 
                     case @"\W":     //  \W#.#;
                         //  set current-token attribute Width
                         currentTspan = ensureTspanForNextCommand(tspans, currentTspan, lineHeight);
-                        currentTspan.Width = parseDouble(code);
+                        double newWidth = parseDouble(code.Substring(2), out bool relativeW);
+                        if (relativeW) {
+                            currentTspan.Width = currentTspan.Width * newWidth;
+                        }
+                        else {
+                            currentTspan.Width = newWidth;
+                        }
+                        break;
+                    case @"\S":
+                        //  Stacking/Fractions
+                        currentTspan = ensureTspanForNextCommand(tspans, currentTspan, lineHeight);
+
+                        string a = m.Groups["a"].Value;
+                        string b = m.Groups["b"].Value;
+                        string div = m.Groups["div"].Value;
+
+                        switch (div) {
+                        case "^":
+                            double myTextSize = currentTspan.FontSize;
+                            if (myTextSize == 0) {
+                                myTextSize = textSize;
+                            }
+                            currentTspan.Value += a;
+                            currentTspan.Dy = -myTextSize;
+                            TspanElement tspan = new TspanElement();
+                            tspan.FontSize = myTextSize;
+                            tspan.Value = b;
+                            tspan.Dx = -GetTextLength(a, myTextSize);
+                            tspan.Dy = myTextSize;
+                            tspans.Add(tspan);
+                            currentTspan = tspan;
+                            break;
+                        case "#":
+                            currentTspan.Value += a + "/" + b;
+                            break;
+                        case "/":
+                            currentTspan.Value += a + "/" + b;
+                            break;
+                        }
+
+
+                        break;
+                    case @"\U":
+                        string uniCode = m.Groups["uniCode"].Value;
+                        TspanElement lastTspan = tspans[tspans.Count - 1];
+                        char uniChar = '?';
+                        if (uint.TryParse(uniCode, NumberStyles.AllowHexSpecifier, null, out uint uniInt)) {
+                            uniChar = (char)uniInt;
+                        }
+                        lastTspan.Value += uniChar;
                         break;
 
                     case @"\C":
@@ -349,7 +429,7 @@ namespace ACadSvg {
                     case @"\Q":     //  \Q#.#   oblique/slant angle
                         //  set current-token attribute SlantAngle
                         currentTspan = ensureTspanForNextCommand(tspans, currentTspan, lineHeight);
-                        currentTspan.SlantAngle = parseDouble(code);
+                        currentTspan.SlantAngle = parseDouble(code.Substring(2), out _);
                         break;
 
                     case "^J":      //  ^J  new Line
@@ -382,13 +462,9 @@ namespace ACadSvg {
 
         private static TspanElement ensureCurrentTspanForInlineCommand(IList<TspanElement> tspans, TspanElement currentTspan, double height) {
             if (currentTspan != null) {
-                if (!string.IsNullOrEmpty(currentTspan.Value)) {
-                    string currentText = currentTspan.Value;
-                    currentTspan.Value = null;
-                    currentTspan.AddChild(new TspanElement() { Value = currentText });
-                }
                 TspanElement tspan = new TspanElement();
-                currentTspan.AddChild(tspan);
+                tspans.Add(tspan);
+                tspan.ParentElement = currentTspan;
                 currentTspan = tspan;
             }
             else {
@@ -419,13 +495,26 @@ namespace ACadSvg {
         }
 
 
-        private static double parseDouble(string code) {
+        private static string stripSemilolon(int start, string code) {
+            code = code.Substring(start);
             if (code.EndsWith(";")) {
                 code = code.Substring(0, code.Length - 1);
             }
-            code = code.Substring(2);
+            return code;
+        }
+
+
+        private static double parseDouble(string code, out bool relative) {
+            if (code.EndsWith(";")) {
+                code = code.Substring(0, code.Length - 1);
+            }
+            relative = false;
+            if (code.EndsWith("x")) {
+                code = code.Substring(0, code.Length - 1);
+                relative = true;
+            }
             double codeValue;
-            if (!double.TryParse(code, out codeValue)) {
+            if (!double.TryParse(code, NumberStyles.AllowDecimalPoint,  CultureInfo.InvariantCulture.NumberFormat, out codeValue)) {
                 return 0.0;
             }
             return codeValue;
