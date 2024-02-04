@@ -14,6 +14,8 @@ using ACadSharp.Tables;
 using SvgElements;
 using CSMath;
 using static ACadSharp.Objects.MultiLeaderAnnotContext;
+using ACadSvg.Extensions;
+using static ACadSvg.Extensions.MultiLeaderProperties;
 
 
 namespace ACadSvg {
@@ -32,6 +34,7 @@ namespace ACadSvg {
     internal class MultiLeaderSvg : EntitySvg {
 
         private MultiLeader _multiLeader;
+        private MultiLeaderProperties _mlProps;
         private MultiLeaderStyle _style;
         private MultiLeaderAnnotContext _contextData;
         private MultiLeaderPropertyOverrideFlags _flags;
@@ -48,6 +51,7 @@ namespace ACadSvg {
             _multiLeader = (MultiLeader)multiLeader;
             SetStandardIdAndClassIf(multiLeader, ctx);
 
+            _mlProps = new MultiLeaderProperties(_multiLeader);
 
             _style = _multiLeader.Style;
             _contextData = _multiLeader.ContextData;
@@ -57,287 +61,6 @@ namespace ACadSvg {
             _leaderRoot = _contextData.LeaderRoots[0];
         }
 
-        #region -  Overridden-properties getter
-
-        private MultiLeaderPathType getPathType(LeaderLine leaderLine) {
-            if (leaderLine.OverrideFlags.HasFlag(LeaderLinePropertOverrideFlags.PathType)) {
-                return leaderLine.PathType;
-            }
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.PathType)) {
-                return _multiLeader.PathType;
-            }
-
-            return _style.PathType;
-        }
-
-
-        private LineType getLeaderLineType(LeaderLine leaderLine) {
-            if (leaderLine.OverrideFlags.HasFlag(LeaderLinePropertOverrideFlags.LineType)) {
-                return leaderLine.LineType;
-            }
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.LeaderLineType)) {
-                return _multiLeader.LineType;
-            }
-
-            return _style.LeaderLineType;
-        }
-
-
-        private Color getLeaderLineColor(LeaderLine leaderLine) {
-            if (leaderLine.OverrideFlags.HasFlag(LeaderLinePropertOverrideFlags.LineColor)) {
-                return leaderLine.LineColor;
-            }
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.LineColor)) {
-                return _multiLeader.LineColor;
-            }
-
-            return _style.LineColor;
-        }
-
-
-        private LineweightType getLeaderLineWeight(LeaderLine leaderLine) {
-            if (leaderLine.OverrideFlags.HasFlag(LeaderLinePropertOverrideFlags.LineWeight)) {
-                return leaderLine.LineWeight;
-			}
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.LeaderLineWeight)) {
-                return _multiLeader.LineWeight;
-            }
-
-            return _style.LeaderLineWeight;
-        }
-
-
-        private bool getEnableLanding() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.EnableLanding)) {
-                return _multiLeader.EnableLanding;
-            }
-
-            return _style.EnableLanding;
-        }
-
-
-        private double getLandingGap() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.LandingGap)) {
-                return _contextData.LandingGap;
-            }
-
-            return _style.LandingGap;
-        }
-
-
-        private double getLandingDistance() {
-            if (_multiLeader.LandingDistance != 0 && _flags.HasFlag(MultiLeaderPropertyOverrideFlags.LandingDistance)) {
-                return _leaderRoot.LandingDistance;
-            }
-
-            return _style.LandingDistance;
-        }
-
-
-        private bool getEnableDogleg() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.EnableDogleg)) {
-                return _multiLeader.EnableDogleg;
-            }
-
-            return _style.EnableDogleg;
-        }
-
-
-        private BlockRecord getArrowHead(LeaderLine leaderLine) {
-            var mlAh = _multiLeader.Arrowhead;
-            var styAh = _style.Arrowhead;
-            var lAh = leaderLine.Arrowhead;
-
-            BlockRecord arrowhead = styAh;
-            if (styAh == null || (mlAh != null && _multiLeader.PropertyOverrideFlags.HasFlag(MultiLeaderPropertyOverrideFlags.Arrowhead))) {
-                arrowhead = mlAh;
-            }
-            if (arrowhead == null || (lAh != null && leaderLine.OverrideFlags.HasFlag(LeaderLinePropertOverrideFlags.Arrowhead))) {
-                arrowhead = lAh;
-            }
-
-            return arrowhead;
-        }
-
-
-        private double getArrowHeadSize(LeaderLine leaderLine) {
-            var mlAhs = _multiLeader.ArrowheadSize;
-            var cdAhs = _contextData.ArrowheadSize;
-            var styAhs = _style.ArrowheadSize;
-            var lAhs = leaderLine.ArrowheadSize;
-            var arrowheadSize = styAhs;
-
-            if (cdAhs > 0 && _flags.HasFlag(MultiLeaderPropertyOverrideFlags.ArrowheadSize)) {
-                arrowheadSize = cdAhs;
-            }
-            if (lAhs > 0 && leaderLine.OverrideFlags.HasFlag(LeaderLinePropertOverrideFlags.ArrowheadSize)) {
-                arrowheadSize = lAhs;
-			}
-
-            return arrowheadSize;
-        }
-
-
-        private LeaderContentType getContentType() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.ContentType)) {
-                return _multiLeader.ContentType;
-            }
-
-            return _style.ContentType;
-		}
-
-
-        private TextStyle getTextStyle() {
-            var styTS = _style.TextStyle;
-            var cdTS = _contextData.TextStyle;
-
-            if (cdTS != null && _flags.HasFlag(MultiLeaderPropertyOverrideFlags.TextStyle)) {
-                return _contextData.TextStyle;
-			}
-            if (styTS != null) {
-                return _style.TextStyle;
-            }
-
-            return _multiLeader.TextStyle;
-		}
-
-
-        private TextAttachmentType getTextLeftAttachment() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.TextLeftAttachment)) {
-                //  Can _multiLeader.TextLeftAttachment have a different value?
-                return _contextData.TextLeftAttachment;
-            }
-
-            return _style.TextLeftAttachment;
-		}
-
-
-        private TextAngleType getTextAngle() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.TextAngle)) {
-                return _multiLeader.TextAngle;
-            }
-
-            return _style.TextAngle;
-        }
-
-
-        private Color getTextColor() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.TextColor)) {
-                //  return _multiLeader.TextColor;
-                return _contextData.TextColor;
-            }
-            else { 
-                return _style.TextColor;
-            }
-        }
-
-
-        private double getTextHeight() {
-            //  Text height hierarchy:
-            //  Text height can only be defined in one place:
-            //      -  in the dimension/leader style or
-            //      -  in the text style.
-            //  If the text height will not change or is disabled in the dimension or leader style,
-            //  then it needs to be adjusted in the text style that the dimension or leader style uses.
-            //  Zeroing the height in the text style will then allow the height to be defined in the dimension/leader style.
-
-            double textHeight = _multiLeader.TextStyle.Height;
-            double styleTextHeight = _style.TextHeight;
-            if (textHeight == 0 || _flags.HasFlag(MultiLeaderPropertyOverrideFlags.TextHeight)) {
-                textHeight = _contextData.TextHeight;
-            }
-
-            return textHeight;
-        }
-
-
-        private BlockRecord getBlockContent() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.BlockContent)) {
-                //  return _multiLeader.BlockContent;
-                return _contextData.BlockContent;
-            }
-
-            return _style.BlockContent;
-        }
-
-
-        private Color getBlockContentColor() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.BlockContentColor)) {
-                //  return _multiLeader.BlockContentColor;
-                return _contextData.BlockContentColor;
-            }
-
-            return _style.BlockContentColor;
-		}
-
-
-        private XYZ getBlockContentScale() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.BlockContentScale)) {
-                //return _multiLeader.BlockContentScale;
-                return _contextData.BlockContentScale;
-            }
-
-            return _style.BlockContentScale;
-        }
-
-
-        private double getBlockContentRotation() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.BlockContentRotation)) {
-                return _multiLeader.BlockContentRotation;
-            }
-
-            return _style.BlockContentRotation;
-        }
-
-
-        private object getBlockContentConnection() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.BlockConnectionConnection)) {
-                return _multiLeader.BlockContentConnection;
-            }
-
-            return _style.BlockContentConnection;
-        }
-
-
-        private double getScaleFactor() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.ScaleFactor)) {
-                return _multiLeader.ScaleFactor;
-            }
-
-            return _style.ScaleFactor;
-        }
-
-
-        private TextAttachmentType getTextRightAttachment() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.TextRightAttachment)) {
-                // ?? _multiLeader.TextRightAttachment;
-                return _contextData.TextRightAttachment;
-            }
-
-            return _style.TextRightAttachment;
-        }
-
-
-        private TextAttachmentType getTextTopAttachment() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.TextTopAttachment)) {
-                // ?? _multiLeader.TextTopAttachment;
-                return _contextData.TextTopAttachment;
-            }
-
-            return _style.TextTopAttachment;
-        }
-
-
-        private TextAttachmentType getTextBottomAttachment() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.TextBottomAttachment)) {
-                // ?? _multiLeader.TextBottomAttachment;
-                return _contextData.TextBottomAttachment;
-            }
-
-            return _style.TextTopAttachment;
-        }
-
-        #endregion
 
         /// <inheritdoc />
         public override SvgElementBase ToSvgElement() {
@@ -360,13 +83,13 @@ namespace ACadSvg {
             ////multiLeaderSb.AppendLine($"<circle cx=\"{Cd(labelPoint.X)}\" cy=\"{Cd(labelPoint.Y)}\" r=\"10\" stroke=\"magenta\"></circle>");
 
             //  Dogleg etc.
-            var landingDistance = getLandingDistance();
+            var landingDistance = _mlProps.LandingDistance;
 
             //  var direction = contextData.Direction;
             var dogLegDirection = _leaderRoot.Direction;
 
 
-            bool enableDogleg = getEnableDogleg();
+            bool enableDogleg = _mlProps.EnableDogleg;
 
             bool drawDogleg = enableDogleg &&
                 landingDistance > 0 && dogLegDirection.GetLength() > 0;
@@ -379,27 +102,28 @@ namespace ACadSvg {
                 leaderEndPoint = contentBasePoint;
             }
 
-            var enabledLanding = getEnableLanding();
-            var landingGap = getLandingGap();
-            var contentType = getContentType();
-            var textStyle = getTextStyle();
-            var textLeftAttachment = getTextLeftAttachment();
-            var textAngle = getTextAngle();
-            var textColor = getTextColor();
-            var scaleFactor = getScaleFactor();
-            var textRightAttachment = getTextRightAttachment();
-            var textTopAttachment = getTextTopAttachment();
-            var textBottomAttachment = getTextBottomAttachment();
+            var enabledLanding = _mlProps.EnableLanding;
+            var landingGap = _mlProps.LandingGap;
+            var contentType = _mlProps.ContentType;
+            var textStyle = _mlProps.TextStyle;
+            var textLeftAttachment = _mlProps.TextLeftAttachment;
+            var textAngle = _mlProps.TextAngle;
+            var textColor = _mlProps.TextColor;
+            var scaleFactor = _mlProps.ScaleFactor;
+            var textRightAttachment = _mlProps.TextRightAttachment;
+            var textTopAttachment = _mlProps.TextTopAttachment;
+            var textBottomAttachment = _mlProps.TextBottomAttachment;
             double? dogLegLineWeight = null;
 
             Color leaderLineColor = Color.ByLayer;
             foreach (LeaderRoot leaderRoot in _multiLeader.ContextData.LeaderRoots) {
                 foreach (LeaderLine leaderLine in leaderRoot.Lines) {
-                    var pathType = getPathType(leaderLine);
-                    var leaderLineType = getLeaderLineType(leaderLine);
-                    double? leaderLineWeight = LineUtils.GetLineWeight(getLeaderLineWeight(leaderLine), _multiLeader, _ctx);
+                    LeaderLineProperties lineProps = _mlProps.LeaderLines[leaderLine];
+                    var pathType = lineProps.PathType;
+                    var leaderLineType =  lineProps.LeaderLineType;
+                    double? leaderLineWeight = LineUtils.GetLineWeight(lineProps.LeaderLineWeight, _multiLeader, _ctx);
                     dogLegLineWeight = leaderLineWeight;
-                    leaderLineColor = getLeaderLineColor(leaderLine);
+                    leaderLineColor = lineProps.LeaderLineColor;
 
                     switch (pathType) {
                     case MultiLeaderPathType.Spline:
@@ -418,8 +142,8 @@ namespace ACadSvg {
                         break;
                     }
 
-                    var arrowHead = getArrowHead(leaderLine);
-                    var arrowHeadSize = getArrowHeadSize(leaderLine);
+                    var arrowHead = lineProps.ArrowHead;
+                    var arrowHeadSize = lineProps.ArrowHeadSize;
 
                     var points = leaderLine.Points;
                     XYZ arrowPoint = points[0];
@@ -446,7 +170,7 @@ namespace ACadSvg {
 
             string text = _contextData.TextLabel;
             if (_contextData.HasTextContents && !string.IsNullOrEmpty(text.Trim())) {
-                double textHeight = getTextHeight();
+                double textHeight = _mlProps.TextHeight;
                 double textSize = TextUtils.GetTextSize(textHeight);
                 var textLocX = location.X;
                 var textLocY = location.Y;
@@ -469,7 +193,7 @@ namespace ACadSvg {
                 groupElement.Children.Add(textElement);
 
                 if (_multiLeader.TextFrame) {
-                    double lg = getLandingGap(); ;
+                    double lg = _mlProps.LandingGap;
                     double fx = contentBasePoint.X;
                     double fy = location.Y - lg;
                     double fw = 60;
@@ -487,11 +211,11 @@ namespace ACadSvg {
             }
 
             if (_contextData.HasContentsBlock) {
-                var blockContent = getBlockContent();
-                var blockContentColor = getBlockContentColor();
-                var blockContentScale = getBlockContentScale();
-                var blockContentRotation = getBlockContentRotation();
-                var blockContentConnection = getBlockContentConnection();
+                var blockContent = _mlProps.BlockContent;
+                var blockContentColor = _mlProps.BlockContentColor;
+                var blockContentScale = _mlProps.BlockContentScale;
+                var blockContentRotation = _mlProps.BlockContentRotation;
+                var blockContentConnection = _mlProps.BlockContentConnection;
 
                 var blockLocX = location.X;
                 var blockLocY = location.Y;
@@ -517,7 +241,7 @@ namespace ACadSvg {
             //commentSb.AppendLine(new PointElement().WithXY(basePoint.X, basePoint.Y).WithStroke("magenta").ToString());
             //commentSb.AppendLine(new PointElement().WithXY(location.X, location.Y).WithStroke("pink").ToString());
 
-            commentSb.Append("Scale factor: ").AppendLine($"{getScaleFactor()}");
+            commentSb.Append("Scale factor: ").AppendLine($"{_mlProps.ScaleFactor}");
             //Dogleg Length
             commentSb.Append("Dogleg Length ml: ").Append(_multiLeader.LandingDistance).Append(", mls: ").Append(_multiLeader.Style.LandingDistance).AppendLine();
             //Dogleg/Landing
