@@ -122,9 +122,11 @@ namespace ACadSvg {
         }
 
 
-        protected void CreateTextElementAndLeader(XY dimMid, XY textMid, XY textEnd, double textRot) {
+        protected void CreateTextElementAndLeader(XY dimMid, XY textMid, XY dimDir, double textRot) {
             double textSize = TextUtils.GetTextSize(_dimProps.TextHeight) * 1.5;
             string text = GetFormattedDimensionText(textSize);
+            double textLen = TextUtils.GetTextLength(text, textSize);
+            XY textEnd = textMid - dimDir * textLen;
             string textColor = ColorUtils.GetHtmlColor(_dimension, _dimProps.TextColor);
             string textAnchor;
             XY textPos;
@@ -309,7 +311,7 @@ namespace ACadSvg {
                 XY dexte = textOutside ? textPoint + dimDir * textLen / 2 : arrowPoint + dimDir * 2 * arrowSize;
                 _groupElement.Children.Add(new PathElement()
                     .AddLine(dexta.X, dexta.Y, dexte.X, dexte.Y)
-                    .WithStroke("red").WithStrokeWidth(_dimensionLineWidth));  //_dimensionLineColor
+                    .WithStroke(_dimensionLineColor).WithStrokeWidth(_dimensionLineWidth));
             }
         }
 

@@ -81,26 +81,33 @@ namespace ACadSvg {
             GetArrowsOutside(_linDim.Measurement, out bool firstArrowOutside, out bool secondArrowOutside);
             XY arrow1Direction = dimDir * (firstArrowOutside ? -1 : 1);
             XY arrow2Direction = -dimDir * (secondArrowOutside ? -1 : 1);
-            string arrowColor = _dimensionLineColor;
 
             //  Get individual arrowheads
             var arr1Block = _dimProps.ArrowHeadBlock1;
             var arr2Block = _dimProps.ArrowHeadBlock2;
 
             //  Get measurement text
-            string text = _linDim.CreateMeasurementText();
             double textSize = TextUtils.GetTextSize(_dimProps.TextHeight) * 1.5;
             double textRot = (GetTextRot(dimDir.GetAngle()) + _linDim.TextRotation) * 180 / Math.PI;
-            double textLen = TextUtils.GetTextLength(text, textSize);
             const double noTextLen = 0;
 
             XY dimMid = GetMidpoint(dp1, dp2);
             XY textMid = Utils.ToXY(_linDim.TextMiddlePoint);
-            XY textEnd = textMid - dimDir * textLen;
             XY textOnDimLin = dp1 + dimDir * dimDir.Dot(textMid - dp1);
-            XY textPos = textOnDimLin;
-            bool textInside = (dp2 - dp1).GetLength() > (textOnDimLin - dp1).GetLength();
             bool withLeader = (textMid - textOnDimLin).GetLength() > textSize * 1.4 && _dimProps.TextMovement == TextMovement.AddLeaderWhenTextMoved;
+
+            double textLen = noTextLen;
+            if (withLeader) {
+                //  Draw measuring text and leader element
+                CreateTextElementAndLeader(dimMid, textMid, dimDir, textRot);
+            }
+            else {
+                //  Draw measuring mext
+                XY textPos = textOnDimLin;
+                CreateTextElement(textPos, dimDir.GetAngle(), out textLen);
+            }
+
+            bool textInside = (dp2 - dp1).GetLength() > (textOnDimLin - dp1).GetLength();
 
             //  Calculate dimension line length
             double dimensionLineExtension = _dimProps.DimensionLineExtension;
@@ -116,32 +123,19 @@ namespace ACadSvg {
                 dl2 = secondArrowOutside ? dp2 : dp2 + dimDir * _arrowSize;
             }
 
-            //  Dimension line extension, when arrow or text is outside
-            bool dim1ext = firstArrowOutside;
-            bool dim2ext = secondArrowOutside || (!textInside && !withLeader);
-
             //  Draw lines
             CreateExtensionLine(dext1a, dext1e);
             CreateExtensionLine(dext2a, dext2e);
             CreateDimensionLine(dl1, dl2);
 
             //  Draw dimension line extensions
-            CreateDimensionLineExtension(dp1, dp1 + dimDir * 2 * _arrowSize, dimDir, _arrowSize, false, dim1ext, noTextLen);
-            CreateDimensionLineExtension(dp2, textOnDimLin, -dimDir, _arrowSize, !textInside, dim2ext, textLen);
+            CreateDimensionLineExtension(dp1, dp1 + dimDir * 2 * _arrowSize, dimDir, _arrowSize, false, firstArrowOutside, noTextLen);
+            CreateDimensionLineExtension(dp2, textOnDimLin, -dimDir, _arrowSize, !textInside, secondArrowOutside, textLen);
 
             //  Draw arrow heads
             CreateArrowHead(arr1Block, dp1, arrow1Direction);
             CreateArrowHead(arr2Block, dp2, arrow2Direction);
-
-            
-            if (withLeader) {
-                //  Draw measuring text and leader element
-                CreateTextElementAndLeader(dimMid, textMid, textEnd, textRot);
-            } else {
-                //  Draw measuring mext
-                CreateTextElement(textPos, dimDir.GetAngle(), out textLen);
-            }
-
+         
             //  TODO
             var attachmentPoint = _linDim.AttachmentPoint;
             var verticalAlignment = _dimProps.TextVerticalAlignment;
