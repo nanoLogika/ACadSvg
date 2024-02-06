@@ -422,11 +422,11 @@ namespace ACadSvg {
                     var arrowHeadSize = getArrowHeadSize(leaderLine);
 
                     var points = leaderLine.Points;
-                    XYZ arrowPoint = points[0];
-                    XYZ arrowDirection = (points.Count > 1 ? points[0] - points[1] : points[0] - leaderEndPoint).Normalize() * arrowHeadSize;
+                    XY arrowPoint = Utils.ToXY(points[0]);
+                    XY arrowDirection = Utils.ToXY(points.Count > 1 ? points[0] - points[1] : points[0] - leaderEndPoint).Normalize() * arrowHeadSize;
 
                     if (arrowHead != null) {
-						groupElement.Children.Add(XElementFactory.CreateArrowhead(arrowHead, arrowPoint, arrowHeadSize, arrowDirection));
+						groupElement.Children.Add(XElementFactory.CreateArrowheadFromBlock(arrowHead, arrowPoint, arrowDirection, arrowHeadSize));
                     }
                     else {
                         var arrowColor = leaderLineColor;

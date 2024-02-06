@@ -9,7 +9,6 @@ using System.Text;
 
 using ACadSharp;
 using ACadSharp.Entities;
-using ACadSharp.Tables;
 using ACadSharp.Tables.Collections;
 
 using SvgElements;
@@ -110,82 +109,6 @@ namespace ACadSvg {
         }
 
 
-        /// <summary>
-        /// Gets a record from an <see cref="ExtendedData"/> dictionary with the specified
-        /// <see cref="AppId"/> name and 
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="appIdName"></param>
-        /// <param name="entryName"></param>
-        /// <param name="field"></param>
-        /// <returns>A <see cref="ExtendedDataRecord"/> or null when the specified record was not found.</returns>
-        /// <remarks>
-        /// <para>
-        /// An <see cref="ExtendedDataRecord"/> contains a <see cref="ExtendedDataRecord.Code"/>
-        /// and a <see cref="ExtendedDataRecord.Value"/>. The Code indicates the type of the value.
-        /// The record provides no information about the meaning of the value. We assume that the
-        /// preceding record tells what the value of the value ist to be used for. The <paramref name="field"/>
-        /// is the value of the preceding field, thus specified the next record to be returned.
-        /// </para><para>
-        /// Example:
-        /// </para><para>
-        /// When in AutoCAD for a LEADER a custom arrowsize is set, the value appears in an
-        /// <see cref="ExtendedData"/> dictionary associated with the <see cref="AppId"/> having the
-        /// name <i>ACAD</i>. The <see cref="ExtendedData"/> entries contain a list of
-        /// <see cref="ExtendedDataRecord"/> records. The first record contains the name
-        /// <i>DSTYLE</i>. One of the next records contains the desired arrowsize. The
-        /// preceding record contains the value <i>41</i>. We believe that this indicates that the
-        /// desired data are in the next record.
-        /// </para>
-        /// </remarks>
-        protected ExtendedDataRecord GetExtendedDataRecord(Entity entity, string appIdName, string entryName, short field) {
-            ExtendedData extendedData = getExtendedData(entity, appIdName, entryName);
-            if (extendedData == null) {
-                return null;
-            }
-            bool fieldFound = false;
-            foreach (ExtendedDataRecord record in extendedData.Data) {
-                if (record.Code == DxfCode.ExtendedDataInteger16 && (short)record.Value == field) {
-                    fieldFound = true;
-                }
-                else if (fieldFound) {
-                    //  If preceding record matched.
-                    return record;
-                }
-            }
-            return null;
-        }
-
-
-        //protected ExtendedDataRecord GetExtendedData(Entity entity, string appIdName, int index) {
-        //    ExtendedData extendedData = getExtendedDataDictionary(entity, appIdName, "");
-        //    return extendedData.Data[index];
-        //}
-
-
-        private ExtendedData getExtendedData(Entity entity, string appIdName, string entryName) {
-            ExtendedDataDictionary extendedDataDict = entity.ExtendedData;
-            var doc = entity.Document;
-            AppIdsTable appIds = doc.AppIds;
-
-            AppId appIdByName = null;
-            foreach (var appId in appIds) {
-                if (appId.Name == appIdName) {
-                    appIdByName = appId;
-                    break;
-                }
-            }
-            if (appIdByName == null) {
-                return null;
-            }
-            if (!extendedDataDict.TryGet(appIdByName, out ExtendedData extendedDataValue)) {
-                return null;
-            }
-            if (!string.IsNullOrEmpty(entryName) && extendedDataValue.Data[0].Value.ToString() != entryName) {
-                return null;
-            }
-            return extendedDataValue;
-        }
 
 
         /// <summary>
@@ -247,7 +170,7 @@ namespace ACadSvg {
 
 
         /// <summary>SVG-converter Factory: creates a entity-specific object implementing
-        /// the conversion of a AutoCAD-DWG <see cref="Entity" /> into SVG text.
+        /// the conversion of a AutoCAD <see cref="Entity" /> into SVG text.
         /// The created object type is determined by the <see cref="CadObject.ObjectType"/>
         /// property.
         /// </summary>
@@ -302,6 +225,18 @@ namespace ACadSvg {
 
             case ObjectType.DIMENSION_ANG_3_Pt:
                 return new DimensionAngular3PtSvg(entity, ctx);
+
+            case ObjectType.DIMENSION_ANG_2_Ln:
+                return new DimensionAngular2LineSvg(entity, ctx);
+
+            case ObjectType.DIMENSION_RADIUS:
+                return new DimensionRadiusSvg(entity, ctx);
+
+            case ObjectType.DIMENSION_DIAMETER:
+                return new DimensionDiameterSvg(entity, ctx);
+
+            case ObjectType.DIMENSION_ORDINATE:
+                return new DimensionOrdinateSvg(entity, ctx);
 
             case ObjectType.LEADER:
                 return new LeaderSvg(entity, ctx);

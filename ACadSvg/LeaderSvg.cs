@@ -6,10 +6,11 @@
 #endregion
 
 using ACadSharp.Entities;
-
+using ACadSharp.Tables;
 using CSMath;
 
 using SvgElements;
+using ACadSvg.Extensions;
 
 
 namespace ACadSvg {
@@ -26,6 +27,7 @@ namespace ACadSvg {
     /// </para></remarks>
     internal class LeaderSvg : EntitySvg {
 
+        private DimensionProperties _dimProps;
         private Leader _leader;
 
 
@@ -37,6 +39,7 @@ namespace ACadSvg {
         /// <param name="ctx">This parameter is not used in this class.</param>
         public LeaderSvg(Entity leader, ConversionContext ctx) : base(ctx) {
             _leader = (Leader)leader;
+            _dimProps = new DimensionProperties(_leader, _leader.Style);
             SetStandardIdAndClassIf(leader, ctx);
         }
 
@@ -46,38 +49,56 @@ namespace ACadSvg {
             GroupElement groupElement = new GroupElement();
             groupElement.WithID(ID).WithClass(Class);
 
-            var lineColor = ColorUtils.GetHtmlColor(_leader, _leader.Color);
-            var vertices = _leader.Vertices;
+            string? lineColor = ColorUtils.GetHtmlColor(_leader, _leader.Color);
+            //  TODO Also consider _dimEx.DimensionLineColor
+
+            IList<XYZ> vertices = new List<XYZ>(_leader.Vertices);
+            if (_leader.HasHookline) {
+                var annotationOffset = _leader.AnnotationOffset;
+                var blockOffset = _leader.BlockOffset;
+                var hookLineDirectionF = _leader.HookLineDirection ? -1 : 1;
+                var horizontalDirection = _leader.HorizontalDirection * hookLineDirectionF;
+                XYZ landingPoint = vertices[vertices.Count - 1] - horizontalDirection * _leader.Style.ArrowSize;
+                vertices.Insert(vertices.Count - 1, landingPoint);
+
+                double textLength = 0;
+                if (_leader.AssociatedAnnotation is TextEntity textEntity) {
+                    var text = textEntity.Value;
+                    textLength = TextUtils.GetTextLength(text, textEntity.Style.Height);
+                }
+                if (_leader.AssociatedAnnotation is MText mText) {
+                    var text = mText.Value;
+                    textLength = TextUtils.GetTextLength(text, mText.Style.Height);
+                }
+
+                if (textLength > 0) {
+                    XYZ textEndPoint = vertices[vertices.Count - 1] + horizontalDirection * textLength;
+                    vertices.Add(textEndPoint);
+                }
+            }
 
             var leaderLine = new PathElement()
-                .AddPoints(Utils.VerticesToArray(_leader.Vertices))
+                .AddPoints(Utils.VerticesToArray(vertices))
                 .WithStroke(lineColor)
                 .WithStrokeWidth(LineUtils.GetLineWeight(_leader.LineWeight, _leader, _ctx));
             groupElement.Children.Add(leaderLine);
 
             if (_leader.ArrowHeadEnabled) {
-                var dimStyle = _leader.Style;
+                double arrowSize = _dimProps.ArrowSize;
                 var arrowColor = lineColor;
-                var record = GetExtendedDataRecord(_leader, "ACAD", "DSTYLE", 41);
-                double arrowSize;
-                if (record != null) {
-                    arrowSize = (double)record.Value;
+                XY arrowPoint = Utils.ToXY(vertices[0]);
+                XY arrowDirection = Utils.ToXY(vertices[0] - vertices[1]).Normalize() * arrowSize;
+
+                BlockRecord arrowBlock = _dimProps.LeaderArrow;
+                if (arrowBlock == null) {
+                    groupElement.Children.Add(XElementFactory.CreateStandardArrowHead(arrowPoint, arrowDirection, arrowColor));
                 }
                 else {
-                    var scaleFactor = dimStyle.ScaleFactor;
-                    if (scaleFactor == 0) {
-                        scaleFactor = 25;  //  Why is this scaler necessary 
-                    }
-                    arrowSize = dimStyle.ArrowSize * scaleFactor * 10;
+                    groupElement.Children.Add(XElementFactory.CreateArrowheadFromBlock(arrowBlock, arrowPoint, arrowDirection, arrowSize));
                 }
-                var arrowDirection = (vertices[0] - vertices[1]).Normalize() * arrowSize;
-                var arrowHead = XElementFactory.CreateStandardArrowHead(vertices[0], arrowDirection, arrowColor);
-
-                groupElement.Children.Add(arrowHead);
             }
 
             return groupElement;
-
         }
     }
 }
