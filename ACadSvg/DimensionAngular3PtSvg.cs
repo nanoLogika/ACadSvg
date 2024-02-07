@@ -49,8 +49,7 @@ namespace ACadSvg {
 
             XY firstExtDir = (firstPoint - arcCenter).Normalize();
             XY secondExtDir = (secondPoint - arcCenter).Normalize();
-            var extLineExt = _dimProps.ExtensionLineExtension;
-            var extLineOffset = _dimProps.ExtensionLineOffset;
+
             XY firstArcPoint = arcCenter + firstExtDir * r;
             XY secondArcPoint = arcCenter + secondExtDir * r;
 
