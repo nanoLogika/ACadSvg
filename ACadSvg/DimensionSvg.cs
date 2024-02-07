@@ -305,6 +305,24 @@ namespace ACadSvg {
         }
 
 
+        protected void CreateFirstExtensionLine(XY point, XY pointExt) {
+            if (_dimProps.SuppressFirstExtensionLine) {
+                return;
+            }
+
+            CreateExtensionLine(point, pointExt);
+        }
+
+
+        protected void CreateSecondExtensionLine(XY point, XY pointExt) {
+            if (_dimProps.SuppressSecondExtensionLine) {
+                return;
+            }
+
+            CreateExtensionLine(point, pointExt);
+        }
+
+
         protected void CreateDimensionLineExtension(XY arrowPoint, XY textPoint, XY dimDir, double arrowSize, bool textOutside, bool arrowOutside, double textLen) {
             if (arrowOutside || textOutside) {
                 XY dexta = arrowOutside ? arrowPoint + dimDir * arrowSize : arrowPoint;

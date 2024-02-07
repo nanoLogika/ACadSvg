@@ -124,8 +124,8 @@ namespace ACadSvg {
             }
 
             //  Draw lines
-            CreateExtensionLine(dext1a, dext1e);
-            CreateExtensionLine(dext2a, dext2e);
+            CreateFirstExtensionLine(dext1a, dext1e);
+            CreateSecondExtensionLine(dext2a, dext2e);
             CreateDimensionLine(dl1, dl2);
 
             //  Draw dimension line extensions

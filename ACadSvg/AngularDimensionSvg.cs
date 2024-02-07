@@ -32,15 +32,38 @@ namespace ACadSvg {
         }
 
 
-        /// <summary>
-        /// Creates a <i>path</i> SVG element containing an arc and adds it to the <i>group</i>
-        /// element of this <see cref="AngularDimensionSvg"/>.
-        /// </summary>
-        /// <param name="center">The center of the arc.</param>
-        /// <param name="r">The radus of the arc.</param>
-        /// <param name="beginAngle">The angle of the begin of the arc.</param>
-        /// <param name="endAngle">The angle of the end of the arc.</param>
-        protected void CreateDimensionLineArc(XY center, double r, double beginAngle, double endAngle) {
+        protected void CreateFirstExtensionLine(XY point, XY extDir, XY arcPoint) {
+			if (_dimProps.SuppressFirstExtensionLine) {
+                return;
+            }
+
+            double extLineOffset = _dimProps.ExtensionLineOffset;
+			double extLineExt = _dimProps.ExtensionLineExtension;
+
+			CreateExtensionLine(point + extLineOffset * extDir, arcPoint + extDir * extLineExt);
+		}
+
+		protected void CreateSecondExtensionLine(XY point, XY extDir, XY arcPoint) {
+			if (_dimProps.SuppressSecondExtensionLine) {
+				return;
+			}
+
+			double extLineOffset = _dimProps.ExtensionLineOffset;
+			double extLineExt = _dimProps.ExtensionLineExtension;
+
+			CreateExtensionLine(point + extLineOffset * extDir, arcPoint + extDir * extLineExt);
+		}
+
+
+		/// <summary>
+		/// Creates a <i>path</i> SVG element containing an arc and adds it to the <i>group</i>
+		/// element of this <see cref="AngularDimensionSvg"/>.
+		/// </summary>
+		/// <param name="center">The center of the arc.</param>
+		/// <param name="r">The radus of the arc.</param>
+		/// <param name="beginAngle">The angle of the begin of the arc.</param>
+		/// <param name="endAngle">The angle of the end of the arc.</param>
+		protected void CreateDimensionLineArc(XY center, double r, double beginAngle, double endAngle) {
             _groupElement.Children.Add(new PathElement()
                 .AddMoveAndArc(center.X, center.Y, beginAngle, endAngle, r)
                 .WithStroke(_dimensionLineColor)
