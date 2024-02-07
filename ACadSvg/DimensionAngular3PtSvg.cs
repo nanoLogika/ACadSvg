@@ -66,7 +66,7 @@ namespace ACadSvg {
 
             //  Extension lines
             CreateFirstExtensionLine(firstPoint, firstExtDir, firstArcPoint);
-            CreateDimensionLine(secondPoint + extLineOffset * secondExtDir, secondArcPoint + extLineExt * secondExtDir);
+            CreateSecondExtensionLine(secondPoint, secondExtDir, secondArcPoint);
 
             double firstAngle = firstExtDir.GetAngle();
             double secondAngle = secondExtDir.GetAngle();
