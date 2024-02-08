@@ -58,24 +58,12 @@ namespace ACadSvg {
             var dimHor = _linDim.HorizontalDirection;
             var extLineRot = _linDim.ExtLineRotation;
 
-            double extLineExt = _dimProps.ExtensionLineExtension;
-            double extLineOffset = _dimProps.ExtensionLineOffset;
+            XY dext2Dir = (dp2 - p2).Normalize();
 
-            XY dext2 = dp2 - p2;
-            double dext2el = dext2.GetLength() + extLineExt;
-            double dext2al = extLineOffset;
-            XY dextn = dext2.Normalize();
-            XY dext2e = p2 + dext2el * dextn;
-            XY dext2a = p2 + dext2al * dextn;
-
-            XY dimDir = ccw ? new XY(-dextn.Y, dextn.X) : new XY(dextn.Y, -dextn.X);
+            XY dimDir = ccw ? new XY(-dext2Dir.Y, dext2Dir.X) : new XY(dext2Dir.Y, -dext2Dir.X);
             XY dp1 = dp2 + dimDir * _linDim.Measurement;
-            XY dext1 = dp1 - p1;
-            double dext1el = dext1.GetLength() + extLineExt;
-            double dext1al = extLineOffset;
-            XY dext1n = dext1.Normalize();
-            XY dext1e = p1 + dext1el * dext1n;
-            XY dext1a = p1 + dext1al * dext1n;
+            
+            XY dext1Dir = (dp1 - p1).Normalize();
 
             //  Get arrow´position, direction and color
             GetArrowsOutside(_linDim.Measurement, out bool firstArrowOutside, out bool secondArrowOutside);
@@ -124,8 +112,8 @@ namespace ACadSvg {
             }
 
             //  Draw lines
-            CreateExtensionLine(dext1a, dext1e);
-            CreateExtensionLine(dext2a, dext2e);
+            CreateFirstExtensionLine(p1, dp1, dext1Dir);
+            CreateSecondExtensionLine(p2, dp2, dext2Dir);
             CreateDimensionLine(dl1, dl2);
 
             //  Draw dimension line extensions

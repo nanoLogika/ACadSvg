@@ -126,21 +126,21 @@ namespace ACadSvg {
             double textSize = TextUtils.GetTextSize(_dimProps.TextHeight) * 1.5;
             string text = GetFormattedDimensionText(textSize);
             double textLen = TextUtils.GetTextLength(text, textSize);
-            XY textEnd = textMid - dimDir * textLen;
             string textColor = ColorUtils.GetHtmlColor(_dimension, _dimProps.TextColor);
             string textAnchor;
-            XY textPos;
-            if (isCcwPath(dimMid, textMid, textEnd)) {
+            if (isCcwPath(dimMid, textMid, textMid - dimDir)) {
                 textAnchor = string.Empty;
             }
             else {
                 textAnchor = "end";
             }
-            textPos = textMid;
+
+            XY dimDir90 = Utils.Rotate(dimDir, Math.PI / 2);
+            XY textPos = textMid + dimDir90 * textSize / 2;
             TextUtils.StyleToValues(_dimProps.TextStyle, textSize, out string fontFamily, out double fontSize, out bool bold, out bool italic);
 
             _groupElement.Children.Add(new TextElement()
-                .WithXY(textMid.X, textMid.Y)
+                .WithXY(textPos.X, textPos.Y)
                 .WithTextAnchor(textAnchor)
                 .WithFont(fontFamily, fontSize, bold, italic)
                 .WithValue(text)
@@ -149,10 +149,14 @@ namespace ACadSvg {
                 .ReverseY(_ctx.ConversionOptions.ReverseY)
                 .AddRotate(textRot, textMid.X, textMid.Y));
 
+            XY landing = textMid + dimDir90 * (textSize / 2 + _dimProps.DimensionLineGap);
+            XY landingEnd = landing - dimDir * textLen;
             _groupElement.Children.Add(new PathElement()
-                    .AddLine(dimMid.X, dimMid.Y, textMid.X, textMid.Y)
-                    .AddLine(textEnd.X, textEnd.Y)
+                    .AddLine(dimMid.X, dimMid.Y, landing.X, landing.Y)
+                    .AddLine(landingEnd.X, landingEnd.Y)
                     .WithStroke(_dimensionLineColor).WithStrokeWidth(_dimensionLineWidth));
+
+            CreateDebugPoint(textPos, "aqua");
         }
 
 
@@ -297,11 +301,32 @@ namespace ACadSvg {
         }
 
 
-        protected void CreateExtensionLine(XY point, XY pointExtExt) {
+        protected void CreateExtensionLine(XY point, XY definitionPoint, XY extDir) {
+            XY exta = point + _dimProps.ExtensionLineOffset * extDir;
+            XY exte = definitionPoint + _dimProps.ExtensionLineExtension * extDir;
+
             _groupElement.Children.Add(new PathElement()
-                .AddLine(point.X, point.Y, pointExtExt.X, pointExtExt.Y)
+                .AddLine(exta.X, exta.Y, exte.X, exte.Y)
                 .WithStroke(_extensionLineColor)
                 .WithStrokeWidth(_extensionLineWidth));
+        }
+
+
+        protected void CreateFirstExtensionLine(XY point, XY arcPoint, XY extDir) {
+            if (_dimProps.SuppressFirstExtensionLine) {
+                return;
+            }
+
+            CreateExtensionLine(point, arcPoint, extDir);
+        }
+
+
+        protected void CreateSecondExtensionLine(XY point, XY arcPoint, XY extDir) {
+            if (_dimProps.SuppressSecondExtensionLine) {
+                return;
+            }
+
+            CreateExtensionLine(point, arcPoint, extDir);
         }
 
 
@@ -334,8 +359,11 @@ namespace ACadSvg {
 
 
         protected void CreateDebugPoint(XY point, string color) {
+#if DEBUG
             _groupElement.Children.Add(new CircleElement() { Cx = point.X, Cy = point.Y, R = 0.25 }.WithStroke(color));
+#endif
         }
+
 
         private bool isCcwPath(XY p0, XY p1, XY p2) {
             double a1 = (p1 - p0).GetAngle();
