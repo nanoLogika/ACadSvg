@@ -14,7 +14,20 @@ namespace ACadSvg {
 
     public static class XElementFactory {
 
-        public static SvgElementBase CreateArrowhead(BlockRecord arrowHead, XYZ arrowPoint, double arrowHeadSize, XYZ arrowDirection) {
+        private static double StandardArrowWidth = 0.1667266;
+
+
+        public static SvgElementBase CreateArrowHead(BlockRecord arrowHeadBlock, XY arrowPoint, XY arrowDirection, double arrowSize, string arrowColor) {
+            if (arrowHeadBlock != null) {
+                return CreateArrowheadFromBlock(arrowHeadBlock, arrowPoint, arrowDirection, arrowSize);
+            }
+            else {
+                return CreateStandardArrowHead(arrowPoint, arrowDirection, arrowColor);
+            }
+        }
+
+
+        public static SvgElementBase CreateArrowheadFromBlock(BlockRecord arrowHead, XY arrowPoint, XY arrowDirection, double arrowHeadSize) {
 			string blockName = Utils.CleanBlockName(arrowHead.Name);
 
 			return
@@ -22,14 +35,14 @@ namespace ACadSvg {
 				.WithGroupId(blockName)
 				.AddTranslate(arrowPoint.X, arrowPoint.Y)
 				.AddScale(arrowHeadSize)
-				.AddRotate(Utils.ToXY(arrowDirection).GetAngle() * 180 / Math.PI);
+				.AddRotate(arrowDirection.GetAngle() * 180 / Math.PI);
 		}
 
 
-        public static SvgElementBase CreateStandardArrowHead(XYZ arrowPoint, XYZ arrowDirection, string arrowColor) {
-            XYZ arrowBase = new XYZ(arrowDirection.Y, -arrowDirection.X, 0) * 0.2;
-            XYZ arrowEnd1 = arrowPoint - arrowDirection + arrowBase;
-            XYZ arrowEnd2 = arrowPoint - arrowDirection - arrowBase;
+        public static SvgElementBase CreateStandardArrowHead(XY arrowPoint, XY arrowDirection, string arrowColor) {
+            XY arrowBase = new XY(arrowDirection.Y, -arrowDirection.X) * StandardArrowWidth;
+            XY arrowEnd1 = arrowPoint - arrowDirection + arrowBase;
+            XY arrowEnd2 = arrowPoint - arrowDirection - arrowBase;
 
             return new PathElement()
                 .AddMove(arrowPoint.X, arrowPoint.Y)

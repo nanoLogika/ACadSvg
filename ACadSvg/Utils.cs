@@ -122,9 +122,14 @@ namespace ACadSvg {
 
 
         internal static double GetInfinity(Entity entity) {
-            return 10 * Math.Max(
+            return Math.Max(
                 entity.Document.Header.ModelSpaceExtMax.X - entity.Document.Header.ModelSpaceExtMin.X,
                 entity.Document.Header.ModelSpaceExtMax.Y - entity.Document.Header.ModelSpaceExtMin.Y);
+        }
+
+
+        internal static XY Rotate(XY v, double phi) {
+            return new XY(v.X * Math.Cos(phi) - v.Y * Math.Sin(phi), v.X * Math.Sin(phi) + v.Y * Math.Cos(phi));
         }
     }
 }
