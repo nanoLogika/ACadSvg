@@ -51,8 +51,6 @@ namespace ACadSvg {
 
             XY firstExtDir = (firstPoint - firstLinePoint1).Normalize();
             XY secondExtDir = (secondPoint - secondLinePoint1).Normalize();
-            double extLineExt = _dimProps.ExtensionLineExtension;
-            var extLineOffset = _dimProps.ExtensionLineOffset;
             XY firstArcPoint = arcCenter + firstExtDir * r;
             XY secondArcPoint = arcCenter + secondExtDir * r;
 
@@ -78,8 +76,8 @@ namespace ACadSvg {
             CreateDimensionLineArc(arcCenter, r, flipped ? secondAngle : firstAngle, flipped ? firstAngle : secondAngle);
 
             //  Lines
-            CreateFirstExtensionLine(firstPoint, firstExtDir, firstArcPoint);
-            CreateSecondExtensionLine(secondPoint, secondExtDir, secondArcPoint);
+            CreateFirstExtensionLine(firstPoint, firstArcPoint, firstExtDir);
+            CreateSecondExtensionLine(secondPoint, secondArcPoint, secondExtDir);
 
             // Arrows
             GetArrowsOutside(r * (secondAngle - firstAngle), out bool firstArrowOutside, out bool secondArrowOutside);
