@@ -212,7 +212,7 @@ namespace ACadSvg.Extensions {
 
         public object BlockContentConnection {
             get {
-                if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.BlockConnectionConnection)) {
+                if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.BlockContentConnection)) {
                     return _multiLeader.BlockContentConnection;
                 }
 

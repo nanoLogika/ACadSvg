@@ -291,7 +291,7 @@ namespace ACadSvg {
 
 
         private object getBlockContentConnection() {
-            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.BlockConnectionConnection)) {
+            if (_flags.HasFlag(MultiLeaderPropertyOverrideFlags.BlockContentConnection)) {
                 return _multiLeader.BlockContentConnection;
             }
 
@@ -349,7 +349,7 @@ namespace ACadSvg {
             //  the location of the text or block context respectively
             XYZ contentBasePoint = _contextData.ContentBasePoint;
             XYZ basePoint = _contextData.BasePoint;
-            XYZ location = _contextData.Location;
+            XYZ location = _contextData.BlockContentLocation;
 
             //  TODO This is a workaround due to bad data from DWG or lack of understanding?
             if (contentBasePoint.X < basePoint.X) {
@@ -453,7 +453,7 @@ namespace ACadSvg {
                 textLocY -= textHeight;
 
                 //  Rotation is performed first, must be positive.
-                double rot = _contextData.Rotation * 180 / Math.PI;
+                double rot = _contextData.BlockContentRotation * 180 / Math.PI;
 
                 string textAnchor = TextUtils.HorizontalAlignmentToTextAnchor(_multiLeader.TextAttachmentPoint);
                 TextUtils.StyleToValues(textStyle, textSize, out string fontFamily, out double fontSize, out bool bold, out bool italic);
@@ -511,7 +511,7 @@ namespace ACadSvg {
             //  Draw points for test
             XYZ contentBasePoint = _contextData.ContentBasePoint;
             XYZ basePoint = _contextData.BasePoint;
-            XYZ location = _contextData.Location;
+            XYZ location = _contextData.BlockContentLocation;
 
             //commentSb.AppendLine(new PointElement().WithXY(contentBasePoint.X, contentBasePoint.Y).WithStroke("aqua").ToString());
             //commentSb.AppendLine(new PointElement().WithXY(basePoint.X, basePoint.Y).WithStroke("magenta").ToString());
@@ -530,12 +530,11 @@ namespace ACadSvg {
             //Richtung
             commentSb.Append("Richtung/Direction: ").AppendLine(_contextData.Direction.ToString());
             //Drehung
-            commentSb.Append("Drehung/Rotation: ").AppendLine(_contextData.Rotation.ToString());
+            commentSb.Append("Drehung/Rotation: ").AppendLine(_contextData.BlockContentRotation.ToString());
             //Textzeilenabstand
             //Zuordnungstyp
             commentSb.AppendLine("Zuordungstyp (TextAttachmentrType):");
-            commentSb.Append("    ML: ").Append(_multiLeader.TextAttachmentDirection).Append(", MLS: ").Append(_multiLeader.Style.TextAttachmentDirection).Append(", LR0: ").Append(_contextData.LeaderRoots[0].AttachmentDirection).AppendLine();
-            commentSb.Append("Zuordnungstyp/AttachmentType: ").AppendLine(_contextData.AttachmentType.ToString());
+            commentSb.Append("    ML: ").Append(_multiLeader.TextAttachmentDirection).Append(", MLS: ").Append(_multiLeader.Style.TextAttachmentDirection).Append(", LR0: ").Append(_contextData.LeaderRoots[0].TextAttachmentDirection).AppendLine();
             //Zuordnung links
             commentSb.Append("Zuordnung links/TextLeftAttachment: ").AppendLine(_contextData.TextLeftAttachment.ToString());
             //Zuordnung rechts
