@@ -16,12 +16,12 @@ namespace ACadSvg.Extensions {
     /// Exposes all proprties required for the rendering of <see cref="Dimension"/> and
     /// derived entity's and <see cref="Leader"/> entity's. Property values are either
     /// provided by the associated <see cref="DimensionStyle"/> object or may be overriden
-    /// by extended data of the entity. The <see cref="DimenionStyle.ScaleFactor"/>is
+    /// by extended data of the entity. The <see cref="DimensionStyle.ScaleFactor"/> is
     /// handled internally.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The <see cref="DimenionStyle.ScaleFactor"/> property is retrieved from the
+    /// The <see cref="DimensionStyle.ScaleFactor"/> property is retrieved from the
     /// <see cref="DimensionStyle"/> and my be overridden by extended data of the entity.
     /// The value is used to scale the property values that have to be scaled.
     /// </para><para>
@@ -36,6 +36,11 @@ namespace ACadSvg.Extensions {
         private double _scaleFactor;
 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DimensionProperties"/> class.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="style"></param>
         public DimensionProperties(Entity entity, DimensionStyle style) {
             _entity = entity;
             _dimStyle = style;
