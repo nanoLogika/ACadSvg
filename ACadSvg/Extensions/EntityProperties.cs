@@ -181,7 +181,7 @@ namespace ACadSvg.Extensions {
 
             AppId appIdByName = null;
             foreach (var appId in appIds) {
-                if (appId.Name == appIdName) {
+                if (appId.Name.ToLower() == appIdName.ToLower()) {
                     appIdByName = appId;
                     break;
                 }
