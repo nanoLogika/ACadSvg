@@ -112,11 +112,10 @@ namespace ACadSvg {
 
 
         private void setDefaultProperties(SvgElementBase svgElement) {
-            svgElement
-                .WithID(ID)
-			    .WithClass(Class)
-			    .WithStroke(ColorUtils.GetHtmlColor(_point, _point.Color))
-                .WithStrokeWidth(LineUtils.GetLineWeight(_point.LineWeight, _point, _ctx));
+            svgElement.ID = ID;
+            svgElement.Class = Class;
+            svgElement.Stroke = ColorUtils.GetHtmlColor(_point, _point.Color);
+            svgElement.StrokeWidth = LineUtils.GetLineWeight(_point.LineWeight, _point, _ctx);
 		}
 
 
