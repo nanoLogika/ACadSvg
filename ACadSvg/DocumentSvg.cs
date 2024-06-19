@@ -71,7 +71,7 @@ namespace ACadSvg {
             children.AddRange(_convertedEntities);
             children.AddRange(_convertedInserts);
 
-            SvgElementBase svgElement = mainGroup.ToSvgElement();
+            GroupElement svgElement = (GroupElement)mainGroup.ToSvgElement();
             if (_ctx.ConversionOptions.ReverseY) {
                 svgElement.AddScale(1, -1);
             }
@@ -106,7 +106,7 @@ namespace ACadSvg {
             children.AddRange(_convertedInserts);
             children.Add(_ctx.BlocksInDefs);
 
-            SvgElementBase svg = mainGroup.ToSvgElement();
+            GroupElement svg = (GroupElement)mainGroup.ToSvgElement();
             if (_ctx.ConversionOptions.ReverseY) {
                 svg.AddScale(1, -1);
             }
@@ -123,12 +123,20 @@ namespace ACadSvg {
         /// </summary>
         public SvgElementBase GetModelSpaceRectangle() {
 
-            CadHeader header = _doc.Header;
-            RectangleElement modelSpaceRectangle = new RectangleElement() {
+			CadHeader header = _doc.Header;
+			double width = header.ModelSpaceExtMax.X - header.ModelSpaceExtMin.X;
+            double height = header.ModelSpaceExtMax.Y - header.ModelSpaceExtMin.Y;
+
+            if (width == 0 || height == 0)
+            {
+                return null;
+            }
+
+			RectangleElement modelSpaceRectangle = new RectangleElement() {
                 X = header.ModelSpaceExtMin.X,
                 Y = header.ModelSpaceExtMin.Y,
-                Width = header.ModelSpaceExtMax.X - header.ModelSpaceExtMin.X,
-                Height = header.ModelSpaceExtMax.Y - header.ModelSpaceExtMin.Y
+                Width = width,
+                Height = height
             };
             modelSpaceRectangle.StrokeWidth = (modelSpaceRectangle.Width + modelSpaceRectangle.Height) / 25000;
             modelSpaceRectangle.Stroke = "red";
