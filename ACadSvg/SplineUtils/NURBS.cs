@@ -46,7 +46,7 @@ namespace ACadSvg.SplineUtils {
             nurbs.Degree = degree;
             nurbs.ControlPoints.Clear();
             foreach (XYZ xyz in xyzControlPoints) {
-                nurbs.ControlPoints.Add(new RationalBSplinePoint(Utils.ToXY(xyz), 1));
+                nurbs.ControlPoints.Add(new RationalBSplinePoint(xyz.ToXY(), 1));
             }
 
             int m = knotsList.Count;

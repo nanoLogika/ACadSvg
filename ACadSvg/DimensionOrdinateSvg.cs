@@ -27,10 +27,10 @@ namespace ACadSvg {
         public override SvgElementBase ToSvgElement() {
             CreateGroupElement();
 
-            XY fl = Utils.ToXY(_dimOrd.FeatureLocation);
-            XY dp = Utils.ToXY(_dimOrd.DefinitionPoint);
-            XY le = Utils.ToXY(_dimOrd.LeaderEndpoint);
-            XY textMid = Utils.ToXY(_dimOrd.TextMiddlePoint);
+            XY fl = _dimOrd.FeatureLocation.ToXY();
+            XY dp = _dimOrd.DefinitionPoint.ToXY();
+            XY le = _dimOrd.LeaderEndpoint.ToXY();
+            XY textMid = _dimOrd.TextMiddlePoint.ToXY();
             bool isXCoordinate = _dimOrd.IsOrdinateTypeX;
 
             XY landing;

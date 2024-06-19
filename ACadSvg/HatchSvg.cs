@@ -120,7 +120,7 @@ namespace ACadSvg {
 
                     case Hatch.BoundaryPath.EdgeType.Polyline:
                         Hatch.BoundaryPath.Polyline polyline = (Hatch.BoundaryPath.Polyline)edge;
-                        List<XY> vertices = new List<XY>(polyline.Vertices);
+                        List<XYZ> vertices = new List<XYZ>(polyline.Vertices);
                         if (reverse) {
                             vertices.Reverse();
                         }
@@ -264,8 +264,8 @@ namespace ACadSvg {
                 break;
             case Hatch.BoundaryPath.EdgeType.Polyline:
                 Hatch.BoundaryPath.Polyline polyline = (Hatch.BoundaryPath.Polyline)edge;
-                startPoint = polyline.Vertices[0];
-                endPoint = polyline.Vertices[polyline.Vertices.Count - 1];
+                startPoint = polyline.Vertices[0].ToXY();
+                endPoint = polyline.Vertices[polyline.Vertices.Count - 1].ToXY();
                 break;
             case Hatch.BoundaryPath.EdgeType.Spline:
                 Hatch.BoundaryPath.Spline spline = (Hatch.BoundaryPath.Spline)edge;

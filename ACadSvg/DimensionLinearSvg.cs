@@ -43,9 +43,9 @@ namespace ACadSvg {
             CreateGroupElement();
 
             // Get points for measurement
-            XY p1 = Utils.ToXY(_linDim.FirstPoint);
-            XY p2 = Utils.ToXY(_linDim.SecondPoint);
-            XY dp2 = Utils.ToXY(_linDim.DefinitionPoint);
+            XY p1 = _linDim.FirstPoint.ToXY();
+            XY p2 = _linDim.SecondPoint.ToXY();
+            XY dp2 = _linDim.DefinitionPoint.ToXY();
 
             double dirp1p2 = (p2 - p1).GetAngle();
             double dirp1dp2 = (dp2 - p1).GetAngle();
@@ -65,7 +65,7 @@ namespace ACadSvg {
             
             XY dext1Dir = (dp1 - p1).Normalize();
 
-            //  Get arrow´position, direction and color
+            //  Get arrow position, direction
             GetArrowsOutside(_linDim.Measurement, out bool firstArrowOutside, out bool secondArrowOutside);
             XY arrow1Direction = dimDir * (firstArrowOutside ? -1 : 1);
             XY arrow2Direction = -dimDir * (secondArrowOutside ? -1 : 1);
@@ -80,7 +80,7 @@ namespace ACadSvg {
             const double noTextLen = 0;
 
             XY dimMid = GetMidpoint(dp1, dp2);
-            XY textMid = Utils.ToXY(_linDim.TextMiddlePoint);
+            XY textMid = _linDim.TextMiddlePoint.ToXY();
             XY textOnDimLin = dp1 + dimDir * dimDir.Dot(textMid - dp1);
             bool withLeader = (textMid - textOnDimLin).GetLength() > textSize * 1.4 && _dimProps.TextMovement == TextMovement.AddLeaderWhenTextMoved;
 

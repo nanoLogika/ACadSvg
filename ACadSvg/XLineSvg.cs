@@ -48,8 +48,8 @@ namespace ACadSvg {
 
             double range = Utils.GetInfinity(_xLine);
 
-            XY direction = Utils.ToXY(_xLine.Direction);
-            XY firstPoint = Utils.ToXY(_xLine.FirstPoint);
+            XY direction = _xLine.Direction.ToXY();
+            XY firstPoint = _xLine.FirstPoint.ToXY();
             XY negInfintiyPoint = firstPoint - direction * range;
             XY posInfintiyPoint = firstPoint + direction * range;
 

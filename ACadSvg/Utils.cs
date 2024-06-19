@@ -96,31 +96,6 @@ namespace ACadSvg {
 		}
 
 
-        internal static XY ToXY(XYZ xyz) {
-            return new XY(xyz.X, xyz.Y);
-        }
-
-
-        internal static void XYZToDoubles(List<XYZ>xyzs, out double[] xs, out double[] ys) {
-            xs = new double[xyzs.Count];
-            ys = new double[xyzs.Count];
-            for (int i = 0; i < xyzs.Count; i++) {
-                XYZ xyz = xyzs[i];
-                xs[i] = xyz.X;
-                ys[i] = xyz.Y;
-            }
-        }
-
-
-        internal static XY[] DoublesToXYx(double[] xs, double[] ys) {
-            XY[] xYs = new XY[xs.Length];
-            for (int i = 0; i < xs.Length; i++) {
-                xYs[i] = new XY(xs[i], ys[i]);
-            }
-            return xYs;
-        }
-
-
         internal static double GetInfinity(Entity entity) {
             return Math.Max(
                 entity.Document.Header.ModelSpaceExtMax.X - entity.Document.Header.ModelSpaceExtMin.X,
@@ -128,8 +103,11 @@ namespace ACadSvg {
         }
 
 
-        internal static XY Rotate(XY v, double phi) {
-            return new XY(v.X * Math.Cos(phi) - v.Y * Math.Sin(phi), v.X * Math.Sin(phi) + v.Y * Math.Cos(phi));
-        }
+		internal static ulong ReverseBytes(ulong value) {
+			return (value & 0x00000000000000FFUL) << 56 | (value & 0x000000000000FF00UL) << 40 |
+				   (value & 0x0000000000FF0000UL) << 24 | (value & 0x00000000FF000000UL) << 8 |
+				   (value & 0x000000FF00000000UL) >> 8 | (value & 0x0000FF0000000000UL) >> 24 |
+				   (value & 0x00FF000000000000UL) >> 40 | (value & 0xFF00000000000000UL) >> 56;
+		}
     }
 }
