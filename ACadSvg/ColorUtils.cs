@@ -27,18 +27,14 @@ namespace ACadSvg {
                     return string.Empty;
                 }
             }
-
             if (color.IsByLayer) {
                 color = entity.Layer.Color;
             }
-            ReadOnlySpan<byte> colorSpan = getColorRgb(color);
-
-            if (colorSpan.IsEmpty) {
-                return string.Empty;
+            if (color.IsByBlock || color.IsByLayer) {
+                return string.Empty;    //  This case should never occur
             }
 
-            System.Drawing.Color colorRgb = System.Drawing.Color.FromArgb(255, colorSpan[0], colorSpan[1], colorSpan[2]);
-            return $"{System.Drawing.ColorTranslator.ToHtml(colorRgb)}";
+            return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
         }
 
 
@@ -52,31 +48,14 @@ namespace ACadSvg {
 
                 color = block.BlockEntity.Color;
             }
-
             if (color.IsByLayer) {
                 color = entity.Layer.Color;
             }
-            ReadOnlySpan<byte> colorSpan = getColorRgb(color);
-
-            if (colorSpan.IsEmpty) {
-                return string.Empty;
-            }
-
-            System.Drawing.Color colorRgb = System.Drawing.Color.FromArgb(255, colorSpan[0], colorSpan[1], colorSpan[2]);
-            return $"{System.Drawing.ColorTranslator.ToHtml(colorRgb)}";
-        }
-
-
-        /// <summary>
-        /// Gets a RGB color value from an <see cref="ACadSharp.Color"/> object.
-        /// </summary>
-        /// <param name="color"></param>
-        /// <returns></returns>
-        private static ReadOnlySpan<byte> getColorRgb(Color color) {
             if (color.IsByBlock || color.IsByLayer) {
-                return ReadOnlySpan<byte>.Empty;    //  This case should never occur
+                return string.Empty;    //  This case should never occur
             }
-            return color.GetRgb();
+
+            return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
         }
     }
 }
