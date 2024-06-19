@@ -135,7 +135,7 @@ namespace ACadSvg {
                 textAnchor = "end";
             }
 
-            XY dimDir90 = Utils.Rotate(dimDir, Math.PI / 2);
+            XY dimDir90 = dimDir.Rotate90();
             XY textPos = textMid + dimDir90 * textSize / 2;
             TextUtils.StyleToValues(_dimProps.TextStyle, textSize, out string fontFamily, out double fontSize, out bool bold, out bool italic);
 

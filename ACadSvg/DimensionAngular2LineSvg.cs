@@ -38,14 +38,14 @@ namespace ACadSvg {
             //  Begin and end of first and second line
             //  Arc center = intersect of first an second line
             //  radius
-            XY firstLinePoint1 = Utils.ToXY(_ang2LineDim.FirstPoint);
-            XY firstPoint = Utils.ToXY(_ang2LineDim.SecondPoint);
-            XY secondLinePoint1 = Utils.ToXY(_ang2LineDim.AngleVertex);
-            XY secondPoint = Utils.ToXY(_ang2LineDim.DefinitionPoint);
+            XY firstLinePoint1 = _ang2LineDim.FirstPoint.ToXY();
+            XY firstPoint = _ang2LineDim.SecondPoint.ToXY();
+            XY secondLinePoint1 = _ang2LineDim.AngleVertex.ToXY();
+            XY secondPoint = _ang2LineDim.DefinitionPoint.ToXY();
             XY arcCenter = evaluateArcCenter(firstLinePoint1, firstPoint, secondLinePoint1, secondPoint);
             //  Some point on the arc
-            XY dimensionArc = Utils.ToXY(_ang2LineDim.DimensionArc);
-            XY textMid = Utils.ToXY(_ang2LineDim.TextMiddlePoint);
+            XY dimensionArc = _ang2LineDim.DimensionArc.ToXY();
+            XY textMid = _ang2LineDim.TextMiddlePoint.ToXY();
             double r = (dimensionArc - arcCenter).GetLength();
             XY textOnDimLin = arcCenter + (textMid - arcCenter).Normalize() * r;
 

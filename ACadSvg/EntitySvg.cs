@@ -255,7 +255,7 @@ namespace ACadSvg {
 
             case ObjectType.UNLISTED:
                 switch (entity.ObjectName) {
-                case "MLEADER":
+                case "MULTILEADER":
                     return new MultiLeaderSvg(entity, ctx);
                 default:
                     return null;

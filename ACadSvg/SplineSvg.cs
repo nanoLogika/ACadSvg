@@ -81,7 +81,7 @@ namespace ACadSvg {
                 }
             }
             else if (_spline.FitPoints != null) {
-                Utils.XYZToDoubles(_spline.FitPoints, out double[] xs, out double[] ys);
+                VectorUtils.XYZToDoubles(_spline.FitPoints, out double[] xs, out double[] ys);
                 getTangentDxDy(_spline.StartTangent, out double firstDx, out double firstDy);
                 getTangentDxDy(_spline.EndTangent, out double lastDx, out double lastDy);
 
@@ -90,7 +90,7 @@ namespace ACadSvg {
                     out double[] curveXs, out double[] curveYs,
                     firstDx, firstDy, lastDx, lastDy);
 
-                XY[] curve = Utils.DoublesToXYx(curveXs, curveYs);
+                XY[] curve = VectorUtils.DoublesToXYx(curveXs, curveYs);
 
                 return new PathElement()
                     .AddPoints(Utils.VerticesToArray(curve))

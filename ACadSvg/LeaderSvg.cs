@@ -86,8 +86,8 @@ namespace ACadSvg {
             if (_leader.ArrowHeadEnabled) {
                 double arrowSize = _dimProps.ArrowSize;
                 var arrowColor = lineColor;
-                XY arrowPoint = Utils.ToXY(vertices[0]);
-                XY arrowDirection = Utils.ToXY(vertices[0] - vertices[1]).Normalize() * arrowSize;
+                XY arrowPoint = vertices[0].ToXY();
+                XY arrowDirection = (vertices[0] - vertices[1]).ToXY().Normalize() * arrowSize;
 
                 BlockRecord arrowBlock = _dimProps.LeaderArrow;
                 if (arrowBlock == null) {
