@@ -422,8 +422,8 @@ namespace ACadSvg {
                     var arrowHeadSize = getArrowHeadSize(leaderLine);
 
                     var points = leaderLine.Points;
-                    XY arrowPoint = Utils.ToXY(points[0]);
-                    XY arrowDirection = Utils.ToXY(points.Count > 1 ? points[0] - points[1] : points[0] - leaderEndPoint).Normalize() * arrowHeadSize;
+                    XY arrowPoint = points[0].ToXY();
+                    XY arrowDirection = (points.Count > 1 ? points[0] - points[1] : points[0] - leaderEndPoint).ToXY().Normalize() * arrowHeadSize;
 
                     if (arrowHead != null) {
 						groupElement.Children.Add(XElementFactory.CreateArrowheadFromBlock(arrowHead, arrowPoint, arrowDirection, arrowHeadSize));

@@ -34,10 +34,10 @@ namespace ACadSvg {
             //                               ∅0000
             //   -->(                     )<------  arrowOutside
 
-            XY angleVertex = Utils.ToXY(_diaDim.AngleVertex);
-            XY dp = Utils.ToXY(_diaDim.DefinitionPoint);
+            XY angleVertex = _diaDim.AngleVertex.ToXY();
+            XY dp = _diaDim.DefinitionPoint.ToXY();
             XY center = (angleVertex + dp) / 2;
-            XY textMid = Utils.ToXY(_diaDim.TextMiddlePoint);
+            XY textMid = _diaDim.TextMiddlePoint.ToXY();
             XY dimDir = (angleVertex - dp).Normalize();
 
             BlockRecord arrowHead1 = _dimProps.ArrowHeadBlock1;

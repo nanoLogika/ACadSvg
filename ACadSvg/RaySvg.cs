@@ -49,8 +49,8 @@ namespace ACadSvg {
 
             double range = Utils.GetInfinity(_ray);
 
-            XY direction = Utils.ToXY(_ray.Direction);
-            XY startPoint = Utils.ToXY(_ray.StartPoint);
+            XY direction = _ray.Direction.ToXY();
+            XY startPoint = _ray.StartPoint.ToXY();
             XY infintiyPoint = startPoint + direction * range;
 
             pathElement.AddLine(startPoint.X, startPoint.Y, infintiyPoint.X, infintiyPoint.Y);

@@ -39,11 +39,11 @@ namespace ACadSvg {
         public override SvgElementBase ToSvgElement() {
             CreateGroupElement();
 
-            XY arcCenter = Utils.ToXY(_ang3PtDim.AngleVertex);
-            XY definitionPoint = Utils.ToXY(_ang3PtDim.DefinitionPoint);
-            XY firstPoint = Utils.ToXY(_ang3PtDim.FirstPoint);
-            XY secondPoint = Utils.ToXY(_ang3PtDim.SecondPoint);
-            XY textMid = Utils.ToXY(_ang3PtDim.TextMiddlePoint);
+            XY arcCenter = _ang3PtDim.AngleVertex.ToXY();
+            XY definitionPoint = _ang3PtDim.DefinitionPoint.ToXY();
+            XY firstPoint = _ang3PtDim.FirstPoint.ToXY();
+            XY secondPoint = _ang3PtDim.SecondPoint.ToXY();
+            XY textMid = _ang3PtDim.TextMiddlePoint.ToXY();
             double r = (definitionPoint - arcCenter).GetLength();
             XY textOnDimLin = arcCenter + (textMid - arcCenter).Normalize() * r;
 

@@ -28,9 +28,9 @@ namespace ACadSvg {
         public override SvgElementBase ToSvgElement() {
             CreateGroupElement();
 
-            XY angleVertex = Utils.ToXY(_radDim.AngleVertex);
-            XY dp = Utils.ToXY(_radDim.DefinitionPoint);
-            XY textMid = Utils.ToXY(_radDim.TextMiddlePoint);
+            XY angleVertex = _radDim.AngleVertex.ToXY();
+            XY dp = _radDim.DefinitionPoint.ToXY();
+            XY textMid = _radDim.TextMiddlePoint.ToXY();
             XY dimDir = (angleVertex - dp).Normalize();
 
             BlockRecord arrowHead = _dimProps.ArrowHeadBlock2;
