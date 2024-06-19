@@ -41,16 +41,20 @@ namespace ACadSvg {
         /// </summary>
 		public override bool Skip {
 			get {
-                ConversionOptions options = _ctx.ConversionOptions;
-                if (options.GroupFilterMode == ConversionOptions.FilterMode.Include) {
-					return !new Regex(options.GroupFilterRegex).IsMatch(ID);
-				}
-                else if (options.GroupFilterMode == ConversionOptions.FilterMode.Exclude) {
-					return new Regex(options.GroupFilterRegex).IsMatch(ID);
-				}
-                else {
-                    return false;
+                try {
+                    ConversionOptions options = _ctx.ConversionOptions;
+                    if (options.GroupFilterMode == ConversionOptions.FilterMode.Include) {
+                        return !new Regex(options.GroupFilterRegex).IsMatch(ID);
+                    }
+                    else if (options.GroupFilterMode == ConversionOptions.FilterMode.Exclude) {
+                        return new Regex(options.GroupFilterRegex).IsMatch(ID);
+                    }
                 }
+                catch {
+                    //	Ignore, do not filter
+                }
+
+                return false;
             }
 		}
 
