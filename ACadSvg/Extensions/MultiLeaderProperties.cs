@@ -100,6 +100,9 @@ namespace ACadSvg.Extensions {
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public LineType LeaderLineType {
             get {
                 if (_style == null || _flags.HasFlag(MultiLeaderPropertyOverrideFlags.LeaderLineType)) {
@@ -154,10 +157,26 @@ namespace ACadSvg.Extensions {
         }
 
 
+        /// <summary>
+        /// Gets the value of the <see cref="MultiLeaderStyle.LandingDistance"/> property or the
+        /// the value of the <see cref="MultiLeader.LandingDistance"/> property if overriding is
+        /// specified by the <see cref="MultiLeaderPropertyOverrideFlags.LandingDistance"/> flag.
+        /// </summary>
+        /// <remarks><para>
+        /// There is only one field for the landing distance in the multileader property grid.
+        /// The value entered arrives in <see cref="MultiLeader.LandingDistance"/> property and the
+        /// <see cref="LeaderRoot.LandingDistance"/> property.
+        /// If two leader roots exist both receive the same value. I seems 
+        /// <see cref="MultiLeaderPropertyOverrideFlags.LandingDistance"/> flag is never set.
+        /// </para><para>
+        /// This property should not be used. The <see cref="LeaderRoot.LandingDistance"/> should be
+        /// used instead.
+        /// </para>
+        /// </remarks>
         public double LandingDistance {
-            get {
-                if (_style == null || _multiLeader.LandingDistance != 0 && _flags.HasFlag(MultiLeaderPropertyOverrideFlags.LandingDistance)) {
-                    return _leaderRoot.LandingDistance;
+        get {
+                if (_style == null || _flags.HasFlag(MultiLeaderPropertyOverrideFlags.LandingDistance)) {
+                    return _multiLeader.LandingDistance;
                 }
 
                 return _style.LandingDistance;
