@@ -188,7 +188,7 @@ namespace ACadSvg {
         }
 
 
-        private static IList<Hatch.BoundaryPath.Edge> sortHatchEdges2(List<Hatch.BoundaryPath.Edge> edges, out Dictionary<Hatch.BoundaryPath.Edge, bool> edgeReverse) {
+        private static IList<Hatch.BoundaryPath.Edge> sortHatchEdges2(IList<Hatch.BoundaryPath.Edge> edges, out Dictionary<Hatch.BoundaryPath.Edge, bool> edgeReverse) {
             edgeReverse = new Dictionary<Hatch.BoundaryPath.Edge, bool>();
 
             if (edges.Count < 2) {

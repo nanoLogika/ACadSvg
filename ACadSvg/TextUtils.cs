@@ -219,7 +219,7 @@ namespace ACadSvg {
                         tspan.Value = leadingText;
                         tspans.Add(tspan);
                     }
-                    else if (currentTspan.Tspans.Count > 0){
+                    else if (currentTspan.Tspans.Count > 0) {
                         TspanElement tspan = new TspanElement();
                         tspan.Value = leadingText;
                         tspan.ParentElement = currentTspan;
@@ -418,8 +418,8 @@ namespace ACadSvg {
                         //  set current-token attribute Color
                         //  \C[1-7];
                         //  Must set the Fill
-                        currentTspan =  ensureTspanForNextCommand(tspans, currentTspan, lineHeight);
-                        currentTspan.Fill = "aqua"; 
+                        currentTspan = ensureTspanForNextCommand(tspans, currentTspan, lineHeight);
+                        currentTspan.Fill = "aqua";
                         break;
                     case @"\c":
                         //  set current-token attribute Color
@@ -435,7 +435,7 @@ namespace ACadSvg {
                     case "^J":      //  ^J  new Line
                     case @"\P":     //  \P  new paragraph
                         //  Close current token, create new one for next line
-                        TspanElement precedingTspan = tspans.Count == 0 ? null : tspans[tspans.Count-1];
+                        TspanElement precedingTspan = tspans.Count == 0 ? null : tspans[tspans.Count - 1];
                         if (precedingTspan == null) {
                             currentTspan = new TspanElement(x, lineHeight);
                         }
@@ -452,10 +452,12 @@ namespace ACadSvg {
                 text = m.Groups["remainder"].Value;
             }
 
-            //  Ensure that first tspan has absolute location
-            tspans[0].X = x;
-            tspans[0].Y = y;
-            tspans[0].Dy = null;
+            if (tspans.Count > 0) {
+                //  Ensure that first tspan has absolute location
+                tspans[0].X = x;
+                tspans[0].Y = y;
+                tspans[0].Dy = null;
+            }
             return tspans;
         }
 
