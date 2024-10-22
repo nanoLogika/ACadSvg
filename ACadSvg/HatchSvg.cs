@@ -8,7 +8,7 @@
 using ACadSharp.Entities;
 using SvgElements;
 using CSMath;
-using System.Xml.Linq;
+using System.Collections.ObjectModel;
 
 
 namespace ACadSvg {
@@ -169,7 +169,7 @@ namespace ACadSvg {
         }
 
 
-        private void createHatchPattern() {
+		private void createHatchPattern() {
             string hatchPatternName = _hatch.Pattern.Name;
             
             //  If we added the referenced pattern before ...
@@ -188,7 +188,7 @@ namespace ACadSvg {
         }
 
 
-        private static IList<Hatch.BoundaryPath.Edge> sortHatchEdges2(List<Hatch.BoundaryPath.Edge> edges, out Dictionary<Hatch.BoundaryPath.Edge, bool> edgeReverse) {
+        private static IList<Hatch.BoundaryPath.Edge> sortHatchEdges2(ObservableCollection<Hatch.BoundaryPath.Edge> edges, out Dictionary<Hatch.BoundaryPath.Edge, bool> edgeReverse) {
             edgeReverse = new Dictionary<Hatch.BoundaryPath.Edge, bool>();
 
             if (edges.Count < 2) {
