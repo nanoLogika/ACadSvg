@@ -46,7 +46,9 @@ namespace ACadSvg {
             //	Convert all entities directly placed in the document
             _convertedEntities = ConvertEntitiesToSvg(_doc.Entities.ToList(), _ctx);
             _convertedInserts = new List<InsertSvg>();
-            //placeInsertSvgToTheEnd(); //  TODO This should be controlled by a conversion option.
+            if (ctx.ConversionOptions.ConcentrateInserts) {
+                placeInsertSvgToTheEnd();
+            }
 
             if (_ctx.ConversionOptions.CreateViewboxFromModelSpaceExtent ) {
                 createViewboxFromModelSpaceExtent();
@@ -68,7 +70,16 @@ namespace ACadSvg {
             MainGroupSvg mainGroup = new MainGroupSvg(_ctx);
 
             List<EntitySvg> children = mainGroup.Children;
-            children.AddRange(_convertedEntities);
+            if (_ctx.ConversionOptions.CreateExtraGroupForFreeElements) {
+                GroupSvg freeGroup = new GroupSvg(_ctx);
+                freeGroup.ID = "free";
+                freeGroup.Children.AddRange(_convertedEntities);
+                children.Add(InsertSvg.Dummy("free"));
+                _ctx.BlocksInDefs.Items.Add(freeGroup);
+            }
+            else {
+                children.AddRange(_convertedEntities);
+            }
             children.AddRange(_convertedInserts);
 
             GroupElement svgElement = (GroupElement)mainGroup.ToSvgElement();
@@ -102,7 +113,16 @@ namespace ACadSvg {
             MainGroupSvg mainGroup = new MainGroupSvg(_ctx);
 
             List<EntitySvg> children = mainGroup.Children;
-            children.AddRange(_convertedEntities);
+            if (_ctx.ConversionOptions.CreateExtraGroupForFreeElements) {
+                GroupSvg freeGroup = new GroupSvg(_ctx);
+                freeGroup.ID = "free";
+                freeGroup.Children.AddRange(_convertedEntities);
+                children.Add(InsertSvg.Dummy("free"));
+                _ctx.BlocksInDefs.Items.Add(freeGroup);
+            }
+            else {
+                children.AddRange(_convertedEntities);
+            }
             children.AddRange(_convertedInserts);
             children.Add(_ctx.BlocksInDefs);
 
@@ -127,8 +147,7 @@ namespace ACadSvg {
 			double width = header.ModelSpaceExtMax.X - header.ModelSpaceExtMin.X;
             double height = header.ModelSpaceExtMax.Y - header.ModelSpaceExtMin.Y;
 
-            if (width == 0 || height == 0)
-            {
+            if (width == 0 || height == 0) {
                 return null;
             }
 

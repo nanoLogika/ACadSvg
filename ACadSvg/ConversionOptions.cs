@@ -116,7 +116,7 @@ namespace ACadSvg {
         /// Gets or sets a regular expression that is to be used to filter the Blocks read
         /// from the AutoCAD file by their name. 
         /// </summary>
-        public string GroupFilterRegex { get; set; }
+        public string GroupFilterRegex { get; set; } = string.Empty;
 
 
         /// <summary>
@@ -124,5 +124,20 @@ namespace ACadSvg {
         /// applied as exlude filter, as include filter, or the filter is off.
         /// </summary>
         public FilterMode GroupFilterMode { get; set; } = FilterMode.Off;
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether Insert entities converted to &lt;use ...&gt;
+        /// elements are collected and placed at the the main group. Inserts foung in blocks
+        /// are not affected.
+        /// </summary>
+        public bool ConcentrateInserts { get; set; } = false;
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether an extra group for free elements, i.e.
+        /// elements that are not part of a block, is created.
+        /// </summary>
+        public bool CreateExtraGroupForFreeElements { get; set; } = false;
     }
 }
