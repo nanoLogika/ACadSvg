@@ -96,7 +96,7 @@ namespace ACadSvg {
                 if (blockRecordEntities.Count > 0) {
                     childGroupSvg = new GroupSvg(_ctx) {
                         ID = $"{ID}_visible"
-                    };
+					};
                     //  Add "free-entities subblock" and convert the remaining entities
                     Children.Add(childGroupSvg);
                     childGroupSvg.Children.AddRange(ConvertEntitiesToSvg(blockRecordEntities, ctx));
@@ -124,7 +124,9 @@ namespace ACadSvg {
                 }
             }
 
-            ctx.BlocksInDefs.Items.Add(this);
+			Class = "block-record";
+
+			ctx.BlocksInDefs.Items.Add(this);
 			ctx.ConversionInfo.Log($"{_blockRecord.Handle.ToString("X")}: End Block: {blockRecord.Name}");
 		}
 
