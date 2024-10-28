@@ -114,11 +114,12 @@ namespace ACadSvg {
 
             List<EntitySvg> children = mainGroup.Children;
             if (_ctx.ConversionOptions.CreateExtraGroupForFreeElements) {
-                GroupSvg freeGroup = new GroupSvg(_ctx);
-                freeGroup.ID = "free";
+                GroupSvg freeGroup = new GroupSvg(_ctx) {
+                    ID = "_free",
+                    Class = "block-record" };
                 freeGroup.Children.AddRange(_convertedEntities);
-                children.Add(InsertSvg.Dummy("free"));
                 _ctx.BlocksInDefs.Items.Add(freeGroup);
+                children.Add(InsertSvg.Dummy("_free"));
             }
             else {
                 children.AddRange(_convertedEntities);
