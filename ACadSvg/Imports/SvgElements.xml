@@ -1,0 +1,937 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SvgElements</name>
+    </assembly>
+    <members>
+        <member name="T:SvgElements.CircleElement">
+            <summary>
+            Represents SVG <i>circle</i> element.
+            </summary>
+        </member>
+        <member name="P:SvgElements.CircleElement.Cx">
+            <summary>
+            Gets or sets the x-coordinate of the circle center.
+            </summary>
+        </member>
+        <member name="P:SvgElements.CircleElement.Cy">
+            <summary>
+            Gets or sets the y-coordinate of the circle center.
+            </summary>
+        </member>
+        <member name="P:SvgElements.CircleElement.R">
+            <summary>
+            Gets or sets the circle radius.
+            </summary>
+        </member>
+        <member name="M:SvgElements.CircleElement.GetXml">
+            <inheritdoc />
+        </member>
+        <member name="T:SvgElements.Da.DAttribute">
+            <summary>
+            Represents a <i>d-attribute</i> of an SVG <i>path</i> element.
+            </summary>
+        </member>
+        <member name="P:SvgElements.Da.DAttribute.IsEmpty">
+            <summary>
+            Gets a value indicating that this <see cref="T:SvgElements.Da.DAttribute"/> contains no clause.
+            </summary>
+            <value>
+            <b>true</b>, when the d-attribute is empty; otherwise, <b>false</b>;
+            </value>
+        </member>
+        <member name="T:SvgElements.DefsElement">
+            <summary>
+            Represents a SVG <i>defs</i> element.
+            </summary>
+        </member>
+        <member name="M:SvgElements.DefsElement.Contains(System.String)">
+            <summary>
+            Gets a value indicating whether a group element with the
+            specified <paramref name="id"/> exists in this <see cref="T:SvgElements.DefsElement" />.
+            </summary>
+            <param name="id"></param>
+            <returns>
+            <b>true</b>, when a group element with the specified
+            <paramref name="id"/> exists; otherwise,<b>false</b>.
+            </returns>
+        </member>
+        <member name="M:SvgElements.DefsElement.GetXml">
+            <inheritdoc/>
+        </member>
+        <member name="T:SvgElements.EllipseElement">
+            <summary>
+            Represents SVG <i>ellipse</i> element.
+            </summary>
+        </member>
+        <member name="P:SvgElements.EllipseElement.Cx">
+            <summary>
+            Gets or sets the x-coordinate of the ellipse center.
+            </summary>
+        </member>
+        <member name="P:SvgElements.EllipseElement.Cy">
+            <summary>
+            Gets or sets the y-coordinate of the ellipse center.
+            </summary>
+        </member>
+        <member name="P:SvgElements.EllipseElement.Rx">
+            <summary>
+            Gets or sets the ellipse axis in x-direction.
+            This property must be specified.
+            </summary>
+        </member>
+        <member name="P:SvgElements.EllipseElement.Ry">
+            <summary>
+            Gets or sets the ellipse axis in y-direction.
+            This property must be specified.
+            </summary>
+        </member>
+        <member name="M:SvgElements.EllipseElement.GetXml">
+            <inheritdoc />
+        </member>
+        <member name="T:SvgElements.GroupElement">
+            <summary>
+            Represents a SVG group element (<i>g</i>) containing other SVG elements.
+            </summary>
+        </member>
+        <member name="M:SvgElements.GroupElement.GetXml">
+            <inheritdoc />
+        </member>
+        <member name="T:SvgElements.GroupElementBase`1">
+            <summary>
+            Base class for objects representing a group-like SVG element such
+            as <i>g</i>, <i>pattern</i>, <i>defs</i>.
+            </summary>
+        </member>
+        <member name="P:SvgElements.GroupElementBase`1.Children">
+            <summary>
+            Get the list of child SVG elements of this group element
+            (<i>g</i>, <i>pattern</i>, <i>defs</i>).
+            </summary>
+        </member>
+        <member name="T:SvgElements.PathElement">
+            <summary>
+            Represents a SVG <i>path</i> element. 
+            </summary>
+        </member>
+        <member name="M:SvgElements.PathElement.AddPoints(System.Double[])">
+            <summary>
+            Adds an absolute move clause and one or more absolute line clauses to the
+            d-Attribute of this path element and returns this element.
+            </summary>
+            <param name="coords">An array of y and y coordinates.</param>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.AddPoints(System.Boolean,System.Double[])">
+            <summary>
+            Adds an absolute move or line clause and one or more absolute line clauses
+            to the d-Attribute of this path element and returns this element.
+            </summary>
+            <param name="firstPointMove"><b>true</b>, if the first clause is a move; otherwise, <b>false</b>.</param>
+            <param name="coords">An array of y and y coordinates.</param>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.AddMove(System.Double,System.Double)">
+            <summary>
+            Adds an absolute move clause M {x} {y} to the d-Attribute of
+            this path element and returns this element.
+            </summary>
+            <param name="x">Absolute x-coordinate.</param>
+            <param name="y">Absolute y-coordinate.</param>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.AddMoveRelative(System.Double,System.Double)">
+            <summary>
+            Adds an relative move clause m {x} {y} to the d-Attribute of
+            this path element and returns this element.
+            </summary>
+            <param name="x">Relative x-coordinate.</param>
+            <param name="y">Relative y-coordinate.</param>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.AddLine(System.Double,System.Double)">
+            <summary>
+            Adds an absolute line clause L {x} {y} to the d-Attribute of
+            this path element and returns this element.
+            </summary>
+            <param name="x">Absolute x-coordinate.</param>
+            <param name="y">Absolute y-coordinate.</param>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.AddLineRelative(System.Double,System.Double)">
+            <summary>
+            Adds an relative line clause l {x} {y} to the d-Attribute of
+            this path element and returns this element.
+            </summary>
+            <param name="x">Relative x-coordinate.</param>
+            <param name="y">Relative y-coordinate.</param>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.AddLine(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Adds an absolute move and a line clause M {x} {y} L {x} {y} to the d-Attribute
+            of this path element and returns this element.
+            </summary>
+            <param name="fromX">Absolute x-coordinate of begin of line.</param>
+            <param name="fromY">Absolute y-coordinate of begin of line.</param>
+            <param name="toX">Absolute x-coordinate of end of line.</param>
+            <param name="toY">Relative y-coordinate of end of line.</param>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.AddMoveAndArc(System.Double,System.Double,System.Double,System.Double,System.Double,System.Boolean)">
+            <summary>
+            Adds a move clause and an circular arc clause to the d-Attribute
+            of this path element and returns this element.
+            </summary>
+            <param name="cx"></param> 
+            <param name="cy"></param>
+            <param name="sa"></param>
+            <param name="ea"></param>
+            <param name="r"></param>
+            <param name="counterClockWise"></param>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.AddMoveAndArc(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Boolean)">
+            <summary>
+            Adds a move clause and an elliptic arc clause to the d-Attribute
+            of this path element and returns this element.
+            </summary>
+            <param name="cx"></param>
+            <param name="cy"></param>
+            <param name="sa"></param>
+            <param name="ea"></param>
+            <param name="rx"></param>
+            <param name="ry"></param>
+            <param name="rot"></param>
+            <param name="counterClockWise"></param>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.AddLineAndArc(System.Double,System.Double,System.Double,System.Double,System.Double,System.Boolean)">
+            <summary>
+            Adds a line clause and an arc clause to the d-Attribute
+            of this path element and returns this element.
+            </summary>
+            <param name="cx"></param> 
+            <param name="cy"></param>
+            <param name="sa"></param>
+            <param name="ea"></param>
+            <param name="r"></param>
+            <param name="counterClockWise"></param>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.AddArc(System.Double,System.Double,System.Double,System.Boolean,System.Boolean,System.Double,System.Double)">
+            <summary>
+            Adds an arc clause without a move or line clause before to the d-Attribute
+            of this path element and returns this element.
+            </summary>
+            <param name="r1"></param>
+            <param name="r2"></param>
+            <param name="rot"></param>
+            <param name="lf"></param>
+            <param name="sf"></param>
+            <param name="xe"></param>
+            <param name="ye"></param>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.AddMoveAndQSpline(System.Double[])">
+            <summary>
+            Adds a move clause and quadratic spline clause to the d-Attribute
+            of this path element and returns this element.
+            </summary>
+            <param name="doubles"></param>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.AddMoveAndCSpline(System.Double[])">
+            <summary>
+            Adds a move clause and quadratic spline clause to the d-Attribute
+            of this path element and returns this element.
+            </summary>
+            <param name="doubles"></param>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.Close(System.Boolean)">
+            <summary>
+            Adds a close clause Z to the d-Attribute
+            of this path element and returns this element.
+            </summary>
+            <returns>This <see cref="T:SvgElements.PathElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.PathElement.GetXml">
+            <inheritdoc />
+        </member>
+        <member name="T:SvgElements.PatternElement">
+            <summary>
+            Represents 
+            </summary>
+        </member>
+        <member name="P:SvgElements.PatternElement.X">
+            <summary>
+            Get or sets the x-coordinate of left-bottom corner of the patterns's bounding box.
+            </summary>
+        </member>
+        <member name="P:SvgElements.PatternElement.Y">
+            <summary>
+            Get or sets the y-coordinate of left-bottom corner of the patterns's bounding box.
+            </summary>
+        </member>
+        <member name="P:SvgElements.PatternElement.Width">
+            <summary>
+            Gets or sets the width of the patterns's bounding box.
+            </summary>
+        </member>
+        <member name="P:SvgElements.PatternElement.Height">
+            <summary>
+            Gets or sets the width of the patterns's bounding box.
+            </summary>
+        </member>
+        <member name="P:SvgElements.PatternElement.PatternUnits">
+            <summary>
+            Gets or sets the value for the <i>patternUnits</i> attribute.
+            </summary>
+        </member>
+        <member name="F:SvgElements.PatternElement.Elements">
+            <summary>
+            Gets or sets the list of <see cref="T:System.Xml.Linq.XElement"/> objects.
+            </summary>
+        </member>
+        <member name="M:SvgElements.PatternElement.GetXml">
+            <inheritdoc />
+        </member>
+        <member name="T:SvgElements.RectangleElement">
+            <summary>
+            Represents a SVG <i>rect</i> element. 
+            </summary>
+        </member>
+        <member name="P:SvgElements.RectangleElement.X">
+            <summary>
+            Gets or sets the x-coordinate of one of the corners
+            of the rectangle. Default is X=0.
+            </summary>
+        </member>
+        <member name="P:SvgElements.RectangleElement.Y">
+            <summary>
+            Gets or sets the y-coordinate of one of the corners
+            of the rectangle. Default is Y=0.
+            </summary>
+        </member>
+        <member name="P:SvgElements.RectangleElement.Width">
+            <summary>
+            Gets or sets the width of the rectangle.
+            Width must not be eugal to 0. 
+            </summary>
+        </member>
+        <member name="P:SvgElements.RectangleElement.Height">
+            <summary>
+            Gets or sets the height of the rectangle.
+            Height must not be eugal to 0. 
+            </summary>
+        </member>
+        <member name="M:SvgElements.RectangleElement.GetXml">
+            <inheritdoc />
+        </member>
+        <member name="T:SvgElements.SvgElement">
+            <summary>
+            Represents the <i>svg</i> Element.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElement.ViewboxMinX">
+            <summary>
+            Gets or sets the min-x value for the <i>viewbox</i> attribute.
+            This value is optional; to enable the <i>viewbox</i> attribute the
+            properties <see cref="P:SvgElements.SvgElement.ViewboxMinX"/>, <see cref="P:SvgElements.SvgElement.ViewboxMinY"/>
+            <see cref="P:SvgElements.SvgElement.ViewboxWidth"/>, and <see cref="P:SvgElements.SvgElement.ViewboxHeight"/> must
+            be set.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElement.ViewboxMinY">
+            <summary>
+            Gets or sets the min-y value for the <i>viewbox</i> attribute.
+            This value is optional; to enable the <i>viewbox</i> attribute the
+            properties <see cref="P:SvgElements.SvgElement.ViewboxMinX"/>, <see cref="P:SvgElements.SvgElement.ViewboxMinY"/>
+            <see cref="P:SvgElements.SvgElement.ViewboxWidth"/>, and <see cref="P:SvgElements.SvgElement.ViewboxHeight"/> must
+            be set.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElement.ViewboxWidth">
+            <summary>
+            Gets or sets the width value for the <i>viewbox</i> attribute.
+            This value is optional; to enable the <i>viewbox</i> attribute the
+            properties <see cref="P:SvgElements.SvgElement.ViewboxMinX"/>, <see cref="P:SvgElements.SvgElement.ViewboxMinY"/>
+            <see cref="P:SvgElements.SvgElement.ViewboxWidth"/>, and <see cref="P:SvgElements.SvgElement.ViewboxHeight"/> must
+            be set.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElement.ViewboxHeight">
+            <summary>
+            Gets or sets the height value for the <i>viewbox</i> attribute.
+            This value is optional; to enable the <i>viewbox</i> attribute the
+            properties <see cref="P:SvgElements.SvgElement.ViewboxMinX"/>, <see cref="P:SvgElements.SvgElement.ViewboxMinY"/>
+            <see cref="P:SvgElements.SvgElement.ViewboxWidth"/>, and <see cref="P:SvgElements.SvgElement.ViewboxHeight"/> must
+            be set.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElement.Width">
+            <summary>
+            Gets or sets the width value for SVG element.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElement.Height">
+            <summary>
+            Gets or sets the height value for SVG element.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElement.Style">
+            <summary>
+            Gets or sets a value for the <i>style</i> attribute.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElement.Xmlns">
+            <summary>
+            Gets or sets the value for the <i>xmlns</i> attribute.
+            Default is "http://www.w3.org/2000/svg".
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElement.Version">
+            <summary>
+            Gets or sets the value for the <i>version</i> attribute.
+            Default is "1.1".
+            </summary>
+        </member>
+        <member name="M:SvgElements.SvgElement.WithViewbox(System.Nullable{System.Double},System.Nullable{System.Double},System.Nullable{System.Double},System.Nullable{System.Double})">
+            <summary>
+            Sets the values <i>min-x</i>, <i>min-y</i>, <i>width</i>, and <i>height</i> for
+            the <i>viewbox</i> attribute
+            and returns this <see cref="T:SvgElements.SvgElement"/>.
+            </summary>
+            <param name="minX"></param>
+            <param name="minY"></param>
+            <param name="width"></param>
+            <param name="height"></param>
+            <returns>This <see cref="T:SvgElements.SvgElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.SvgElement.GetXml">
+            <inheritdoc />
+        </member>
+        <member name="T:SvgElements.SvgElementBase">
+            <summary>
+            Base class for all classes that represent SVG elements.
+            </summary>
+        </member>
+        <member name="M:SvgElements.SvgElementBase.GetXml">
+            <summary>
+            Returns an XML-element built from the properties of this SVG-element
+            object.
+            </summary>
+            <returns>
+            The <see cref="T:System.Xml.Linq.XElement"/> built from the properties of this
+            SVG-element.
+            </returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase.Cd(System.Double,System.Int32)">
+            <summary>
+            Formats a double value with a decimal dot as needed in numerical attribute
+            of a SVG element.
+            </summary>
+            <param name="val"></param>
+            <param name="places"></param>
+            <returns>A string containing the formatted double value.</returns>
+        </member>
+        <member name="P:SvgElements.SvgElementBase.ID">
+            <summary>
+            Gets or sets an optional value for the <i>id</i> attribute.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElementBase.Class">
+            <summary>
+            Gets or sets an optional value for the <i>class</i> attribute.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElementBase.CommentsEnabled">
+            <summary>
+            Gets or sets a value indicating that a comment associated with this
+            <see cref="T:SvgElements.SvgElementBase"/> is to be displayed.
+            </summary>
+            <value><b>true</b>, when the comment is to be displayed; otherwise, <b>false</b>.</value>
+        </member>
+        <member name="P:SvgElements.SvgElementBase.Comment">
+            <summary>
+            Gets or sets an optional string value for a comment to be placed in
+            this element.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElementBase.Stroke">
+            <summary>
+            Gets or sets an optional value for the <i>stroke</i> attribute.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElementBase.StrokeWidth">
+            <summary>
+            Gets or sets an optional value for the <i>stroke-width</i> attribute.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElementBase.StrokeDashArray">
+            <summary>
+            Gets or sets an optional value for the <i>stroke-dasharray</i> attribute.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElementBase.Fill">
+            <summary>
+            Gets or sets an optional value for the <i>fill</i> attribute.
+            </summary>
+        </member>
+        <member name="P:SvgElements.SvgElementBase.Transform">
+            <summary>
+            Gets the value of the <i>transform</i> attribute, built from the specified clauses.
+            </summary>
+        </member>
+        <member name="T:SvgElements.SvgElementBase`1">
+            <summary>
+            Base class for all classes that represent SVG elements.
+            </summary>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.WithID(System.String)">
+            <summary>
+            Sets the value for the <i>id</i> attribute
+            and returns this element.
+            </summary>
+            <param name="id"></param>
+            <returns>This <see cref="!:T"/>.</returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.WithClass(System.String)">
+            <summary>
+            Sets the value for the <i>class</i> attribute
+            and returns this element.
+            </summary>
+            <param name="className"></param>
+            <returns>This <see cref="!:T"/>.</returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.WithStroke(System.String)">
+            <summary>
+            Sets the value for the <i>stroke</i> attribute
+            and returns this element.
+            </summary>
+            <param name="stroke"></param>
+            <returns>This <see cref="!:T"/>.</returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.WithStrokeWidth(System.Nullable{System.Double})">
+            <summary>
+            Sets the values for the <i>stroke-width</i> attribute
+            and returns this element.
+            </summary>
+            <param name="strokeWidth"></param>
+            <returns>This <see cref="!:T"/>.</returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.WithStrokeDashArray(System.String)">
+            <summary>
+            Sets the value for the <i>stroke-dasharray</i> attribute
+            and returns this element.
+            </summary>
+            <param name="strokeDashArray"></param>
+            <returns>This <see cref="!:T"/>.</returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.WithFill(System.String)">
+            <summary>
+            Sets the fill property with an fill attribute value containg a
+            color name or Hex RGB-value and returns this element.
+            </summary>
+            <param name="fill"></param>
+            <returns>This <see cref="!:T"/>.</returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.WithFillURL(System.String)">
+            <summary>
+            Sets the fill property with a fill attribute value containg a URL
+            expression with the passed fill URL and returns this element.
+            </summary>
+            <param name="fillUrl"></param>
+            <returns>This <see cref="!:T"/>.</returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.AddScale(System.Double,System.Double)">
+            <summary>
+            Adds a scale clause with individual scale factors for x and y 
+            to the transform attribute and returns this element.
+            </summary>
+            <param name="x">Scale factor for x.</param>
+            <param name="y">Scale factor for y.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.AddScale(System.Double)">
+            <summary>
+            Adds a scale clause with equal scale factors for x and y 
+            to the transform attribute and returns this element.
+            </summary>
+            <param name="xy">Scale factor for x and y.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.AddRotate(System.Double)">
+            <summary>
+            Adds a rotate clause to the transform attribute and returns this
+            element.
+            </summary>
+            <param name="a"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.AddRotate(System.Double,System.Double,System.Double)">
+            <summary>
+            Adds a rotate clause to the transform attribute and returns this
+            element.
+            </summary>
+            <param name="a"></param>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.AddTranslate(System.Double,System.Double)">
+            <summary>
+            Adds a transalate clause to the transform attribute and returns this
+            element.
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.ReverseY(System.Boolean)">
+            <summary>
+            Sets a value indicating that a transform atrribute provides a inversion of
+            the y-coordinate.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.WithComment(System.String)">
+            <summary>
+            Sets the <see cref="!:Comment"/> property
+            and return this element.
+            </summary>
+            <param name="comment"></param>
+            <returns>This <see cref="!:T"/>.</returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.ToString">
+            <summary>
+            Returns an XML-element built from the properties of this SVG-element
+            object as string. If the <see cref="!:Comment"/> property contains a
+            value and comments are enbled a XML Comment element is placed before
+            the XML-element.
+            </summary>
+            <returns>A string containing <see cref="T:System.Xml.Linq.XElement"/> built from the properties of this
+            SVG-element preceeded by a <see cref="T:System.Xml.Linq.XComment"/> element.
+            </returns>
+        </member>
+        <member name="M:SvgElements.SvgElementBase`1.AddAttribute(System.Xml.Linq.XElement,System.String,System.Object,System.Boolean)">
+            <summary>
+            Adds an attribute with specified name and value if the <paramref name="specified"/>
+            parameter is true and the specified value is not null.
+            </summary>
+            <param name="xElement">The element the attribute is to added to.</param>
+            <param name="name">The name of the attributre.</param>
+            <param name="value">The value for the attribute.</param>
+            <param name="specified"><b>true</b>, if the attribute is to be added; otherwise; <b>false</b>.</param>
+        </member>
+        <member name="T:SvgElements.TextElement">
+            <summary>
+            Represents a SVG <i>text</i> element. 
+            </summary>
+        </member>
+        <member name="M:SvgElements.TextElement.#ctor">
+            <summary>
+            Initializes a new instance of a <see cref="T:SvgElements.TextElement"/>.
+            The stroke property is set to "none" by default.
+            </summary>
+        </member>
+        <member name="M:SvgElements.TextElement.WithXY(System.Double,System.Double)">
+            <summary>
+            Sets values for the <i>x</i> and <i>y</i> attributes
+            and returns this element.
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns>This <see cref="T:SvgElements.TextElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.TextElement.WithFont(System.String,System.Double,System.Boolean,System.Boolean)">
+            <summary>
+            Sets the values for the attributes <i>font-family</i>, <i>font-size</i>,
+            <i>font-weight</i>, and <i>font-style</i> attributes.
+            and returns this element.
+            </summary>
+            <param name="fontFamily">The name of the font family or empty if the
+            <i>font-family</i> attribute is not to be set.</param>
+            <param name="fontSize">The font size zero if the
+            <i>font-size</i> attribute is not to be set.</param>
+            <param name="bold"><b>true</b> if the <i>font-weight="bold"</i> attribute
+            is to be set; otherwise, <b>false</b>.</param>
+            <param name="italic"><b>true</b> if the <i>font-style="italic"</i> attribute
+            is to be set; otherwise, <b>false</b>.</param>
+            <returns>This <see cref="T:SvgElements.TextElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.TextElement.WithAlignmentBaseline(System.String)">
+            <summary>
+            Sets the value for the <i>alignment-baseline</i> attribute
+            and returns this element.
+            </summary>
+            <remarks>
+            <para>
+            The SVG <i>text</i> element does not support the <i>alignment-baseline</i> attribute
+            specifying the attribute forces inserting a <i>tspan</i> element.
+            </para>
+            </remarks>
+            <param name="alignmentBaseline"></param>
+            <returns>This <see cref="T:SvgElements.TextElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.TextElement.WithTextAnchor(System.String)">
+            <summary>
+            Sets the value for the <i>text-anchor</i> attribute
+            and returns this element.
+            </summary>
+            <param name="textAnchor"></param>
+            <returns>This <see cref="T:SvgElements.TextElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.TextElement.WithTspans(System.Collections.Generic.IList{SvgElements.TspanElement})">
+            <summary>
+            Adds a list of <see cref="T:SvgElements.TspanElement"/> object to the
+            <see cref="!:TextElementBase.Tspans"/> list property
+            and returns this element.
+            </summary>
+            <param name="tspans"></param>
+            <returns>This <see cref="T:SvgElements.TextElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.TextElement.WithValue(System.String)">
+            <summary>
+            Sets the value for the SVG <i>text</i> element
+            and returns this element.
+            </summary>
+            <param name="value"></param>
+            <returns>This <see cref="T:SvgElements.TextElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.TextElement.GetXml">
+            <inheritdoc />
+        </member>
+        <member name="T:SvgElements.TextElementBase`1">
+            <summary>
+            Base class for the classes that represent SVG text and tspan elements.
+            </summary>
+        </member>
+        <member name="T:SvgElements.TextElementBase`1.LengthAdjustType">
+            <summary>
+            Defines valid values for the <see cref="P:SvgElements.TextElementBase`1.LengthAdjust"/> property,
+            i.e. values for the <i>length-adjust</i> attribute.
+            </summary>
+        </member>
+        <member name="F:SvgElements.TextElementBase`1.LengthAdjustType.None">
+            <summary>No length adjust, attribute will not be assigned.</summary>
+        </member>
+        <member name="F:SvgElements.TextElementBase`1.LengthAdjustType.Spacing">
+            <summary>Stretch using spacing only</summary>
+        </member>
+        <member name="F:SvgElements.TextElementBase`1.LengthAdjustType.SpacingAndGlyphs">
+            <summary>Stretch using spacing and glyphs.</summary>
+        </member>
+        <member name="P:SvgElements.TextElementBase`1.Value">
+            <summary>
+            Gets or sets the text value for this <see cref="T:SvgElements.TspanElement"/>.
+            The list of children that were previously added is cleared.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:SvgElements.TextElementBase`1.X" -->
+        <!-- Badly formed XML comment ignored for member "P:SvgElements.TextElementBase`1.Y" -->
+        <!-- Badly formed XML comment ignored for member "P:SvgElements.TextElementBase`1.Dx" -->
+        <!-- Badly formed XML comment ignored for member "P:SvgElements.TextElementBase`1.Dy" -->
+        <!-- Badly formed XML comment ignored for member "P:SvgElements.TextElementBase`1.Rotate" -->
+        <member name="P:SvgElements.TextElementBase`1.LengthAdjust">
+            <summary>
+            How the text is stretched or compressed to fit the width defined by the textLength attribute.
+            </summary>
+            <value>
+            Value type: spacing|spacingAndGlyphs; Default value: spacing; Animatable: yes
+            </value>
+        </member>
+        <member name="P:SvgElements.TextElementBase`1.FontFamily">
+            <summary>
+            Gets or set a font name for this <see cref="T:SvgElements.TspanElement"/>.
+            If the font name is set a <i>font-family</i> attribute is created.
+            </summary>
+        </member>
+        <member name="P:SvgElements.TextElementBase`1.Bold">
+            <summary>
+            Gets or sets a value indicating bold text for this <see cref="T:SvgElements.TspanElement"/>.
+            If this property is <b>true</b> a <i>font-weight="bold"</i> attribute is created.
+            </summary>
+        </member>
+        <member name="P:SvgElements.TextElementBase`1.Italic">
+            <summary>
+            Gets or sets a value indicating italic text for this <see cref="T:SvgElements.TspanElement"/>.
+            If this property is <b>true</b> a <i>font-style="italic"</i> attribute is created.
+            </summary>
+        </member>
+        <member name="P:SvgElements.TextElementBase`1.FontSize">
+            <summary>
+            Gets or set the font size for this <see cref="T:SvgElements.TspanElement"/>.
+            If this property is not equal to zero <i>font-size</i> attribute with the
+            specified value is created.
+            </summary>
+        </member>
+        <member name="P:SvgElements.TextElementBase`1.TextAnchor">
+            <summary>
+            Gets or sets the value for an <i>text-anchor</i> attribute for this <see cref="T:SvgElements.TspanElement"/>.
+            This is used is used to align a text in text direction. 
+            </summary>
+            <value>
+            Valid values are: start | middle | end.
+            </value>
+        </member>
+        <member name="P:SvgElements.TextElementBase`1.Underline">
+            <summary>
+            Gets or sets a value indicating that text is underlined in this <see cref="T:SvgElements.TspanElement"/>.
+            If this property is <b>true</b> a <i>text-decoration="underline"</i> attribute is created.
+            </summary>
+        </member>
+        <member name="P:SvgElements.TextElementBase`1.Overstrike">
+            <summary>
+            Gets or sets a value indicating that text is overstriked in this <see cref="T:SvgElements.TspanElement"/>.
+            A respective <i>text-decoration</i> is not available in SVG.
+            </summary>
+        </member>
+        <member name="P:SvgElements.TextElementBase`1.Strikethrough">
+            <summary>
+            Gets or sets a value indicating that text is striked through in this <see cref="T:SvgElements.TspanElement"/>.
+            If this property is <b>true</b> a <i>text-decoration="line-through"</i> attribute is created.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:SvgElements.TextElementBase`1.TextLength" -->
+        <member name="P:SvgElements.TextElementBase`1.Tspans">
+            <summary>
+            Gets the list of child tspans of this <see cref="T:SvgElements.TspanElement"/>.
+            </summary>
+            <value>
+            A IList of <see cref="T:SvgElements.TspanElement"/> objects.
+            </value>
+        </member>
+        <member name="M:SvgElements.TextElementBase`1.AddTextContent(System.Xml.Linq.XElement)">
+            <summary>
+            Adds <i>tspan</i> elements or text value.
+            </summary>
+            <param name="xElement"></param>
+        </member>
+        <member name="T:SvgElements.TspanElement">
+            <summary>
+            Represents a SVG <i>tspan</i> element.
+            </summary>
+        </member>
+        <member name="M:SvgElements.TspanElement.#ctor">
+            <summary>
+            Initializes a new instance of a <see cref="T:SvgElements.TspanElement"/>
+            that represents an in-line tspan, to be placed after the
+            preceding tspan, i.e. no location is specified.
+            </summary>
+        </member>
+        <member name="M:SvgElements.TspanElement.#ctor(System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of a <see cref="T:SvgElements.TspanElement"/>
+            that represents a tspan that is to be placed on a new line.
+            </summary>
+        </member>
+        <member name="P:SvgElements.TspanElement.CodePage">
+            <summary>
+            This property is currently not used.
+            </summary>
+        </member>
+        <member name="P:SvgElements.TspanElement.Alignment">
+            <summary>
+            This property is currently not used.
+            </summary>
+        </member>
+        <member name="P:SvgElements.TspanElement.Height">
+            <summary>
+            This property is currently not used.
+            </summary>
+        </member>
+        <member name="P:SvgElements.TspanElement.Width">
+            <summary>
+            This property is currently not used.
+            </summary>
+        </member>
+        <member name="P:SvgElements.TspanElement.SlantAngle">
+            <summary>
+            This property is currently not used.
+            </summary>
+        </member>
+        <member name="P:SvgElements.TspanElement.AlignmentBaseline">
+            <summary>
+            Gets or sets a string to create a <i>alignment-baseline</i> attribute. It specifies
+            how the text is aligned with respect to its parent.
+            </summary>
+            <value><para>
+            A string, valid values are:
+            </para>
+            <para>
+            auto | baseline | before-edge | text-before-edge | middle | central | after-edge |
+            text-after-edge | ideographic | alphabetic | hanging | mathematical | top | center |
+            bottom
+            </para><para>
+            For more information see, e.g. <see cref="!:https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/alignment-baseline"/>
+            </para>
+            </value>
+        </member>
+        <member name="P:SvgElements.TspanElement.ParentElement">
+            <summary>
+            Gets the parent element if this <see cref="T:SvgElements.TspanElement"/> was created
+            as a child of an element.
+            </summary>
+            <value>
+            A <see cref="T:SvgElements.TspanElement"/> or null when the element was not created as
+            a child of another element.
+            </value>
+        </member>
+        <member name="M:SvgElements.TspanElement.GetXml">
+            <inhertdoc />
+        </member>
+        <member name="T:SvgElements.UseElement">
+            <summary>
+            Represents SVG <i>use</i> element.
+            </summary>
+        </member>
+        <member name="P:SvgElements.UseElement.X">
+            <summary>
+            Gets or sets an optional x-coordinate of the location for the
+            content referenced by this <see cref="T:SvgElements.UseElement"/>. Default
+            is x = 0.
+            </summary>
+        </member>
+        <member name="P:SvgElements.UseElement.Y">
+            <summary>
+            Gets or sets an optional y-coordinate of the location for the
+            content referenced by this <see cref="T:SvgElements.UseElement"/>. Default
+            is y = 0.
+            </summary>
+        </member>
+        <member name="P:SvgElements.UseElement.GroupId">
+            <summary>
+            Gets or sets the the ID of the SVG group to be
+            referenced and returns this element.
+            </summary>
+            <value>
+            A string containing the ID of the SVG group as defined by the
+            <i>id</i>-Attribute.
+            </value>
+        </member>
+        <member name="M:SvgElements.UseElement.WithXY(System.Double,System.Double)">
+            <summary>
+            Sets the location (<see cref="P:SvgElements.UseElement.X"/>, <see cref="P:SvgElements.UseElement.Y"/>) for the
+            content referenced by this <see cref="T:SvgElements.UseElement"/> and returns
+            this element.
+            </summary>
+            <param name="x">The x-coordinate of the location.</param>
+            <param name="y">The y-coordinate of the location.</param>
+            <returns>This <see cref="T:SvgElements.UseElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.UseElement.WithGroupId(System.String)">
+            <summary>
+            Sets the <see cref="P:SvgElements.UseElement.GroupId"/>, i.e. the ID of the SVG group to be
+            referenced and returns this element.
+            </summary>
+            <param name="groupId">The ID of a SVG group as defined by the
+            <i>id</i>-Attribute.</param>
+            <returns>This <see cref="T:SvgElements.UseElement"/>.</returns>
+        </member>
+        <member name="M:SvgElements.UseElement.GetXml">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
