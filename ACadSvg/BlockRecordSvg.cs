@@ -115,7 +115,7 @@ namespace ACadSvg {
                 }
                 foreach (var subBlock in dynamicBLock.SubBlocks) {
                     GroupSvg subBlockGroupSvg = new GroupSvg(_ctx) {
-                        ID = Utils.CleanBlockName(subBlock.Name)
+                        ID = $"{_ctx.ConversionOptions.BlockVisibilityParametersPrefix}{Utils.CleanBlockName(subBlock.Name)}"
                     };
 
                     subBlockGroupSvg.Children.AddRange(ConvertEntitiesToSvg(subBlock.Entities, ctx));

@@ -139,5 +139,11 @@ namespace ACadSvg {
         /// elements that are not part of a block, is created.
         /// </summary>
         public bool CreateExtraGroupForFreeElements { get; set; } = false;
+
+
+        /// <summary>
+        /// Gets or sets the prefix for dynamic-block subblock IDs. 
+        /// </summary>
+        public string BlockVisibilityParametersPrefix { get; set; } = "_";
     }
 }
