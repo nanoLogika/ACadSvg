@@ -359,9 +359,9 @@ namespace ACadSvg {
 
 
         protected void CreateDebugPoint(XY point, string color) {
-#if DEBUG
-            _groupElement.Children.Add(new CircleElement() { Cx = point.X, Cy = point.Y, R = 0.25 }.WithStroke(color));
-#endif
+            if (_ctx.ConversionOptions.CreateDebugElements) {
+                _groupElement.Children.Add(new CircleElement() { Cx = point.X, Cy = point.Y, R = 0.25 }.WithStroke(color));
+            }
         }
 
 
