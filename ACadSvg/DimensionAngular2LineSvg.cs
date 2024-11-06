@@ -49,8 +49,8 @@ namespace ACadSvg {
             double r = (dimensionArc - arcCenter).GetLength();
             XY textOnDimLin = arcCenter + (textMid - arcCenter).Normalize() * r;
 
-            XY firstExtDir = (firstPoint - firstLinePoint1).Normalize();
-            XY secondExtDir = (secondPoint - secondLinePoint1).Normalize();
+            XY firstExtDir = -(firstPoint - firstLinePoint1).Normalize();
+            XY secondExtDir = -(secondPoint - secondLinePoint1).Normalize();
             XY firstArcPoint = arcCenter + firstExtDir * r;
             XY secondArcPoint = arcCenter + secondExtDir * r;
 
@@ -63,12 +63,18 @@ namespace ACadSvg {
             //  Debug+
             CreateDebugPoint(textOnDimLin, "blue");
             CreateDebugPoint(textMid, "blue");
-            CreateDebugPoint(secondLinePoint1, "aqua");
-            CreateDebugPoint(secondPoint, "pink");
-            CreateDebugPoint(dimensionArc, "green");
-            CreateDebugPoint(firstLinePoint1, "magenta");
-            CreateDebugPoint(firstPoint, "yellow");
-            CreateDebugPoint(arcCenter, "white");
+
+            CreateDebugPoint(secondLinePoint1, "aqua");     //  as read
+            CreateDebugPoint(secondPoint, "aqua");          //  as read
+            CreateDebugPoint(secondArcPoint, "white");
+
+            CreateDebugPoint(dimensionArc, "green");        //  as read
+
+            CreateDebugPoint(firstLinePoint1, "magenta");   //  as read
+            CreateDebugPoint(firstPoint, "magenta");        //  as read
+            CreateDebugPoint(firstArcPoint, "white");
+
+            CreateDebugPoint(arcCenter, "white");           //  evaluated intersection of first an second line
             //  -Debug
 
             bool flipped = secondAngle < firstAngle;
@@ -76,8 +82,8 @@ namespace ACadSvg {
             CreateDimensionLineArc(arcCenter, r, flipped ? secondAngle : firstAngle, flipped ? firstAngle : secondAngle);
 
             //  Lines
-            CreateFirstExtensionLine(firstPoint, firstArcPoint, firstExtDir);
-            CreateSecondExtensionLine(secondPoint, secondArcPoint, secondExtDir);
+            CreateFirstExtensionLine(arcCenter, firstArcPoint, firstExtDir);
+            CreateSecondExtensionLine(arcCenter, secondArcPoint, secondExtDir);
 
             // Arrows
             GetArrowsOutside(r * (secondAngle - firstAngle), out bool firstArrowOutside, out bool secondArrowOutside);
@@ -95,6 +101,7 @@ namespace ACadSvg {
 
             //  Measurement text  
             double rot = (textMid - arcCenter).GetAngle() + Math.PI / 2;
+            _ang2LineDim.Text = Math.Round(Math.Abs(secondAngle - firstAngle) * 180 / Math.PI).ToString() + "°";
             CreateTextElement(textOnDimLin, rot, out double textLen);
 
             return _groupElement;
