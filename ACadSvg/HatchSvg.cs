@@ -121,18 +121,32 @@ namespace ACadSvg {
                     case Hatch.BoundaryPath.EdgeType.Polyline:
                         Hatch.BoundaryPath.Polyline polyline = (Hatch.BoundaryPath.Polyline)edge;
                         List<XYZ> vertices = new List<XYZ>(polyline.Vertices);
+                        List<double> bulges = new List<double>(polyline.Bulges);
+                        XY lastVertexLocation = XY.Zero;
+                        double lastVertexBulge = 0;
                         if (reverse) {
                             vertices.Reverse();
+                            bulges.Reverse();
                         }
+                        int bulgIx = 0;
                         foreach (var vertex in vertices) {
+                            XY vertexLocation = vertex.ToXY();
                             if (first) {
-                                path.AddMove(vertex.X, vertex.Y);
+                                path.AddMove(vertexLocation.X, vertexLocation.Y);
                             }
                             else {
-                                path.AddLine(vertex.X, vertex.Y);
+                                //path.AddLine(vertex.X, vertex.Y);
+                                addLineOrBulge(path, vertexLocation, lastVertexLocation, lastVertexBulge);
                             }
 
+                            lastVertexLocation = vertexLocation;
+                            lastVertexBulge = bulges[bulgIx];
                             first = false;
+                            bulgIx++;
+                        }
+
+                        if (polyline.IsClosed) {
+                            addLineOrBulge(path, vertices[0].ToXY(), lastVertexLocation, lastVertexBulge);
                         }
                         break;
 
@@ -169,7 +183,24 @@ namespace ACadSvg {
         }
 
 
-		private void createHatchPattern() {
+        private static void addLineOrBulge(PathElement pathElement, XY vertexLocation, XY lastVertexLocation, double lastVertexBulge) {
+            if (lastVertexBulge != 0) {
+                double l = vertexLocation.DistanceFrom(lastVertexLocation);
+                double d = l / 2;
+                double sagitta = d * Math.Abs(lastVertexBulge);
+                double r = (Math.Pow(sagitta, 2) + Math.Pow(d, 2)) / 2 / sagitta;
+                bool lf = r < sagitta;
+                bool sf = lastVertexBulge > 0;
+
+                pathElement.AddArc(r, r, 0, lf, sf, vertexLocation.X, vertexLocation.Y);
+            }
+            else {
+                pathElement.AddLine(vertexLocation.X, vertexLocation.Y);
+            }
+        }
+
+
+        private void createHatchPattern() {
             string hatchPatternName = _hatch.Pattern.Name;
             
             //  If we added the referenced pattern before ...
