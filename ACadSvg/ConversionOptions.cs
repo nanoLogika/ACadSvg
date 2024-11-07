@@ -145,5 +145,12 @@ namespace ACadSvg {
         /// Gets or sets the prefix for dynamic-block subblock IDs. 
         /// </summary>
         public string BlockVisibilityParametersPrefix { get; set; } = "_";
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether SVG elements are to be included
+        /// that reperesent coordinates or definition points, e.g., in leaders or dimensions.
+        /// </summary>
+        public bool CreateDebugElements { get; set; } = false;
     }
 }
