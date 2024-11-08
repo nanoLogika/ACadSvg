@@ -5,6 +5,7 @@
 //  See LICENSE file in the project root for full license information.
 #endregion
 
+
 using ACadSharp;
 using ACadSharp.Entities;
 using ACadSharp.Tables;
@@ -15,6 +16,7 @@ namespace ACadSvg {
     internal static class ColorUtils {
 
         public static string GetHtmlColor(Entity entity, Color color) {
+            color = repairColor(color);
             if (color.IsByBlock) {
                 //  Color will be set at group that represents this block
                 BlockRecord block = entity.Owner as BlockRecord;
@@ -39,6 +41,7 @@ namespace ACadSvg {
 
 
         public static string GetHtmlTextColor(ACadSharp.Entities.Entity entity, Color color) {
+            color = repairColor(color);
             if (color.IsByBlock) {
                 //  Text color must be set as fill, cannot be set at group.
                 BlockRecord block = entity.Owner as BlockRecord;
@@ -56,6 +59,14 @@ namespace ACadSvg {
             }
 
             return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
+        }
+
+
+        private static Color repairColor(Color color) {
+            if (color.IsTrueColor && color.R == 0 && color.G == 0 && color.B == 0) {
+                return Color.ByBlock;
+            }
+            return color;
         }
     }
 }
