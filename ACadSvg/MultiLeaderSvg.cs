@@ -230,7 +230,7 @@ namespace ACadSvg {
             var tspans = TextUtils.ConvertMTextToHtml(textLocation.X, textLocationY, text, textSize, textStyle);
 
             var textElement = new TextElement()
-                    .WithFont(fontFamily, fontSize * 1.5, bold, italic)
+                    .WithFont(fontFamily, fontSize, bold, italic)
                     .WithTextAnchor(textAnchor)
                     .WithTspans(tspans)
                     .WithFill(ColorUtils.GetHtmlTextColor(_multiLeader, textColor))
