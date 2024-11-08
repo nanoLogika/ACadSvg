@@ -152,6 +152,7 @@ namespace ACadSvg {
 
 
         //  TODO Does textStyle.Hight overrule other values?
+        //  Why do we not need factor 1.5 here?
         public static double GetTextSize(bool overrideTextHeight, double styleTextHeight, TextStyle textStyle, double scaleFactor) {
             if (textStyle.Height != 0) {
                 return textStyle.Height * scaleFactor * TextSizeFromHeight;
@@ -162,8 +163,9 @@ namespace ACadSvg {
         }
 
 
+        //  Heuristic factor 1.5
         public static double GetTextSize(double textHeight) {
-            return textHeight * TextSizeFromHeight;
+            return textHeight * TextSizeFromHeight * 1.5;
         }
 
 

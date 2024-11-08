@@ -75,7 +75,7 @@ namespace ACadSvg {
             var arr2Block = _dimProps.ArrowHeadBlock2;
 
             //  Get measurement text
-            double textSize = TextUtils.GetTextSize(_dimProps.TextHeight) * 1.5;
+            double textSize = TextUtils.GetTextSize(_dimProps.TextHeight);
             double textRot = (GetTextRot(dimDir.GetAngle()) + _linDim.TextRotation) * 180 / Math.PI;
             const double noTextLen = 0;
 

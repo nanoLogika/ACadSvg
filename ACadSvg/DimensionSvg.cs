@@ -83,7 +83,7 @@ namespace ACadSvg {
 
 
         protected void CreateTextElement(XY textPos, double dimDirAngle, out double textLen) {
-            double textSize = TextUtils.GetTextSize(_dimProps.TextHeight) * 1.5;
+            double textSize = TextUtils.GetTextSize(_dimProps.TextHeight);
             string text = GetFormattedDimensionText(textSize);
             textLen = TextUtils.GetTextLength(text, textSize);
             string textColor = ColorUtils.GetHtmlColor(_dimension, _dimProps.TextColor);
@@ -123,7 +123,7 @@ namespace ACadSvg {
 
 
         protected void CreateTextElementAndLeader(XY dimMid, XY textMid, XY dimDir, double textRot) {
-            double textSize = TextUtils.GetTextSize(_dimProps.TextHeight) * 1.5;
+            double textSize = TextUtils.GetTextSize(_dimProps.TextHeight);
             string text = GetFormattedDimensionText(textSize);
             double textLen = TextUtils.GetTextLength(text, textSize);
             string textColor = ColorUtils.GetHtmlColor(_dimension, _dimProps.TextColor);
