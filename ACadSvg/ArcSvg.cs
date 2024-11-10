@@ -42,6 +42,7 @@ namespace ACadSvg {
 			SvgElementBase pathElement = new PathElement()
 				.AddMoveAndArc(c.X, c.Y, sa, ea, r)
 				.WithID(ID)
+				.WithFill("none")
 				.WithClass(Class)
 				.WithStroke(ColorUtils.GetHtmlColor(_arc, _arc.Color))
 				.WithStrokeWidth(LineUtils.GetLineWeight(_arc.LineWeight, _arc, _ctx));

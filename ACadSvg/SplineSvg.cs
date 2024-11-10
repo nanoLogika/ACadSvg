@@ -46,6 +46,7 @@ namespace ACadSvg {
                         .AddMoveAndQSpline(Utils.VerticesToArray(_spline.ControlPoints))
                         .WithID(ID)
                         .WithClass(Class)
+                        .WithFill("none")
                         .WithStroke(ColorUtils.GetHtmlColor(_spline, _spline.Color))
                         .WithStrokeWidth(LineUtils.GetLineWeight(_spline.LineWeight, _spline, _ctx))
                         .WithStrokeDashArray(LineUtils.LineToDashArray(_spline, _spline.LineType));
@@ -55,6 +56,7 @@ namespace ACadSvg {
                         .AddMoveAndCSpline(Utils.VerticesToArray(_spline.ControlPoints))
                         .WithID(ID)
                         .WithClass(Class)
+                        .WithFill("none")
                         .WithStroke(ColorUtils.GetHtmlColor(_spline, _spline.Color))
                         .WithStrokeWidth(LineUtils.GetLineWeight(_spline.LineWeight, _spline, _ctx))
                         .WithStrokeDashArray(LineUtils.LineToDashArray(_spline, _spline.LineType));
@@ -66,6 +68,7 @@ namespace ACadSvg {
                         .AddPoints(Utils.VerticesToArray(points))
                         .WithID(ID)
                         .WithClass(Class)
+                        .WithFill("none")
                         .WithStroke(ColorUtils.GetHtmlColor(_spline, _spline.Color))
                         .WithStrokeWidth(LineUtils.GetLineWeight(_spline.LineWeight, _spline, _ctx))
                         .WithStrokeDashArray(LineUtils.LineToDashArray(_spline, _spline.LineType));
@@ -96,6 +99,7 @@ namespace ACadSvg {
                     .AddPoints(Utils.VerticesToArray(curve))
                     .WithID(ID)
                     .WithClass(Class)
+                    .WithFill("none")
                     .WithStroke(ColorUtils.GetHtmlColor(_spline, _spline.Color))
                     .WithStrokeWidth(LineUtils.GetLineWeight(_spline.LineWeight, _spline, _ctx))
                     .WithStrokeDashArray(LineUtils.LineToDashArray(_spline, _spline.LineType));
