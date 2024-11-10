@@ -261,7 +261,7 @@ namespace ACadSvg {
                 svgElement.WithFill(ctx.GlobalAttributeData.Fill);
             }
             else {
-                svgElement.WithFill("none");
+                //  svgElement.WithFill("none");
             }
 
             return svgElement;

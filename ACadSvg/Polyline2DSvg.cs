@@ -44,7 +44,8 @@ namespace ACadSvg {
 			return path
 				.WithID(ID)
 				.WithClass(Class)
-				.WithStroke(ColorUtils.GetHtmlColor(_polyline, _polyline.Color))
+                .WithFill("none")
+                .WithStroke(ColorUtils.GetHtmlColor(_polyline, _polyline.Color))
 				.WithStrokeDashArray(LineUtils.LineToDashArray(_polyline, _polyline.LineType))
 				.WithStrokeWidth(LineUtils.GetLineWeight(_polyline.LineWeight, _polyline, _ctx));
 		}
