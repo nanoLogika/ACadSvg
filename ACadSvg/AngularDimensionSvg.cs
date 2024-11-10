@@ -43,6 +43,7 @@ namespace ACadSvg {
         protected void CreateDimensionLineArc(XY center, double r, double beginAngle, double endAngle) {
             _groupElement.Children.Add(new PathElement()
                 .AddMoveAndArc(center.X, center.Y, beginAngle, endAngle, r)
+                .WithFill("none")
                 .WithStroke(_dimensionLineColor)
                 .WithStrokeWidth(_dimensionLineWidth));
         }

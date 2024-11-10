@@ -65,6 +65,7 @@ namespace ACadSvg {
 				ellipseElement
 					.WithID(ID)
                     .WithClass(Class)
+		            .WithFill("none")
                     .WithStroke(ColorUtils.GetHtmlColor(_ellipse, _ellipse.Color))
 					.WithStrokeWidth(LineUtils.GetLineWeight(_ellipse.LineWeight, _ellipse, _ctx));
 
@@ -75,7 +76,8 @@ namespace ACadSvg {
 				    .AddMoveAndArc(cx, cy, sa, ea, rx, ry, rot)
 				    .WithID(ID)
 				    .WithClass(Class)
-				    .WithStroke(ColorUtils.GetHtmlColor(_ellipse, _ellipse.Color))
+                    .WithFill("none")
+					.WithStroke(ColorUtils.GetHtmlColor(_ellipse, _ellipse.Color))
 				    .WithStrokeWidth(LineUtils.GetLineWeight(_ellipse.LineWeight, _ellipse, _ctx));
 			}
 		}
