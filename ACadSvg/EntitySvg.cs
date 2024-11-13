@@ -257,6 +257,8 @@ namespace ACadSvg {
                 switch (entity.ObjectName) {
                 case "MULTILEADER":
                     return new MultiLeaderSvg(entity, ctx);
+                case "WIPEOUT":
+                    return new WipeoutSvg(entity, ctx);
                 default:
                     return null;
                 }
