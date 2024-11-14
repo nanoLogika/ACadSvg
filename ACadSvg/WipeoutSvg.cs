@@ -6,6 +6,7 @@
 #endregion
 
 using ACadSharp.Entities;
+using CSMath;
 using SvgElements;
 
 
@@ -31,35 +32,63 @@ namespace ACadSvg {
         }
 
 
-        /// <inheritdoc />
-        public override SvgElementBase ToSvgElement() {
+		/// <inheritdoc />
+		public override SvgElementBase ToSvgElement() {
 			var path = new PathElement();
 
-			List<CSMath.XY> vertices = _wipeout.ClipBoundaryVertices;
-			
-			List<CSMath.XY> newVertices = new List<CSMath.XY>();
-			foreach (var vertex in vertices) {
-				newVertices.Add(new CSMath.XY(_wipeout.InsertPoint.X + vertex.X, _wipeout.InsertPoint.Y + vertex.Y));
+			List<XY> vertices = _wipeout.ClipBoundaryVertices;
+
+			List<XY> newVertices = new List<XY>();
+			for (int i = 0; i < vertices.Count; i++) {
+				double x = _wipeout.InsertPoint.X + (vertices[i].X * _wipeout.UVector.X);
+				double y = _wipeout.InsertPoint.Y + (vertices[i].Y * _wipeout.VVector.Y * (_ctx.ConversionOptions.ReverseY ? -1 : 1));
+
+				newVertices.Add(new XY(x, y));
 			}
 
 			path.AddPoints(Utils.VerticesToArray(newVertices));
 			path.Close();
 
-			CircleElement circle = new CircleElement()
-				.WithID("InsertPoint")
-				.WithFill("yellow");
-			circle.Cx = _wipeout.InsertPoint.X;
-			circle.Cy = _wipeout.InsertPoint.Y;
-			circle.R = 1;
-
 			GroupElement group = new GroupElement();
+
+			CircleElement circle1 = new CircleElement()
+				.WithID($"1st POINT")
+				.WithFill("red");
+			circle1.Cx = newVertices[0].X;
+			circle1.Cy = newVertices[0].Y;
+			circle1.R = 1;
+			group.Children.Add(circle1);
+
+			CircleElement circle2 = new CircleElement()
+				.WithID($"2nd POINT")
+				.WithFill("green");
+			circle2.Cx = newVertices[1].X;
+			circle2.Cy = newVertices[1].Y;
+			circle2.R = 1;
+			group.Children.Add(circle2);
+
+			CircleElement circle3 = new CircleElement()
+				.WithID($"3rd POINT")
+				.WithFill("blue");
+			circle3.Cx = newVertices[2].X;
+			circle3.Cy = newVertices[2].Y;
+			circle3.R = 1;
+			group.Children.Add(circle3);
+
 			group.Children.Add(path);
-			group.Children.Add(circle);
 
 			path
-				.WithID(ID)
+				.WithID($"Size: {_wipeout.Size} | UVector: {_wipeout.UVector} | VVector: {_wipeout.VVector}")
 				.WithClass(Class)
-				.WithFill("green");
+				.WithFill("skyblue");
+
+			CircleElement circle4 = new CircleElement()
+				.WithID($"INSERT POINT {_wipeout.InsertPoint}")
+				.WithStroke("magenta");
+			circle4.Cx = _wipeout.InsertPoint.X;
+			circle4.Cy = _wipeout.InsertPoint.Y;
+			circle4.R = 1;
+			group.Children.Add(circle4);
 
 			return group;
 		}
