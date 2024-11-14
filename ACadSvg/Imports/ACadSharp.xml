@@ -5501,6 +5501,9 @@
             <summary>
             Viewport ID.
             </summary>
+            <remarks>
+            The first value for a PaperSpace will represent the paper image in the screen.
+            </remarks>
         </member>
         <member name="P:ACadSharp.Entities.Viewport.ViewCenter">
             <summary>
@@ -5683,6 +5686,27 @@
             Ambient light color.Write only if not black color.
             </summary>
         </member>
+        <member name="P:ACadSharp.Entities.Viewport.Scale">
+            <summary>
+            Scale assigned for this viewport.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.Viewport.ScaleFactor">
+            <summary>
+            Scale factor applied in this viewport.
+            </summary>
+            <remarks>
+            Represents the scale applied to all the entities in the model when are visualized in the paper.
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Entities.Viewport.RepresentsPaper">
+            <summary>
+            Flag that set for those viewports that represent the paper in the view.
+            </summary>
+            <remarks>
+            A paper viewport is only for boundaries only, does not visualize anything.
+            </remarks>
+        </member>
         <member name="M:ACadSharp.Entities.Viewport.Clone">
             <inheritdoc/>
         </member>
@@ -5690,7 +5714,16 @@
             <inheritdoc/>
         </member>
         <member name="M:ACadSharp.Entities.Viewport.GetModelBoundingBox">
-            <inheritdoc/>
+            <summary>
+            Gets the bounding box of this viewport in the model space.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ACadSharp.Entities.Viewport.SelectEntities(System.Boolean)">
+            <summary>
+            Gets all the entities from the model that are in the view of the viewport.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ACadSharp.Entities.ViewportStatusFlags">
             <summary>
@@ -9846,6 +9879,12 @@
         <member name="M:ACadSharp.Objects.Collections.ObjectDictionaryCollection`1.System#Collections#IEnumerable#GetEnumerator">
             <inheritdoc/>
         </member>
+        <member name="M:ACadSharp.Objects.Collections.ScaleCollection.Add(ACadSharp.Objects.Scale)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+        </member>
         <member name="T:ACadSharp.Objects.DictionaryCloningFlags">
             <summary>
             Duplicate record cloning flag (determines how to merge duplicate entries).
@@ -11970,7 +12009,7 @@
         </member>
         <member name="P:ACadSharp.Objects.PlotSettings.PaperRotation">
             <summary>
-            Plot paper units.
+            Plot paper rotation.
             </summary>
         </member>
         <member name="P:ACadSharp.Objects.PlotSettings.PlotType">
@@ -12319,11 +12358,14 @@
         </member>
         <member name="T:ACadSharp.Objects.XRecord">
             <summary>
-            Represents a <see cref="T:ACadSharp.Objects.XRecord"/> object
+            Represents a <see cref="T:ACadSharp.Objects.XRecord"/> object.
             </summary>
             <remarks>
             Object name <see cref="F:ACadSharp.DxfFileToken.ObjectXRecord"/> <br/>
             Dxf class name <see cref="F:ACadSharp.DxfSubclassMarker.XRecord"/>
+            <br/>
+            <br/>
+            Is not recommended to modify, add or remove entries to an XRecord unless you know what consequences will cause in the document.
             </remarks>
         </member>
         <member name="P:ACadSharp.Objects.XRecord.ObjectType">
@@ -12335,7 +12377,7 @@
         <member name="P:ACadSharp.Objects.XRecord.SubclassMarker">
             <inheritdoc/>
         </member>
-        <member name="P:ACadSharp.Objects.XRecord.ClonningFlags">
+        <member name="P:ACadSharp.Objects.XRecord.CloningFlags">
             <summary>
             Duplicate record cloning flag (determines how to merge duplicate entries)
             </summary>
@@ -12499,17 +12541,17 @@
         </member>
         <member name="P:ACadSharp.Tables.BlockRecord.IsExplodable">
             <summary>
-            Specifies whether the block can be exploded
+            Specifies whether the block can be exploded.
             </summary>
         </member>
         <member name="P:ACadSharp.Tables.BlockRecord.CanScale">
             <summary>
-            Specifies the scaling allowed for the block
+            Specifies the scaling allowed for the block.
             </summary>
         </member>
         <member name="P:ACadSharp.Tables.BlockRecord.Preview">
             <summary>
-            DXF: Binary data for bitmap preview
+            DXF: Binary data for bitmap preview.
             </summary>
             <remarks>
             Optional
@@ -12517,7 +12559,7 @@
         </member>
         <member name="P:ACadSharp.Tables.BlockRecord.Layout">
             <summary>
-            Associated Layout
+            Associated Layout.
             </summary>
         </member>
         <member name="P:ACadSharp.Tables.BlockRecord.AttributeDefinitions">
@@ -12532,7 +12574,7 @@
         </member>
         <member name="P:ACadSharp.Tables.BlockRecord.Viewports">
             <summary>
-            Viewports attached to this block
+            ViewPorts attached to this block
             </summary>
         </member>
         <member name="P:ACadSharp.Tables.BlockRecord.Entities">
@@ -14835,137 +14877,137 @@
         </member>
         <member name="F:ACadSharp.LineweightType.Default">
             <summary>
-            Default lineweight.
+            Default line weight.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.ByBlock">
             <summary>
-            Lineweight defined by block.
+            Line weight defined by block.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.ByLayer">
             <summary>
-            Lineweight defined by layer.
+            Line weight defined by layer.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W0">
             <summary>
-            Lineweight value 0.00 mm (hairline).
+            Line weight value 0.00 mm (hairline).
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W5">
             <summary>
-            Lineweight value 0.05 mm.
+            Line weight value 0.05 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W9">
             <summary>
-            Lineweight value 0.09 mm.
+            Line weight value 0.09 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W13">
             <summary>
-            Lineweight value 0.13 mm.
+            Line weight value 0.13 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W15">
             <summary>
-            Lineweight value 0.15 mm.
+            Line weight value 0.15 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W18">
             <summary>
-            Lineweight value 0.18 mm.
+            Line weight value 0.18 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W20">
             <summary>
-            Lineweight value 0.20 mm.
+            Line weight value 0.20 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W25">
             <summary>
-            Lineweight value 0.25 mm.
+            Line weight value 0.25 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W30">
             <summary>
-            Lineweight value 0.30 mm.
+            Line weight value 0.30 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W35">
             <summary>
-            Lineweight value 0.35 mm.
+            Line weight value 0.35 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W40">
             <summary>
-            Lineweight value 0.40 mm.
+            Line weight value 0.40 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W50">
             <summary>
-            Lineweight value 0.50 mm.
+            Line weight value 0.50 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W53">
             <summary>
-            Lineweight value 0.53 mm.
+            Line weight value 0.53 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W60">
             <summary>
-            Lineweight value 0.60 mm.
+            Line weight value 0.60 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W70">
             <summary>
-            Lineweight value 0.70 mm.
+            Line weight value 0.70 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W80">
             <summary>
-            Lineweight value 0.80 mm.
+            Line weight value 0.80 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W90">
             <summary>
-            Lineweight value 0.90 mm.
+            Line weight value 0.90 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W100">
             <summary>
-            Lineweight value 1.00 mm.
+            Line weight value 1.00 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W106">
             <summary>
-            Lineweight value 1.06 mm.
+            Line weight value 1.06 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W120">
             <summary>
-            Lineweight value 1.20 mm.
+            Line weight value 1.20 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W140">
             <summary>
-            Lineweight value 1.40 mm.
+            Line weight value 1.40 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W158">
             <summary>
-            Lineweight value 1.58 mm.
+            Line weight value 1.58 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W200">
             <summary>
-            Lineweight value 2.00 mm.
+            Line weight value 2.00 mm.
             </summary>
         </member>
         <member name="F:ACadSharp.LineweightType.W211">
             <summary>
-            Lineweight value 2.11 mm.
+            Line weight value 2.11 mm.
             </summary>
         </member>
         <member name="T:ACadSharp.ObjectType">
@@ -15325,6 +15367,28 @@
             <param name="box"></param>
             <returns>The merged box.</returns>
         </member>
+        <member name="M:CSMath.BoundingBox.IsIn(CSMath.BoundingBox)">
+            <summary>
+            Checks if the given box is in the bounds of this box.
+            </summary>
+            <param name="box"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CSMath.BoundingBox.IsIn(CSMath.BoundingBox,System.Boolean@)">
+            <summary>
+            Checks if the given box is in the bounds of this box.
+            </summary>
+            <param name="box"></param>
+            <param name="partialIn">Flag to notify that on part of the box is inside but not completely.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CSMath.BoundingBox.IsIn(CSMath.XYZ)">
+            <summary>
+            Checks if the point is in the bounds of the box.
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
         <member name="M:CSMath.BoundingBox.Merge(System.Collections.Generic.IEnumerable{CSMath.BoundingBox})">
             <summary>
             Merge Multiple boxes into the common one.
@@ -15619,29 +15683,29 @@
             <param name="v"></param>
             <returns>Result matrix</returns>
         </member>
-        <member name="F:CSMath.Utilities.RadToDegFactor">
+        <member name="F:CSMath.MathHelper.RadToDegFactor">
             <summary>
             Factor for converting radians to degrees.
             </summary>
         </member>
-        <member name="F:CSMath.Utilities.DegToRadFactor">
+        <member name="F:CSMath.MathHelper.DegToRadFactor">
             <summary>
             Factor for converting degrees to radians.
             </summary>
         </member>
-        <member name="F:CSMath.Utilities.Epsilon">
+        <member name="F:CSMath.MathHelper.Epsilon">
             <summary>
             Default tolerance
             </summary>
         </member>
-        <member name="M:CSMath.Utilities.IsZero(System.Double)">
+        <member name="M:CSMath.MathHelper.IsZero(System.Double)">
             <summary>
             Checks if a number is close to zero.
             </summary>
             <param name="number">Double precision number.</param>
             <returns>True if its close to one or false in any other case.</returns>
         </member>
-        <member name="M:CSMath.Utilities.IsZero(System.Double,System.Double)">
+        <member name="M:CSMath.MathHelper.IsZero(System.Double,System.Double)">
             <summary>
             Checks if a number is close to zero.
             </summary>
@@ -15649,30 +15713,30 @@
             <param name="threshold">Tolerance.</param>
             <returns>True if its close to one or false in any other case.</returns>
         </member>
-        <member name="M:CSMath.Utilities.RadToDeg(System.Double)">
+        <member name="M:CSMath.MathHelper.RadToDeg(System.Double)">
             <summary>
             Convert a value from radian to degree
             </summary>
             <param name="value">Value in radians</param>
             <returns>The radian value</returns>
         </member>
-        <member name="M:CSMath.Utilities.DegToRad(System.Double)">
+        <member name="M:CSMath.MathHelper.DegToRad(System.Double)">
             <summary>
             Convert a value from degree to radian
             </summary>
             <param name="value">Value in degrees</param>
             <returns>The radian value</returns>
         </member>
-        <member name="M:CSMath.Utilities.Sin(System.Double)">
+        <member name="M:CSMath.MathHelper.Sin(System.Double)">
             <summary>
-            Returns the sine of specific angle in radians adjusting the value to 0 using <see cref="F:CSMath.Utilities.Epsilon"/> as tolerance.
+            Returns the sine of specific angle in radians adjusting the value to 0 using <see cref="F:CSMath.MathHelper.Epsilon"/> as tolerance.
             </summary>
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="M:CSMath.Utilities.Cos(System.Double)">
+        <member name="M:CSMath.MathHelper.Cos(System.Double)">
             <summary>
-            Returns the cosine of specific angle in radians adjusting the value to 0 using <see cref="F:CSMath.Utilities.Epsilon"/> as tolerance.
+            Returns the cosine of specific angle in radians adjusting the value to 0 using <see cref="F:CSMath.MathHelper.Epsilon"/> as tolerance.
             </summary>
             <param name="value"></param>
             <returns></returns>
