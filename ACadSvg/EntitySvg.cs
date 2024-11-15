@@ -22,7 +22,7 @@ namespace ACadSvg {
     public abstract class EntitySvg {
 
         protected ConversionContext _ctx;
-
+        protected bool _insertAtTopOfTheParentGroup = false;
 
         public EntitySvg(ConversionContext ctx) {
             _ctx = ctx;
@@ -49,6 +49,15 @@ namespace ACadSvg {
         /// </summary>
         public virtual bool Skip {
             get { return false; }
+        }
+
+
+        /// <summary>
+        /// Gets a value indicating whether an instance of this entity is to placed
+        /// before all other elements in its parent group.
+        /// </summary>
+        public bool InsertAtTopOfTheParentGroup {
+            get { return _insertAtTopOfTheParentGroup; }
         }
 
 

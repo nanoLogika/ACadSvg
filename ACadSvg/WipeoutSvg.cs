@@ -29,31 +29,36 @@ namespace ACadSvg {
 		public WipeoutSvg(Entity wipeout, ConversionContext ctx) : base(ctx) {
             _wipeout = (Wipeout)wipeout;
             SetStandardIdAndClassIf(wipeout, ctx);
+            _insertAtTopOfTheParentGroup = true;
         }
 
 
-		/// <inheritdoc />
-		public override SvgElementBase ToSvgElement() {
-			var path = new PathElement();
+        /// <inheritdoc />
+        public override SvgElementBase ToSvgElement() {
 
-			List<XY> vertices = _wipeout.ClipBoundaryVertices;
+            List<XY> vertices = _wipeout.ClipBoundaryVertices;
+            double reverseY = _ctx.ConversionOptions.ReverseY ? -1 : 1;
 
-			List<XY> newVertices = new List<XY>();
+            XY offset = new XY(
+				_wipeout.InsertPoint.X + _wipeout.UVector.X / 2,
+				_wipeout.InsertPoint.Y + _wipeout.VVector.Y / 2);
+
+            List <XY> newVertices = new List<XY>();
 			for (int i = 0; i < vertices.Count; i++) {
-				BoundingBox bb = _wipeout.GetBoundingBox();
+				XY vertex = new XY(
+					offset.X + vertices[i].X * _wipeout.UVector.X,
+					offset.Y + vertices[i].Y * _wipeout.VVector.Y * reverseY);
 
-				double x = _wipeout.InsertPoint.X + ((bb.Width * _wipeout.UVector.X) / 2) + (vertices[i].X * _wipeout.UVector.X);
-				double y = _wipeout.InsertPoint.Y + ((bb.Height * _wipeout.VVector.Y) / 2) + (vertices[i].Y * _wipeout.VVector.Y * (_ctx.ConversionOptions.ReverseY ? -1 : 1));
-
-				newVertices.Add(new XY(x, y));
+                newVertices.Add(vertex);
 			}
 
-			path.AddPoints(Utils.VerticesToArray(newVertices));
-			path.Close();
+			PathElement path = new PathElement()
+				.AddPoints(Utils.VerticesToArray(newVertices))
+				.Close()
+				.WithID(ID)
+				.WithClass(Class);
 
-			path.WithFill("green");
-
-			return path;
+            return path;
 		}
     }
 }
