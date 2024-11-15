@@ -57,7 +57,7 @@ namespace ACadSvg {
 				.Close()
 				.WithID(ID)
 				.WithClass(Class)
-				.WithFill("none");
+				.WithStroke("none");
 
             return path;
 		}
