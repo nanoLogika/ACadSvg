@@ -56,7 +56,8 @@ namespace ACadSvg {
 				.AddPoints(Utils.VerticesToArray(newVertices))
 				.Close()
 				.WithID(ID)
-				.WithClass(Class);
+				.WithClass(Class)
+				.WithFill("none");
 
             return path;
 		}
