@@ -148,7 +148,8 @@ namespace ACadSvg {
                                 .AddPoints(Utils.VerticesToArray(leaderLine.Points))
                                 .AddLine(connectionPoint.X, connectionPoint.Y)
                                 .WithStroke(leaderLineColor)
-                                .WithStrokeWidth(leaderLineWeight));
+                                .WithStrokeWidth(leaderLineWeight)
+                                .WithFill("none"));
                         break;
                     case MultiLeaderPathType.Invisible:
                     default:

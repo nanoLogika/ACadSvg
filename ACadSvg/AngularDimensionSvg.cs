@@ -45,6 +45,7 @@ namespace ACadSvg {
                 .AddMoveAndArc(center.X, center.Y, beginAngle, endAngle, r)
                 .WithFill("none")
                 .WithStroke(_dimensionLineColor)
+                .WithFill("none")
                 .WithStrokeWidth(_dimensionLineWidth));
         }
 
