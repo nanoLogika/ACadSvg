@@ -40,6 +40,7 @@ namespace ACadSvg {
 			}
 			.WithID(ID)
 			.WithClass(Class)
+			.WithFill("none")
 			.WithStroke(ColorUtils.GetHtmlColor(_circle, _circle.Color))
 			.WithStrokeWidth(LineUtils.GetLineWeight(_circle.LineWeight, _circle, _ctx));
 		}
