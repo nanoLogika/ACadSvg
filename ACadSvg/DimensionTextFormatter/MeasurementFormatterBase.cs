@@ -369,11 +369,21 @@ namespace ACadSvg.DimensionTextFormatter {
                 return sign + number.TrimStart('0');
 
             case ZeroHandling.SuppressDecimalTrailingZeroes:
-                return text.TrimEnd('0').TrimEnd(decimalSeparator);
+                if (text.Contains(decimalSeparator)) {
+                    return text.TrimEnd('0').TrimEnd(decimalSeparator);
+                }
+                else {
+                    return text;
+                }
 
             case ZeroHandling.SuppressDecimalLeadingAndTrailingZeroes:
                 getSignAndNumber(text, out string number2, out string sign2);
-                return sign2 + number2.TrimStart('0').TrimEnd('0').TrimEnd(decimalSeparator);
+                if (number2.Contains(decimalSeparator)) {
+                    return sign2 + number2.TrimStart('0').TrimEnd('0').TrimEnd(decimalSeparator);
+                }
+                else {
+                    return sign2 + number2.TrimStart('0');
+                }
             }
 
             return text;
