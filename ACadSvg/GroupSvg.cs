@@ -29,8 +29,15 @@ namespace ACadSvg {
             groupElement.Comment = Comment;
             groupElement.ID = ID;
             groupElement.Class = Class;
+            int insertAt = 0;
             foreach (EntitySvg child in Children) {
-                groupElement.Children.Add(child.ToSvgElement());
+                if (child.InsertAtTopOfTheParentGroup) {
+                    groupElement.Children.Insert(insertAt, child.ToSvgElement());
+                    insertAt++;
+                }
+                else {
+                    groupElement.Children.Add(child.ToSvgElement());
+                }
             }
             return groupElement;
         }
