@@ -9,6 +9,7 @@ using ACadSharp;
 using ACadSharp.Entities;
 using ACadSharp.Tables;
 using ACadSharp.Tables.Collections;
+using ACadSharp.XData;
 
 
 namespace ACadSvg.Extensions {
@@ -70,16 +71,16 @@ namespace ACadSvg.Extensions {
                 Type type = typeof(T);
                 if (type.IsEnum) {
                     Type intType = type.GetEnumUnderlyingType();
-                    var value = Convert.ChangeType(rec.Value, intType);
+                    var value = Convert.ChangeType(((ExtendedDataRecord<T>)rec).Value, intType);
                     if (type.IsEnumDefined(value)) {
                         return (T)value;
                     }
                 }
                 if (type == typeof(bool)) {
-                    T tbValue = (T)Convert.ChangeType((short)rec.Value != 0, typeof(bool));
+                    T tbValue = (T)Convert.ChangeType(((ExtendedDataRecord<short>)rec).Value != 0, typeof(bool));
                     return tbValue;
                 }
-                if (rec.Value is T tValue) {
+                if (((ExtendedDataRecord<object>)rec).Value is T tValue) {
                     return tValue;
                 }
             }
@@ -108,7 +109,7 @@ namespace ACadSvg.Extensions {
             if (rec == null) {
                 return defaultBlockRecord;
             }
-            var handle = (ulong)rec.Value;
+            var handle = ((ExtendedDataRecord<ulong>)rec).Value;
             if (!entity.Document.TryGetCadObject<BlockRecord>(handle, out BlockRecord blockReference)) {
                 return defaultBlockRecord;
             }
@@ -137,7 +138,7 @@ namespace ACadSvg.Extensions {
         public static Color GetExtendedDataColor(Entity entity, string appIdName, string entryName, short field, Color defaultColor) {
             var recTc = getExtendedDataRecord(entity, appIdName + "_TC", entryName + "_TC", field);
             if (recTc != null) {
-                byte[] bytes = recTc.Value as byte[];
+                byte[] bytes = ((ExtendedDataRecord<byte[]>)recTc).Value;
                 var r = bytes[10];
                 var g = bytes[9];
                 var b = bytes[8];
@@ -145,7 +146,7 @@ namespace ACadSvg.Extensions {
             }
             var rec = getExtendedDataRecord(entity, appIdName, entryName, field);
             if (rec != null) {
-                return new Color((short)rec.Value);
+                return new Color(((ExtendedDataRecord<short>)rec).Value);
             }
             return defaultColor;
         }
@@ -161,9 +162,11 @@ namespace ACadSvg.Extensions {
                 return null;
             }
             bool fieldFound = false;
-            foreach (ExtendedDataRecord record in extendedData.Data) {
-                if (record.Code == DxfCode.ExtendedDataInteger16 && (short)record.Value == field) {
-                    fieldFound = true;
+            foreach (ExtendedDataRecord record in extendedData.Records) {
+                if (record.Code == DxfCode.ExtendedDataInteger16) {
+                    if (((ExtendedDataRecord<short>)record).Value == field) {
+                        fieldFound = true;
+                    }
                 }
                 else if (fieldFound) {
                     //  If preceding record matched.
@@ -192,7 +195,7 @@ namespace ACadSvg.Extensions {
             if (!extendedDataDict.TryGet(appIdByName, out ExtendedData extendedData)) {
                 return null;
             }
-            if (!string.IsNullOrEmpty(entryName) && extendedData.Data[0].Value.ToString() != entryName) {
+            if (!string.IsNullOrEmpty(entryName) && ((ExtendedDataRecord<string>)extendedData.Records[0]).Value != entryName) {
                 return null;
             }
             return extendedData;

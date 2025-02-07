@@ -7,6 +7,7 @@
 
 using ACadSharp.Entities;
 using ACadSharp.Objects;
+using ACadSharp.Objects.Evaluations;
 using ACadSharp.Tables;
 using System.Text.RegularExpressions;
 
@@ -113,12 +114,12 @@ namespace ACadSvg {
                         Children.Add(childGroupSvg);
                     }
                 }
-                foreach (var subBlock in dynamicBLock.SubBlocks) {
+                foreach (var state in dynamicBLock.States) {
                     GroupSvg subBlockGroupSvg = new GroupSvg(_ctx) {
-                        ID = $"{_ctx.ConversionOptions.BlockVisibilityParametersPrefix}{Utils.CleanBlockName(subBlock.Name)}"
+                        ID = $"{_ctx.ConversionOptions.BlockVisibilityParametersPrefix}{Utils.CleanBlockName(state.Name)}"
                     };
 
-                    subBlockGroupSvg.Children.AddRange(ConvertEntitiesToSvg(subBlock.Entities, ctx));
+                    subBlockGroupSvg.Children.AddRange(ConvertEntitiesToSvg(state.Entities, ctx));
 
                     Children.Add(subBlockGroupSvg);
                 }
@@ -136,9 +137,9 @@ namespace ACadSvg {
             if (blockRecord.XDictionary != null && blockRecord.XDictionary.EntryNames.Contains("ACAD_ENHANCEDBLOCK")) {
                 var enhancedBlock = blockRecord.XDictionary["ACAD_ENHANCEDBLOCK"] as EvaluationGraph;
                 if (enhancedBlock != null && enhancedBlock is EvaluationGraph) {
-                    foreach (EvaluationGraph.GraphNode node in enhancedBlock.Nodes) {
-                        if (node.NodeObject is BlockVisibilityParameter) {
-                            dynamicBLock = (BlockVisibilityParameter)node.NodeObject;
+                    foreach (EvaluationGraph.Node node in enhancedBlock.Nodes) {
+                        if (node.Expression is BlockVisibilityParameter) {
+                            dynamicBLock = (BlockVisibilityParameter)node.Expression;
                             break;
                         }
                     }

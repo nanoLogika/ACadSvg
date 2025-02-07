@@ -10,6 +10,7 @@ using System.Text;
 using ACadSharp;
 using ACadSharp.Entities;
 using ACadSharp.Tables.Collections;
+using ACadSharp.XData;
 
 using SvgElements;
 
@@ -105,10 +106,10 @@ namespace ACadSvg {
                 if (extendedData.ContainsKey(appId)) {
                     exdSb.AppendLine();
                     exdSb.Append("    ").Append(appId.Name).Append(":: ");
-                    IList<ExtendedDataRecord> exd = extendedData.Get(appId).Data;
+                    IList<ExtendedDataRecord> exd = extendedData.Get(appId).Records;
                     foreach (var e in exd) {
                         exdSb.AppendLine();
-                        exdSb.Append($"      {e.Code.ToString()}: {e.Value.ToString()}");
+                        exdSb.Append($"      {e.ToString()}");
                         //exdSb.Append(" . ");
                     }
                 }
