@@ -361,6 +361,14 @@
             The collection of all vports in the drawing
             </summary>
         </member>
+        <member name="P:ACadSharp.CadDocument.Colors">
+            <summary>
+            The collection of all book colors in the drawing.
+            </summary>
+            <remarks>
+            The collection is null if the <see cref="F:ACadSharp.Objects.CadDictionary.AcadColor"/> doesn't exist in the root dictionary.
+            </remarks>
+        </member>
         <member name="P:ACadSharp.CadDocument.Layouts">
             <summary>
             The collection of all layouts in the drawing.
@@ -395,8 +403,11 @@
         </member>
         <member name="P:ACadSharp.CadDocument.ImageDefinitions">
             <summary>
-            
+            The collection of all images in the drawing. 
             </summary>
+            <remarks>
+            The collection is null if the <see cref="F:ACadSharp.Objects.CadDictionary.AcadImageDict"/> doesn't exist in the root dictionary.
+            </remarks>
         </member>
         <member name="P:ACadSharp.CadDocument.MLeaderStyles">
             <summary>
@@ -516,17 +527,20 @@
         </member>
         <member name="P:ACadSharp.CadObject.Reactors">
             <summary>
-            Objects that are attached to this object
+            Objects that are attached to this object.
             </summary>
+            <remarks>
+            This collection is not managed by ACadSharp, any changes may cause a corruption in the file.
+            </remarks>
         </member>
         <member name="P:ACadSharp.CadObject.ExtendedData">
             <summary>
-            Extended data attached to this object
+            Extended data attached to this object.
             </summary>
         </member>
         <member name="P:ACadSharp.CadObject.Document">
             <summary>
-            Document where this element belongs
+            Document where this element belongs.
             </summary>
         </member>
         <member name="M:ACadSharp.CadObject.#ctor">
@@ -1380,50 +1394,55 @@
             Describes if the hatch is an annotative block.
             </summary>
         </member>
-        <member name="T:ACadSharp.Entities.CadImageBase">
+        <member name="T:ACadSharp.Entities.CadWipeoutBase">
             <summary>
             Common base class for <see cref="T:ACadSharp.Entities.RasterImage" /> and <see cref="T:ACadSharp.Entities.Wipeout" />.
             </summary>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.ClassVersion">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.ClassVersion">
             <summary>
             Class version
             </summary>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.InsertPoint">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.InsertPoint">
             <summary>
             Insertion point(in WCS)
             </summary>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.UVector">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.UVector">
             <summary>
             U-vector of a single pixel(points along the visual bottom of the image, starting at the insertion point) (in WCS)
             </summary>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.VVector">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.VVector">
             <summary>
             V-vector of a single pixel(points along the visual left side of the image, starting at the insertion point) (in WCS)
             </summary>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.Size">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.Size">
             <summary>
-            Image size in pixels
+            Image size in pixels.
             </summary>
             <remarks>
-            2D point(U and V values)
+            2D point(U and V values).
             </remarks>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.Flags">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.Flags">
             <summary>
-            Image display properties
+            Image display properties.
             </summary>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.ClippingState">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.ShowImage">
+            <summary>
+            Add the ShowImage flag to the display flags property.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.ClippingState">
             <summary>
             Clipping state
             </summary>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.Brightness">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.Brightness">
             <summary>
             Brightness
             </summary>
@@ -1431,7 +1450,7 @@
             0-100; default = 50
             </remarks>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.Contrast">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.Contrast">
             <summary>
             Contrast
             </summary>
@@ -1439,7 +1458,7 @@
             0-100; default = 50
             </remarks>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.Fade">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.Fade">
             <summary>
             Fade
             </summary>
@@ -1447,17 +1466,17 @@
             0-100; default = 0
             </remarks>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.ClipMode">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.ClipMode">
             <summary>
             Clipping state
             </summary>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.ClipType">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.ClipType">
             <summary>
             Clipping boundary type
             </summary>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.ClipBoundaryVertices">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.ClipBoundaryVertices">
             <summary>
             Clip boundary vertices
             </summary>
@@ -1465,20 +1484,20 @@
             For rectangular clip boundary type, two opposite corners must be specified.Default is (-0.5,-0.5), (size.x-0.5, size.y-0.5). 2) For polygonal clip boundary type, three or more vertices must be specified.Polygonal vertices must be listed sequentially
             </remarks>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.Definition">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.Definition">
             <summary>
             Image definition.
             </summary>
         </member>
-        <member name="P:ACadSharp.Entities.CadImageBase.DefinitionReactor">
+        <member name="P:ACadSharp.Entities.CadWipeoutBase.DefinitionReactor">
             <summary>
-            Reference to image definition reactor
+            Reference to image definition reactor.
             </summary>
         </member>
-        <member name="M:ACadSharp.Entities.CadImageBase.GetBoundingBox">
+        <member name="M:ACadSharp.Entities.CadWipeoutBase.GetBoundingBox">
             <inheritdoc/>
         </member>
-        <member name="M:ACadSharp.Entities.CadImageBase.Clone">
+        <member name="M:ACadSharp.Entities.CadWipeoutBase.Clone">
             <inheritdoc/>
         </member>
         <member name="T:ACadSharp.Entities.Circle">
@@ -2192,6 +2211,11 @@
         <member name="P:ACadSharp.Entities.Entity.Material">
             <inheritdoc/>
         </member>
+        <member name="P:ACadSharp.Entities.Entity.BookColor">
+            <summary>
+            Book color for this entity.
+            </summary> 
+        </member>
         <member name="M:ACadSharp.Entities.Entity.#ctor">
             <inheritdoc/>
         </member>
@@ -2543,7 +2567,7 @@
         </member>
         <member name="P:ACadSharp.Entities.Hatch.PatternAngle">
             <summary>
-            Hatch pattern angle (pattern fill only)
+            Hatch pattern angle (pattern fill only).
             </summary>
         </member>
         <member name="P:ACadSharp.Entities.Hatch.PatternScale">
@@ -2635,19 +2659,49 @@
             Name of the gradient 
             </summary>
         </member>
+        <member name="P:ACadSharp.Entities.HatchPattern.Description">
+            <summary>
+            Description for this pattern.
+            </summary>
+            <remarks>
+            The description is not saved in dxf or dwg files, its only used in the .pat files.
+            </remarks>
+        </member>
+        <member name="M:ACadSharp.Entities.HatchPattern.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:ACadSharp.Entities.HatchPattern.LoadFrom(System.String)">
+            <summary>
+            Load a collection of patterns from a .pat file.
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ACadSharp.Entities.HatchPattern.SavePatterns(System.String,ACadSharp.Entities.HatchPattern[])">
+            <summary>
+            Write a pattern or a collection of patterns into a .pat file.
+            </summary>
+            <param name="filename"></param>
+            <param name="patterns"></param>
+        </member>
         <member name="P:ACadSharp.Entities.HatchPattern.Line.Angle">
             <summary>
-            Pattern line angle
+            Pattern line angle.
             </summary>
         </member>
         <member name="P:ACadSharp.Entities.HatchPattern.Line.BasePoint">
             <summary>
-            Pattern line base point
+            Pattern line base point.
             </summary>
         </member>
         <member name="P:ACadSharp.Entities.HatchPattern.Line.Offset">
             <summary>
-            Pattern line offset
+            Pattern line offset.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.HatchPattern.Line.DashLengths">
+            <summary>
+            Line dashes.
             </summary>
         </member>
         <member name="T:ACadSharp.Entities.HatchPatternType">
@@ -2806,7 +2860,7 @@
         </member>
         <member name="P:ACadSharp.Entities.Insert.Block">
             <summary>
-            Gets the insert block definition
+            Gets the insert block definition.
             </summary>
         </member>
         <member name="P:ACadSharp.Entities.Insert.InsertPoint">
@@ -2816,17 +2870,17 @@
         </member>
         <member name="P:ACadSharp.Entities.Insert.XScale">
             <summary>
-            X scale factor 
+            X scale factor.
             </summary>
         </member>
         <member name="P:ACadSharp.Entities.Insert.YScale">
             <summary>
-            Y scale factor 
+            Y scale factor.
             </summary>
         </member>
         <member name="P:ACadSharp.Entities.Insert.ZScale">
             <summary>
-            Z scale factor 
+            Z scale factor.
             </summary>
         </member>
         <member name="P:ACadSharp.Entities.Insert.Rotation">
@@ -2884,9 +2938,8 @@
         </member>
         <member name="M:ACadSharp.Entities.Insert.UpdateAttributes">
             <summary>
-            Updates all attribute definitions contained in the block reference as Attribute entitites in the insert
+            Updates all attribute definitions contained in the block reference as <see cref="T:ACadSharp.Entities.AttributeDefinition"/> entitites in the insert
             </summary>
-            <exception cref="T:System.NotImplementedException"></exception>
         </member>
         <member name="M:ACadSharp.Entities.Insert.GetBoundingBox">
             <inheritdoc/>
@@ -4946,6 +4999,369 @@
             Use knot parameter
             </summary>
         </member>
+        <member name="T:ACadSharp.Entities.TableEntity">
+            <summary>
+            Represents a <see cref="T:ACadSharp.Entities.TableEntity"/> entity.
+            </summary>
+            <remarks>
+            Object name <see cref="F:ACadSharp.DxfFileToken.EntityTable"/> <br/>
+            Dxf class name <see cref="F:ACadSharp.DxfSubclassMarker.TableEntity"/>
+            </remarks>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.BorderType.Single">
+            <summary>
+            Single border line.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.BorderType.Double">
+            <summary>
+            Double border line.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.BreakFlowDirection.Right">
+            <summary>
+            Right
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.BreakFlowDirection.Vertical">
+            <summary>
+            Vertical
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.BreakFlowDirection.Left">
+            <summary>
+            Left
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.BreakOptionFlags.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.BreakOptionFlags.EnableBreaks">
+            <summary>
+            Enable breaks
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.BreakOptionFlags.RepeatTopLabels">
+            <summary>
+            Repeat top labels
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.BreakOptionFlags.RepeatBottomLabels">
+            <summary>
+            Repeat bottom labels
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.BreakOptionFlags.AllowManualPositions">
+            <summary>
+            Allow manual positions
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.BreakOptionFlags.AllowManualHeights">
+            <summary>
+            Allow manual heights
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Cell.Type">
+            <summary>
+            Cell type.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Cell.FlagValue">
+            <summary>
+            Cell flag value.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Cell.MergedValue">
+            <summary>
+            Cell merged value.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Cell.Autofit">
+            <summary>
+            Boolean flag indicating if the autofit option is set for the cell.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Cell.BorderWidth">
+            <summary>
+            Cell border width.
+            </summary>
+            <remarks>
+            Applicable only for merged cells.
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Cell.BorderHeight">
+            <summary>
+            Cell border height.
+            </summary>
+            <remarks>
+            Applicable only for merged cells.
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Cell.VirtualEdgeFlag">
+            <summary>
+            Flag value for a virtual edge.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Cell.Rotation">
+            <summary>
+            Rotation value.
+            </summary>
+            <remarks>
+            Applicable for a block-type cell and a text-type cell.
+            </remarks>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.ValueUnitType.NoUnits">
+            <summary>
+            No units.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.ValueUnitType.Distance">
+            <summary>
+            Distance.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.ValueUnitType.Angle">
+            <summary>
+            Angle.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.ValueUnitType.Area">
+            <summary>
+            Area.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.ValueUnitType.Volume">
+            <summary>
+            Volumne.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.ValueUnitType.Currency">
+            <summary>
+            Currency.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.ValueUnitType.Percentage">
+            <summary>
+            Percentage.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.CellValue.Text">
+            <summary>
+            Text string in a cell.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.CellValueType.Unknown">
+            <summary>
+            Unknown
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.CellValueType.Long">
+            <summary>
+            32 bit Long value
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.CellValueType.Double">
+            <summary>
+            Double value
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.CellValueType.String">
+            <summary>
+            String value
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.CellValueType.Date">
+            <summary>
+            Date value
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.CellValueType.Point2D">
+            <summary>
+            2D point value
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.CellValueType.Point3D">
+            <summary>
+            3D point value
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.CellValueType.Handle">
+            <summary>
+            Object handle value
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.CellValueType.Buffer">
+            <summary>
+            Buffer value
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.CellValueType.ResultBuffer">
+            <summary>
+            Result buffer value
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.CellValueType.General">
+            <summary>
+            General
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Column.Width">
+            <summary>
+            Column width.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.ObjectType">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.ObjectName">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.SubclassMarker">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Version">
+            <summary>
+            Table data version
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.HorizontalDirection">
+            <summary>
+            Horizontal direction vector
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.ValueFlag">
+            <summary>
+            Flag for table value.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Rows">
+            <summary>
+            Table rows.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Columns">
+            <summary>
+            Table columns
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.OverrideFlag">
+            <summary>
+            Flag for an override.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.OverrideBorderColor">
+            <summary>
+            Flag for an override of border color.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.OverrideBorderLineWeight">
+            <summary>
+            Flag for an override of border line weight.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.OverrideBorderVisibility">
+            <summary>
+            Flag for an override of border visibility.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Style">
+            <summary>
+            Table Style
+            </summary>
+        </member>
+        <member name="M:ACadSharp.Entities.TableEntity.GetBoundingBox">
+            <inheritdoc/>
+        </member>
+        <member name="M:ACadSharp.Entities.TableEntity.Clone">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Entities.TableEntity.Row.Height">
+            <summary>
+            Row height.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableBorderPropertyFlags.None">
+            <summary>
+            None.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableBorderPropertyFlags.BorderType">
+            <summary>
+            Border type.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableBorderPropertyFlags.LineWeight">
+            <summary>
+            Line weight.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableBorderPropertyFlags.LineType">
+            <summary>
+            Line type.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableBorderPropertyFlags.Color">
+            <summary>
+            Color.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableBorderPropertyFlags.Invisibility">
+            <summary>
+            Invisibility.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableBorderPropertyFlags.DoubleLineSpacing">
+            <summary>
+            Double line spacing.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableBorderPropertyFlags.All">
+            <summary>
+            All.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableCellStateFlags.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableCellStateFlags.ContentLocked">
+            <summary>
+            Content  locked
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableCellStateFlags.ContentReadOnly">
+            <summary>
+            Content read only
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableCellStateFlags.Linked">
+            <summary>
+            Linked.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableCellStateFlags.ContentModifiedAfterUpdate">
+            <summary>
+            Content modifed after update
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableCellStateFlags.FormatLocked">
+            <summary>
+            Format locked
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableCellStateFlags.FormatReadOnly">
+            <summary>
+            Format readonly
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Entities.TableEntity.TableCellStateFlags.FormatModifiedAfterUpdate">
+            <summary>
+            Format was modified after update
+            </summary>
+        </member>
         <member name="T:ACadSharp.Entities.TextEntity">
             <summary>
             Represents a <see cref="T:ACadSharp.Entities.TextEntity"/>
@@ -5918,27 +6334,6 @@
             <param name="message"></param>
             <param name="line"></param>
         </member>
-        <member name="M:ACadSharp.ExtendedDataDictionary.Add(ACadSharp.Tables.AppId,ACadSharp.ExtendedData)">
-            <summary>Add ExtendedData for a specific AppId to the Dictionary.</summary>
-            <param name="app">The AppId object.</param>
-            <param name="edata">The ExtendedData object.</param>
-        </member>
-        <member name="M:ACadSharp.ExtendedDataDictionary.Get(ACadSharp.Tables.AppId)">
-            <summary>Get ExtendedData for a specific AppId from the Dictionary.</summary>
-            <param name="app">The AppId object.</param>
-        </member>
-        <member name="M:ACadSharp.ExtendedDataDictionary.TryGet(ACadSharp.Tables.AppId,ACadSharp.ExtendedData@)">
-            <summary>Try to get ExtendedData for a specific AppId from the Dictionary.</summary>
-            <param name="app">The AppId object.</param>
-            <param name="value">ExtendedData object.</param>
-        </member>
-        <member name="M:ACadSharp.ExtendedDataDictionary.ContainsKey(ACadSharp.Tables.AppId)">
-            <summary>Check whether a AppId is given in the Dictionary.</summary>
-            <param name="app">The AppId object.</param>
-        </member>
-        <member name="M:ACadSharp.ExtendedDataDictionary.Clear">
-            <summary>Clear all Dictionary entries.</summary>
-        </member>
         <member name="T:ACadSharp.GroupCodeValueType">
             <summary>
             Group codes define the type of the associated value as an integer, a floating-point number, or a string, according to the following table of group code ranges.
@@ -6049,7 +6444,7 @@
         </member>
         <member name="P:ACadSharp.Header.CadHeader.MeasurementUnits">
             <summary>
-            Sets drawing units
+            Controls whether the current drawing uses imperial or metric hatch pattern and linetype files.
             </summary>
             <remarks>
             System variable MEASUREMENT
@@ -6067,19 +6462,23 @@
         </member>
         <member name="P:ACadSharp.Header.CadHeader.OrthoMode">
             <summary>
-            System variable ORTHOMODE.
-            Ortho mode on if nonzero.
+            Constrains cursor movement to the perpendicular.
             </summary>
+            <remarks>
+            System variable ORTHOMODE.
+            </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.RegenerationMode">
             <summary>
-            System variable REGENMODE.
-            REGENAUTO mode on if nonzero
+            Obsolete. Controls automatic regeneration of the drawing.
             </summary>
+            <remarks>
+            System variable REGENMODE.
+            </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.FillMode">
             <summary>
-            Fill mode on if nonzero
+            Specifies whether hatches and fills, 2D solids, and wide polylines are filled in.
             </summary>
             <remarks>
             System variable FILLMODE.
@@ -6103,9 +6502,11 @@
         </member>
         <member name="P:ACadSharp.Header.CadHeader.LimitCheckingOn">
             <summary>
-            Nonzero if limits checking is on
-            System variable LIMCHECK.
+            Controls whether you can create objects outside the grid limits.
             </summary>
+            <remarks>
+            System variable LIMCHECK.
+            </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.BlipMode">
             <summary>
@@ -6114,258 +6515,276 @@
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UserTimer">
             <summary>
-            Controls the user timer for the drawing
-            System variable USRTIMER
+            Controls the user timer for the drawing.
             </summary>
+            <remarks>
+            System variable USRTIMER.
+            </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.SketchPolylines">
             <summary>
-            Determines the object type created by the SKETCH command
-            System variable SKPOLY
+            Determines the object type created by the SKETCH command.
             </summary>
+            <remarks>
+            System variable SKPOLY.
+            </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.AngularDirection">
             <summary>
-            Represents angular direction.
-            System variable ANGDIR
+            Sets the direction of positive angles.
             </summary>
+            <remarks>
+            System variable ANGDIR.
+            </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.ShowSplineControlPoints">
             <summary>
             Controls the display of helixes and smoothed mesh objects.
-            System variable SPLFRAME
             </summary>
+            <remarks>
+            System variable SPLFRAME.
+            </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.MirrorText">
             <summary>
-            Mirror text if nonzero <br/>
-            System variable MIRRTEXT
+            Controls how MIRROR reflects text.
             </summary>
+            <remarks>
+            System variable MIRRTEXT.
+            </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.WorldView">
             <summary>
-            Determines whether input for the DVIEW and VPOINT command evaluated as relative to the WCS or current UCS <br/>
-            System variable WORLDVIEW
+            Determines whether input to the DVIEW and VPOINT commands is relative to the WCS (default) or the current UCS.
             </summary>
+            <remarks>
+            System variable WORLDVIEW.
+            </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.ShowModelSpace">
             <summary>
-            1 for previous release compatibility mode; 0 otherwise <br/>
-            System variable TILEMODE
+            Determines whether the Model tab or the most-recently accessed named layout tab is active.
             </summary>
+            <remarks>
+            System variable TILEMODE.
+            </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.PaperSpaceLimitsChecking">
             <summary>
-            Limits checking in paper space when nonzero <br/>
-            System variable PLIMCHECK
+            Limits checking in paper space when nonzero.
             </summary>
+            <remarks>
+            System variable PLIMCHECK.
+            </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.RetainXRefDependentVisibilitySettings">
             <summary>
             Controls the properties of xref-dependent layers: <br/>
             0 = Don't retain xref-dependent visibility settings <br/>
             1 = Retain xref-dependent visibility settings <br/>
-            System variable VISRETAIN
             </summary>
+            <remarks>
+            System variable VISRETAIN.
+            </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.DisplaySilhouetteCurves">
             <summary>
-            Controls the display of silhouette curves of body objects in Wireframe mode
+            Controls display of silhouette edges of 3D solid and surface objects in the Wireframe or 2D Wireframe visual styles.
             </summary>
             <remarks>
-            System variable DISPSILH
+            System variable DISPSILH.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.CreateEllipseAsPolyline">
             <summary>
-            
+            Controls the ellipse type created with ELLIPSE.
             </summary>
             <remarks>
-            System variable PELLIPSE (not present in DXF)
+            System variable PELLIPSE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.ProxyGraphics">
             <summary>
-            Controls the saving of proxy object images
+            Specifies whether images of proxy objects are saved in the drawing.
             </summary>
             <remarks>
-            System variable PROXYGRAPHICS
+            System variable PROXYGRAPHICS.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.SpatialIndexMaxTreeDepth">
             <summary>
-            Specifies the maximum depth of the spatial index
+            Specifies the maximum depth, that is, the number of times the tree-structured spatial index can divide into branches.
             </summary>
             <remarks>
-            System variable TREEDEPTH
+            System variable TREEDEPTH.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.LinearUnitFormat">
             <summary>
-            Units format for coordinates and distances
+            Sets the linear units format for creating objects.
             </summary>
             <remarks>
-            System variable LUNITS
+            System variable LUNITS.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.LinearUnitPrecision">
             <summary>
-            Units precision for coordinates and distances
+            Sets the display precision for linear units and coordinates.
             </summary>
             <remarks>
-            System variable LUPREC
+            System variable LUPREC.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.AngularUnit">
             <summary>
-            Entity linetype name, or BYBLOCK or BYLAYER
+            Sets units for angles.
             </summary>
             <remarks>
-            System variable AUNITS
+            System variable AUNITS.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.AngularUnitPrecision">
             <summary>
-            Units precision for angles
+            Sets the display precision for angular units and coordinates.
             </summary>
             <remarks>
-            System variable AUPREC
+            System variable AUPREC.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.ObjectSnapMode">
             <summary>
-            Sets running object snaps, only for R13 - R14
+            Sets running object snaps.
             </summary>
             <remarks>
-            System variable OSMODE
+            System variable OSMODE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.AttributeVisibility">
             <summary>
-            Attribute visibility
+            Controls display of attributes.
             </summary>
             <remarks>
-            System variable ATTMODE
+            System variable ATTMODE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.PointDisplayMode">
             <summary>
-            Point display mode
+            Controls how point objects are displayed.
             </summary>
             <remarks>
-            System variable PDMODE
+            System variable PDMODE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UserShort1">
             <summary>
-            Integer variable intended for use by third-party developers
+            Integer variable intended for use by third-party developers.
             </summary>
             <remarks>
-            System variable USERI1
+            System variable USERI1.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UserShort2">
             <summary>
-            Integer variable intended for use by third-party developers
+            Integer variable intended for use by third-party developers.
             </summary>
             <remarks>
-            System variable USERI2
+            System variable USERI2.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UserShort3">
             <summary>
-            Integer variable intended for use by third-party developers
+            Integer variable intended for use by third-party developers.
             </summary>
             <remarks>
-            System variable USERI3
+            System variable USERI3.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UserShort4">
             <summary>
-            Integer variable intended for use by third-party developers
+            Integer variable intended for use by third-party developers.
             </summary>
             <remarks>
-            System variable USERI4
+            System variable USERI4.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UserShort5">
             <summary>
-            Integer variable intended for use by third-party developers
+            Integer variable intended for use by third-party developers.
             </summary>
             <remarks>
-            System variable USERI5
+            System variable USERI5.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.NumberOfSplineSegments">
             <summary>
-            Undocumented
+            Sets the number of line segments to be generated for each spline-fit polyline generated by the Spline option of the PEDIT command.
             </summary>
             <remarks>
-            System variable SPLINESEGS
+            System variable SPLINESEGS.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.SurfaceDensityU">
             <summary>
-            Surface density (for PEDIT Smooth) in M direction
+            Surface density (for PEDIT Smooth) in M direction.
             </summary>
             <remarks>
-            System variable SURFU
+            System variable SURFU.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.SurfaceDensityV">
             <summary>
-            Surface density(for PEDIT Smooth) in N direction
+            Surface density(for PEDIT Smooth) in N direction.
             </summary>
             <remarks>
-            System variable SURFV
+            System variable SURFV.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.SurfaceType">
             <summary>
-            Surface type for PEDIT Smooth
+            Surface type for PEDIT Smooth.
             </summary>
             <remarks>
-            System variable SURFTYPE
+            System variable SURFTYPE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.SurfaceMeshTabulationCount1">
             <summary>
-            Number of mesh tabulations in first direction
+            Number of mesh tabulations in first direction.
             </summary>
             <remarks>
-            System variable SURFTAB1
+            System variable SURFTAB1.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.SurfaceMeshTabulationCount2">
             <summary>
-            Number of mesh tabulations in second direction
+            Number of mesh tabulations in second direction.
             </summary>
             <remarks>
-            System variable SURFTAB2
+            System variable SURFTAB2.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.SplineType">
             <summary>
-            Spline curve type for PEDIT Spline
+            Sets the type of curve generated by the Spline option of the PEDIT command.
             </summary>
             <remarks>
-            System variable SPLINETYPE
+            System variable SPLINETYPE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.ShadeEdge">
             <summary>
-            Controls the shading of edges
+            Controls the shading of edges.
             </summary>
             <remarks>
-            System variable SHADEDGE
+            System variable SHADEDGE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.ShadeDiffuseToAmbientPercentage">
             <summary>
-            Percent ambient/diffuse light
+            Sets the ratio of diffuse reflective light to ambient light.
             </summary>
             <remarks>
-            System variable SHADEDIF
+            System variable SHADEDIF.
             </remarks>
             <value>
             range 1-100
@@ -6373,71 +6792,71 @@
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UnitMode">
             <summary>
-            Low bit set = Display fractions, feet-and-inches, and surveyor's angles in input format
+            Controls the display format for units.
             </summary>
             <remarks>
-            System variable UNITMODE
+            System variable UNITMODE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.MaxViewportCount">
             <summary>
-            Sets maximum number of viewports to be regenerated
+            Sets the maximum number of viewports that can be active at one time in a layout.
             </summary>
             <remarks>
-            System variable MAXACTVP
+            System variable MAXACTVP.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.SurfaceIsolineCount">
             <summary>
-            
+            Specifies the number of contour lines displayed on the curved surfaces of 3D solids.
             </summary>
             <remarks>
-            System variable ISOLINES
+            System variable ISOLINES.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.CurrentMultilineJustification">
             <summary>
-            Current multiline justification
+            Current multiline justification.
             </summary>
             <remarks>
-            System variable CMLJUST
+            System variable CMLJUST.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.TextQuality">
             <summary>
-            
+            Sets the resolution of TrueType text for plotting and rendering.
             </summary>
             <remarks>
-            System variable TEXTQLTY
+            System variable TEXTQLTY.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.LineTypeScale">
             <summary>
-            Global linetype scale
+            Sets the global linetype scale factor.
             </summary>
             <remarks>
-            System variable LTSCALE
+            System variable LTSCALE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.TextHeightDefault">
             <summary>
-            Default text height
+            Sets the default text height when creating new text objects.
             </summary>
             <remarks>
-            System variable TEXTSIZE
+            System variable TEXTSIZE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.TextStyleName">
             <summary>
-            Current text style name
+            Sets the name of the current text style.
             </summary>
             <remarks>
-            System variable TEXTSTYLE
+            System variable TEXTSTYLE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.CurrentLayerName">
             <summary>
-            Current layer name
+            Sets the current layer.
             </summary>
             <remarks>
             System variable CLAYER
@@ -6445,55 +6864,55 @@
         </member>
         <member name="P:ACadSharp.Header.CadHeader.CurrentLineTypeName">
             <summary>
-            Entity linetype name, or BYBLOCK or BYLAYER
+            Sets the linetype of new objects.
             </summary>
             <remarks>
-            System variable CELTYPE
+            System variable CELTYPE.
             </remarks>
         </member>
-        <member name="P:ACadSharp.Header.CadHeader.MultiLineStyleName">
+        <member name="P:ACadSharp.Header.CadHeader.CurrentMultiLineStyleName">
             <summary>
-            Current multiline style name
+            Current multiline style name.
             </summary>
             <remarks>
-            System variable CMLSTYLE
+            System variable CMLSTYLE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.TraceWidthDefault">
             <summary>
-            Default trace width
+            Default trace width.
             </summary>
             <remarks>
-            System variable TRACEWID
+            System variable TRACEWID.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.SketchIncrement">
             <summary>
-            Sketch record increment
+            Sketch record increment.
             </summary>
             <remarks>
-            System variable SKETCHINC
+            System variable SKETCHINC.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.FilletRadius">
             <summary>
-            Sketch record increment
+            Stores the current fillet radius for 2D objects.
             </summary>
             <remarks>
-            System variable FILLETRAD
+            System variable FILLETRAD.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.ThicknessDefault">
             <summary>
-            Current thickness set by ELEV command
+            Sets the default 3D thickness property when creating 2D geometric objects.
             </summary>
             <remarks>
-            System variable THICKNESS
+            System variable THICKNESS.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.AngleBase">
             <summary>
-            Angle 0 direction
+            Sets the zero (0) base angle with respect to the current UCS.
             </summary>
             <remarks>
             System variable ANGBASE
@@ -6501,162 +6920,165 @@
         </member>
         <member name="P:ACadSharp.Header.CadHeader.PointDisplaySize">
             <summary>
-            Point display size
+            Sets the display size for point objects.
             </summary>
             <remarks>
-            System variable PDSIZE
+            System variable PDSIZE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.PolylineWidthDefault">
             <summary>
-            Default polyline width
+            Stores the default polyline width.
             </summary>
             <remarks>
-            System variable PLINEWID
+            System variable PLINEWID.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UserDouble1">
             <summary>
-            Real variable intended for use by third-party developers
+            Real variable intended for use by third-party developers.
             </summary>
             <remarks>
-            System variable $USERR1
+            System variable USERR1.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UserDouble2">
             <summary>
-            Real variable intended for use by third-party developers
+            Real variable intended for use by third-party developers.
             </summary>
             <remarks>
-            System variable $USERR2
+            System variable USERR2.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UserDouble3">
             <summary>
-            Real variable intended for use by third-party developers
+            Real variable intended for use by third-party developers.
             </summary>
             <remarks>
-            System variable $USERR3
+            System variable USERR3.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UserDouble4">
             <summary>
-            Real variable intended for use by third-party developers
+            Real variable intended for use by third-party developers.
             </summary>
             <remarks>
-            System variable $USERR4
+            System variable USERR4.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UserDouble5">
             <summary>
-            Real variable intended for use by third-party developers
+            Real variable intended for use by third-party developers.
             </summary>
             <remarks>
-            System variable $USERR5
+            System variable USERR5.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.ChamferDistance1">
             <summary>
-            First chamfer distance
+            Sets the first chamfer distance when CHAMMODE is set to 0.
             </summary>
             <remarks>
-            System variable CHAMFERA
+            System variable CHAMFERA.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.ChamferDistance2">
             <summary>
-            Second  chamfer distance
+            Sets the second chamfer distance when CHAMMODE is set to 0.
             </summary>
             <remarks>
-            System variable CHAMFERB
+            System variable CHAMFERB.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.ChamferLength">
             <summary>
-            Chamfer length
+            Sets the chamfer length when CHAMMODE is set to 1.
             </summary>
             <remarks>
-            System variable CHAMFERC
+            System variable CHAMFERC.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.ChamferAngle">
             <summary>
-            Chamfer angle
+            Sets the chamfer angle when CHAMMODE is set to 1.
             </summary>
             <remarks>
-            System variable CHAMFERD
+            System variable CHAMFERD.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.FacetResolution">
             <summary>
-            
+            Adjusts the smoothness of shaded and rendered objects, rendered shadows, and objects with hidden lines removed.
             </summary>
             <remarks>
-            System variable FACETRES
+            System variable FACETRES.
             </remarks>
+            <value>
+            Valid values are from 0.01 to 10.0.
+            </value>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.CurrentMultilineScale">
             <summary>
-            Current multiline scale
+            Current multiline scale.
             </summary>
             <remarks>
-            System variable CMLSCALE
+            System variable CMLSCALE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.CurrentEntityLinetypeScale">
             <summary>
-            Current entity linetype scale
+            Current entity linetype scale.
             </summary>
             <remarks>
-            System variable CHAMFERD
+            System variable CELTSCALE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.MenuFileName">
             <summary>
-            Name of menu file
+            Name of menu file.
             </summary>
             <remarks>
-            System variable MENU
+            System variable MENU.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.HandleSeed">
             <summary>
-            Next available handle
+            Next available handle.
             </summary>
             <remarks>
-            System variable HANDSEED
+            System variable HANDSEED.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.CreateDateTime">
             <summary>
-            Local date/time of drawing creation (see Special Handling of Date/Time Variables)
+            Local date/time of drawing creation (see Special Handling of Date/Time Variables).
             </summary>
             <remarks>
-            System variable TDCREATE
+            System variable TDCREATE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UniversalCreateDateTime">
             <summary>
-            Universal date/time the drawing was created(see Special Handling of Date/Time Variables)
+            Universal date/time the drawing was created(see Special Handling of Date/Time Variables).
             </summary>
             <remarks>
-            System variable TDUCREATE
+            System variable TDUCREATE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UpdateDateTime">
             <summary>
-            Local date/time of last drawing update(see Special Handling of Date/Time Variables)
+            Local date/time of last drawing update(see Special Handling of Date/Time Variables).
             </summary>
             <remarks>
-            System variable TDUPDATE
+            System variable TDUPDATE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.UniversalUpdateDateTime">
             <summary>
-            Universal date/time of the last update/save(see Special Handling of Date/Time Variables)
+            Universal date/time of the last update/save(see Special Handling of Date/Time Variables).
             </summary>
             <remarks>
-            System variable TDUUPDATE
+            System variable TDUUPDATE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.TotalEditingTime">
@@ -6677,58 +7099,58 @@
         </member>
         <member name="P:ACadSharp.Header.CadHeader.CurrentEntityColor">
             <summary>
-            Current entity color number
+            Current entity color number.
             </summary>
             <remarks>
-            System variable CECOLOR
+            System variable CECOLOR.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.ViewportDefaultViewScaleFactor">
             <summary>
-            View scale factor for new viewports
+            View scale factor for new viewports.
             </summary>
             <remarks>
-            System variable PSVPSCALE
+            System variable PSVPSCALE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.PaperSpaceInsertionBase">
             <summary>
-            Insertion base set by BASE command(in WCS)
+            Paper space insertion base point.
             </summary>
             <remarks>
-            System variable PINSBASE
+            System variable PINSBASE.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.PaperSpaceExtMin">
             <summary>
-            X, Y, and Z drawing extents lower-left corner (in WCS)
+            X, Y, and Z drawing extents lower-left corner (in WCS).
             </summary>
             <remarks>
-            System variable PEXTMIN
+            System variable PEXTMIN.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.PaperSpaceExtMax">
             <summary>
-            X, Y, and Z drawing extents upper-right corner(in WCS)
+            X, Y, and Z drawing extents upper-right corner(in WCS).
             </summary>
             <remarks>
-            System variable PEXTMAX
+            System variable PEXTMAX.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.PaperSpaceLimitsMin">
             <summary>
-            XY drawing limits lower-left corner(in WCS)
+            XY drawing limits lower-left corner(in WCS).
             </summary>
             <remarks>
-            System variable PLIMMIN
+            System variable PLIMMIN.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.PaperSpaceLimitsMax">
             <summary>
-            XY drawing limits upper-right corner (in WCS)
+            XY drawing limits upper-right corner (in WCS).
             </summary>
             <remarks>
-            System variable PLIMMAX
+            System variable PLIMMAX.
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.PaperSpaceElevation">
@@ -7015,7 +7437,7 @@
         </member>
         <member name="P:ACadSharp.Header.CadHeader.CurrentEntityLineWeight">
             <summary>
-            Lineweight of new objects
+            Line weight of new objects
             </summary>
             <remarks>
             System variable CELWEIGHT
@@ -7023,7 +7445,7 @@
         </member>
         <member name="P:ACadSharp.Header.CadHeader.EndCaps">
             <summary>
-            Lineweight endcaps setting for new objects
+            Line weight end-caps setting for new objects
             </summary>
             <remarks>
             System variable ENDCAPS
@@ -7031,7 +7453,7 @@
         </member>
         <member name="P:ACadSharp.Header.CadHeader.JoinStyle">
             <summary>
-            Lineweight joint setting for new objects
+            Line weight joint setting for new objects
             </summary>
             <remarks>
             System variable JOINSTYLE
@@ -7039,7 +7461,7 @@
         </member>
         <member name="P:ACadSharp.Header.CadHeader.DisplayLineWeight">
             <summary>
-            Controls the display of lineweights on the Model or Layout tab<br/>
+            Controls whether the lineweights of objects are displayed.<br/>
             0 = Lineweight is not displayed<br/>
             1 = Lineweight is displayed
             </summary>
@@ -7164,6 +7586,11 @@
             System variable INTERFERECOLOR
             </remarks>
         </member>
+        <member name="P:ACadSharp.Header.CadHeader.ObscuredType">
+            <remarks>
+            System variable OBSCUREDLTYPE
+            </remarks>
+        </member>
         <member name="P:ACadSharp.Header.CadHeader.ProjectName">
             <summary>
             Assigns a project name to the current drawing. Used when an external reference or image is not found on its original path. The project name points to a section in the registry that can contain one or more search paths for each project name defined. Project names and their search directories are created from the Files tab of the Options dialog box
@@ -7172,9 +7599,98 @@
             System variable PROJECTNAME
             </remarks>
         </member>
+        <member name="P:ACadSharp.Header.CadHeader.CameraDisplayObjects">
+            <remarks>
+            System variable CAMERADISPLAY
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.StepsPerSecond">
+            <summary>
+            Specifies the number of steps taken per second when you are in walk or fly mode.
+            </summary>
+            <remarks>
+            System variable STEPSPERSEC
+            </remarks>
+            <value>
+            Valid values are from 1 to 30
+            </value>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.StepSize">
+            <summary>
+            Specifies the size of each step when in walk or fly mode, in drawing units.
+            </summary>
+            <remarks>
+            System variable STEPSIZE
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.Dw3DPrecision">
+            <remarks>
+            System variable 3DDWFPREC
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.LensLength">
+            <remarks>
+            System variable LENSLENGTH
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.CameraHeight">
+            <remarks>
+            System variable CAMERAHEIGHT
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.SolidsRetainHistory">
+            <remarks>
+            System variable SOLIDHIST
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.ShowSolidsHistory">
+            <remarks>
+            System variable SHOWHIST
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.SweptSolidWidth">
+            <remarks>
+            System variable PSOLWIDTH
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.SweptSolidHeight">
+            <remarks>
+            System variable PSOLHEIGHT
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.DraftAngleFirstCrossSection">
+            <remarks>
+            System variable LOFTANG1
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.DraftAngleSecondCrossSection">
+            <remarks>
+            System variable LOFTANG2
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.DraftMagnitudeFirstCrossSection">
+            <remarks>
+            System variable LOFTMAG1
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.DraftMagnitudeSecondCrossSection">
+            <remarks>
+            System variable LOFTMAG2
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.SolidLoftedShape">
+            <remarks>
+            System variable LOFTPARAM
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.LoftedObjectNormals">
+            <remarks>
+            System variable LOFTNORMALS
+            </remarks>
+        </member>
         <member name="P:ACadSharp.Header.CadHeader.Latitude">
             <summary>
-            Specifies the latitude of the drawing model in decimal format
+            Specifies the latitude of the drawing model in decimal format.
             </summary>
             <remarks>
             System variable LATITUDE
@@ -7182,7 +7698,7 @@
         </member>
         <member name="P:ACadSharp.Header.CadHeader.Longitude">
             <summary>
-            Specifies the longitude of the drawing model in decimal format
+            Specifies the longitude of the drawing model in decimal format.
             </summary>
             <remarks>
             System variable LONGITUDE
@@ -7194,8 +7710,18 @@
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.TimeZone">
+            <summary>
+            Sets the time zone for the sun in the drawing.
+            </summary>
             <remarks>
+            The values in the table are expressed as hours and minutes away from Greenwich Mean Time. You can also change this value in the Geographic Location dialog box when you set or edit geographic location information for the drawing file.
+            <br/>
             System variable TIMEZONE
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.DisplayLightGlyphs">
+            <remarks>
+            System variable LIGHTGLYPHDISPLAY
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.DwgUnderlayFramesVisibility">
@@ -7222,6 +7748,11 @@
             </summary>
             <remarks>
             System variable SHADOWPLANELOCATION
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Header.CadHeader.StyleSheetName">
+            <remarks>
+            System variable STYLESHEET
             </remarks>
         </member>
         <member name="P:ACadSharp.Header.CadHeader.DimensionTextStyleName">
@@ -7850,7 +8381,7 @@
         </member>
         <member name="M:ACadSharp.Header.CadHeader.SetValue(System.String,System.Object[])">
             <summary>
-            Set a valueo of a system variable by name
+            Set a value of a system variable by name
             </summary>
             <param name="systemvar">name of the system var</param>
             <param name="values">parameters for the constructor of the value</param>
@@ -7861,6 +8392,9 @@
             </summary>
             <param name="systemvar"></param>
             <returns>dictionary with the codes and values</returns>
+        </member>
+        <member name="M:ACadSharp.Header.CadHeader.ToString">
+            <inheritdoc/>
         </member>
         <member name="T:ACadSharp.Header.DimensionAssociation">
             <summary>
@@ -8315,6 +8849,14 @@
             default: false
             </value>
         </member>
+        <member name="P:ACadSharp.IO.CadWriterConfiguration.WriteXData">
+            <summary>
+            Will not ignore the <see cref="T:ACadSharp.XData.ExtendedData"/> collection in the <see cref="T:ACadSharp.CadObject"/>.
+            </summary>
+            <value>
+            default: true
+            </value>
+        </member>
         <member name="F:ACadSharp.IO.DWG.CRC.CrcTable">
             <summary>
             Standard 8 bit CRC calculation.
@@ -8540,6 +9082,9 @@
         <member name="M:ACadSharp.IO.DWG.DwgStreamReaderBase.Read2RawDouble">
             <inheritdoc/>
         </member>
+        <member name="M:ACadSharp.IO.DWG.DwgStreamReaderBase.Read3RawDouble">
+            <inheritdoc/>
+        </member>
         <member name="M:ACadSharp.IO.DWG.DwgStreamReaderBase.ReadModularChar">
             <inheritdoc/>
         </member>
@@ -8728,6 +9273,12 @@
         <member name="M:ACadSharp.IO.DWG.IDwgStreamReader.Read2RawDouble">
             <summary>
             2RD : 2 raw doubles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ACadSharp.IO.DWG.IDwgStreamReader.Read3RawDouble">
+            <summary>
+            3RD : 3 raw doubles
             </summary>
             <returns></returns>
         </member>
@@ -9172,7 +9723,7 @@
         <member name="M:ACadSharp.IO.DwgWriter.Dispose">
             <inheritdoc/>
         </member>
-        <member name="M:ACadSharp.IO.DwgWriter.Write(System.String,ACadSharp.CadDocument,ACadSharp.IO.CadWriterConfiguration,ACadSharp.IO.NotificationEventHandler)">
+        <member name="M:ACadSharp.IO.DwgWriter.Write(System.String,ACadSharp.CadDocument,ACadSharp.IO.DWG.DwgWriterConfiguration,ACadSharp.IO.NotificationEventHandler)">
             <summary>
             Write a <see cref="T:ACadSharp.CadDocument"/> into a file
             </summary>
@@ -9525,79 +10076,36 @@
         <member name="P:ACadSharp.Objects.AcdbPlaceHolder.SubclassMarker">
             <inheritdoc/>
         </member>
-        <member name="T:ACadSharp.Objects.BlockVisibilityParameter">
+        <member name="T:ACadSharp.Objects.BookColor">
             <summary>
-            Represents a BLOCKVISIBILITYPARAMETER object, in AutoCAD used to
-            control the visibility state of entities in a dynamic block.
+            Represents a <see cref="T:ACadSharp.Objects.BookColor"/> object.
             </summary>
+            <remarks>
+            Object name <see cref="F:ACadSharp.DxfFileToken.ObjectDBColor"/> <br/>
+            Dxf class name <see cref="F:ACadSharp.DxfSubclassMarker.DbColor"/>
+            </remarks>
         </member>
-        <member name="P:ACadSharp.Objects.BlockVisibilityParameter.ObjectType">
+        <member name="P:ACadSharp.Objects.BookColor.ObjectType">
             <inheritdoc/>
         </member>
-        <member name="P:ACadSharp.Objects.BlockVisibilityParameter.ObjectName">
+        <member name="P:ACadSharp.Objects.BookColor.ObjectName">
             <inheritdoc/>
         </member>
-        <member name="P:ACadSharp.Objects.BlockVisibilityParameter.SubclassMarker">
+        <member name="P:ACadSharp.Objects.BookColor.SubclassMarker">
             <inheritdoc/>
         </member>
-        <member name="P:ACadSharp.Objects.BlockVisibilityParameter.Entities">
-            <summary>
-            Gets the list of all <see cref="T:ACadSharp.Entities.Entity"/> objects of the dynamic block
-            this <see cref="T:ACadSharp.Objects.BlockVisibilityParameter"/> is associated with.
-            </summary>
-        </member>
-        <member name="P:ACadSharp.Objects.BlockVisibilityParameter.SubBlocks">
-            <summary>
-            Gets the list of subblocks each containing a subset of the <see cref="T:ACadSharp.Entities.Entity"/>
-            objects of the dynamic block this <see cref="T:ACadSharp.Objects.BlockVisibilityParameter"/>
-            is associated with.
-            </summary>
-        </member>
-        <member name="P:ACadSharp.Objects.BlockVisibilityParameter.BasePosition">
-            <summary>
-            Gets a position presumably used to display a triangle-button in AutoCAD open
-            a dialog to select the subblock that is to be set visible.
-            </summary>
-        </member>
-        <member name="P:ACadSharp.Objects.BlockVisibilityParameter.ParameterType">
-            <summary>
-            Gets a text presumably describing the purpose of this <see cref="T:ACadSharp.Objects.BlockVisibilityParameter"/>.
-            </summary>
-        </member>
-        <member name="P:ACadSharp.Objects.BlockVisibilityParameter.Name">
-            <summary>
-            Gets a title for the dialog to select the subblock that is to be set visible.
-            </summary>
-        </member>
-        <member name="P:ACadSharp.Objects.BlockVisibilityParameter.Description">
-            <summary>
-            Gets a description presumably for the dialog to select the subblock that is to be set visible.
-            </summary>
-        </member>
-        <member name="P:ACadSharp.Objects.BlockVisibilityParameter.L91">
-            <summary>
-            Unknown
-            </summary>
-        </member>
-        <member name="T:ACadSharp.Objects.BlockVisibilityParameter.SubBlock">
-            <summary>
-            Represents a named subblock containing <see cref="T:ACadSharp.Entities.Entity"/> objects.
-            The visibility of the entities of a subblock can be determined
-            interactively in AutoCAD.
-            </summary>
-        </member>
-        <member name="P:ACadSharp.Objects.BlockVisibilityParameter.SubBlock.Name">
-            <summary>
-            Gets the name of the subblock.
-            </summary>
-        </member>
-        <member name="P:ACadSharp.Objects.BlockVisibilityParameter.SubBlock.Entities">
-            <summary>
-            Get the list of <see cref="T:ACadSharp.Entities.Entity"/> objects in this subblock.
-            </summary>
-        </member>
-        <member name="M:ACadSharp.Objects.BlockVisibilityParameter.Clone">
+        <member name="P:ACadSharp.Objects.BookColor.Name">
             <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.BookColor.ColorName">
+            <summary>
+            Color name.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.BookColor.BookName">
+            <summary>
+            Book name where the color is stored.
+            </summary>
         </member>
         <member name="T:ACadSharp.Objects.CadDictionary">
             <summary>
@@ -9610,62 +10118,62 @@
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.Root">
             <summary>
-            ROOT dictionary, only used in the top level dictionary
+            ROOT dictionary, only used in the top level dictionary.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadColor">
             <summary>
-            ACAD_COLOR dictionary entry
+            ACAD_COLOR dictionary entry.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadGroup">
             <summary>
-            ACAD_GROUP dictionary entry
+            ACAD_GROUP dictionary entry.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadLayout">
             <summary>
-            ACAD_LAYOUT dictionary entry
+            ACAD_LAYOUT dictionary entry.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadMaterial">
             <summary>
-            ACAD_MATERIAL dictionary entry
+            ACAD_MATERIAL dictionary entry.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadSortEnts">
             <summary>
-            ACAD_SORTENTS dictionary entry
+            ACAD_SORTENTS dictionary entry.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadMLeaderStyle">
             <summary>
-            ACAD_MLEADERSTYLE dictionary entry
+            ACAD_MLEADERSTYLE dictionary entry.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadMLineStyle">
             <summary>
-            ACAD_MLINESTYLE dictionary entry
+            ACAD_MLINESTYLE dictionary entry.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadTableStyle">
             <summary>
-            ACAD_TABLESTYLE dictionary entry
+            ACAD_TABLESTYLE dictionary entry.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadPlotSettings">
             <summary>
-            ACAD_PLOTSETTINGS dictionary entry
+            ACAD_PLOTSETTINGS dictionary entry.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.VariableDictionary">
             <summary>
-            AcDbVariableDictionary dictionary entry
+            AcDbVariableDictionary dictionary entry.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadPlotStyleName">
             <summary>
-            ACAD_PLOTSTYLENAME dictionary entry
+            ACAD_PLOTSTYLENAME dictionary entry.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadScaleList">
@@ -9675,17 +10183,22 @@
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadVisualStyle">
             <summary>
-            ACAD_VISUALSTYLE dictionary entry
+            ACAD_VISUALSTYLE dictionary entry.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadFieldList">
             <summary>
-            ACAD_FIELDLIST dictionary entry
+            ACAD_FIELDLIST dictionary entry.
             </summary>
         </member>
         <member name="F:ACadSharp.Objects.CadDictionary.AcadImageDict">
             <summary>
-            ACAD_IMAGE_DICT dictionary entry
+            ACAD_IMAGE_DICT dictionary entry.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Objects.CadDictionary.GeographicData">
+            <summary>
+            ACAD_GEOGRAPHICDATA dictionary entry.
             </summary>
         </member>
         <member name="P:ACadSharp.Objects.CadDictionary.ObjectType">
@@ -9812,12 +10325,21 @@
             Dxf class name <see cref="F:ACadSharp.DxfSubclassMarker.DictionaryWithDefault"/>
             </remarks>
         </member>
+        <member name="P:ACadSharp.Objects.CadDictionaryWithDefault.ObjectType">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.CadDictionaryWithDefault.ObjectName">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.CadDictionaryWithDefault.SubclassMarker">
+            <inheritdoc/>
+        </member>
         <member name="P:ACadSharp.Objects.CadDictionaryWithDefault.DefaultEntry">
             <summary>
-            Default object
+            Default entry.
             </summary>
             <remarks>
-            Currently only used for plot style dictionary's default entry, named “Normal”
+            Currently only used for plot style dictionary's default entry, named “Normal”.
             </remarks>
         </member>
         <member name="M:ACadSharp.Objects.Collections.LayoutCollection.Remove(System.String,ACadSharp.Objects.Layout@)">
@@ -9879,11 +10401,25 @@
         <member name="M:ACadSharp.Objects.Collections.ObjectDictionaryCollection`1.System#Collections#IEnumerable#GetEnumerator">
             <inheritdoc/>
         </member>
-        <member name="M:ACadSharp.Objects.Collections.ScaleCollection.Add(ACadSharp.Objects.Scale)">
+        <member name="F:ACadSharp.Objects.DesignCoordinatesType.Unknown">
             <summary>
-            
+            Unknown.
             </summary>
-            <param name="entry"></param>
+        </member>
+        <member name="F:ACadSharp.Objects.DesignCoordinatesType.LocalGrid">
+            <summary>
+            Local grid.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Objects.DesignCoordinatesType.ProjectedGrid">
+            <summary>
+            Projected grid.
+            </summary>
+        </member>
+        <member name="F:ACadSharp.Objects.DesignCoordinatesType.Geographic">
+            <summary>
+            Geographic (latitude/longitude).
+            </summary>
         </member>
         <member name="T:ACadSharp.Objects.DictionaryCloningFlags">
             <summary>
@@ -9948,80 +10484,368 @@
             Object schema number (currently set to 0)
             </summary>
         </member>
-        <member name="T:ACadSharp.Objects.EvaluationGraph">
+        <member name="P:ACadSharp.Objects.Evaluations.Block1PtParameter.SubclassMarker">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.Block1PtParameter.Location">
             <summary>
-            Represents an evaluation graph containing a list of <see cref="T:ACadSharp.Objects.EvaluationGraph.GraphNode"/>
+            Location for parameter to be placed in the block.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.Block2PtParameter.SubclassMarker">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockElement.SubclassMarker">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockElement.ElementName">
+            <summary>
+            Block element name.
+            </summary>
+        </member>
+        <member name="T:ACadSharp.Objects.Evaluations.BlockLinearParameter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockLinearParameter.ObjectType">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockLinearParameter.ObjectName">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockLinearParameter.SubclassMarker">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockLinearParameter.Label">
+            <summary>
+            Label text.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockParameter.SubclassMarker">
+            <inheritdoc/>
+        </member>
+        <member name="T:ACadSharp.Objects.Evaluations.BlockVisibilityParameter">
+            <summary>
+            Represents a BLOCKVISIBILITYPARAMETER object, in AutoCAD used to
+            control the visibility state of entities in a dynamic block.
+            </summary>
+            <remarks>
+            Object name <see cref="F:ACadSharp.DxfFileToken.ObjectBlockVisibilityParameter"/> <br/>
+            Dxf class name <see cref="F:ACadSharp.DxfSubclassMarker.BlockVisibilityParameter"/>
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockVisibilityParameter.ObjectName">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockVisibilityParameter.SubclassMarker">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockVisibilityParameter.Entities">
+            <summary>
+            Gets the list of all <see cref="T:ACadSharp.Entities.Entity"/> objects of the dynamic block
+            this <see cref="T:ACadSharp.Objects.Evaluations.BlockVisibilityParameter"/> is associated with.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockVisibilityParameter.States">
+            <summary>
+            Gets the list of states each containing a 2 subsets of <see cref="T:ACadSharp.Entities.Entity"/> <br/>
+            Objects must belong to the dynamic <see cref="T:ACadSharp.Objects.Evaluations.BlockVisibilityParameter"/> associated with.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockVisibilityParameter.Name">
+            <summary>
+            Visibility parameter name.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockVisibilityParameter.Description">
+            <summary>
+            Visibility parameter description.
+            </summary>
+        </member>
+        <member name="M:ACadSharp.Objects.Evaluations.BlockVisibilityParameter.Clone">
+            <inheritdoc/>
+        </member>
+        <member name="T:ACadSharp.Objects.Evaluations.BlockVisibilityParameter.State">
+            <summary>
+            Represents a named state containing <see cref="T:ACadSharp.Entities.Entity"/> objects. <br/>
+            The state controls the visibility of the entities assigned to it.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockVisibilityParameter.State.Name">
+            <summary>
+            Gets the name of the state.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockVisibilityParameter.State.Entities">
+            <summary>
+            Get the list of <see cref="T:ACadSharp.Entities.Entity"/> objects in this state.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.BlockVisibilityParameter.State.Expressions">
+            <summary>
+            Get the list of <see cref="T:ACadSharp.Objects.Evaluations.EvaluationExpression"/> objects.
+            </summary>
+        </member>
+        <member name="M:ACadSharp.Objects.Evaluations.BlockVisibilityParameter.State.Clone">
+            <inheritdoc/>
+        </member>
+        <member name="T:ACadSharp.Objects.Evaluations.EvaluationExpression">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationExpression.ObjectType">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationExpression.SubclassMarker">
+            <inheritdoc/>
+        </member>
+        <member name="T:ACadSharp.Objects.Evaluations.EvaluationGraph">
+            <summary>
+            Represents an evaluation graph containing a list of <see cref="T:ACadSharp.Objects.Evaluations.EvaluationGraph.Node"/>
             objects.
             </summary>
         </member>
-        <member name="P:ACadSharp.Objects.EvaluationGraph.ObjectType">
+        <member name="F:ACadSharp.Objects.Evaluations.EvaluationGraph.DictionaryEntryName">
+            <summary>
+            Dictionary entry name for the object <see cref="T:ACadSharp.Objects.Evaluations.EvaluationGraph"/>
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationGraph.ObjectType">
             <inheritdoc/>
         </member>
-        <member name="P:ACadSharp.Objects.EvaluationGraph.ObjectName">
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationGraph.ObjectName">
             <inheritdoc/>
         </member>
-        <member name="P:ACadSharp.Objects.EvaluationGraph.SubclassMarker">
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationGraph.SubclassMarker">
             <inheritdoc/>
         </member>
-        <member name="P:ACadSharp.Objects.EvaluationGraph.Nodes">
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationGraph.Nodes">
             <summary>
-            Gets a list of <see cref="T:ACadSharp.Objects.EvaluationGraph.GraphNode"/> objects.
+            Gets a list of <see cref="T:ACadSharp.Objects.Evaluations.EvaluationGraph.Node"/> objects.
             </summary>
         </member>
-        <member name="T:ACadSharp.Objects.EvaluationGraph.GraphNode">
+        <member name="M:ACadSharp.Objects.Evaluations.EvaluationGraph.Clone">
+            <inheritdoc/>
+        </member>
+        <member name="T:ACadSharp.Objects.Evaluations.EvaluationGraph.Node">
             <summary>
-            Represents a graph node of a <see cref="T:ACadSharp.Objects.EvaluationGraph"/>.
+            Represents a graph node of a <see cref="T:ACadSharp.Objects.Evaluations.EvaluationGraph"/>.
             </summary>
         </member>
-        <member name="P:ACadSharp.Objects.EvaluationGraph.GraphNode.Index">
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationGraph.Node.Index">
             <summary>
-            Gets or sets the index of this <see cref="T:ACadSharp.Objects.EvaluationGraph.GraphNode"/> in the list of
-            graph nodes in the owning <see cref="T:ACadSharp.Objects.EvaluationGraph"/>.
+            Gets or sets the index of this <see cref="T:ACadSharp.Objects.Evaluations.EvaluationGraph.Node"/> in the list of
+            graph nodes in the owning <see cref="T:ACadSharp.Objects.Evaluations.EvaluationGraph"/>.
             </summary>
         </member>
-        <member name="P:ACadSharp.Objects.EvaluationGraph.GraphNode.NextNodeIndex">
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationGraph.Node.NextNodeIndex">
             <summary>
-            Gets or sets the index of the next <see cref="T:ACadSharp.Objects.EvaluationGraph.GraphNode"/> in the list of
-            graph nodes in the owning <see cref="T:ACadSharp.Objects.EvaluationGraph"/>.
+            Gets or sets the index of the next <see cref="T:ACadSharp.Objects.Evaluations.EvaluationGraph.Node"/> in the list of
+            graph nodes in the owning <see cref="T:ACadSharp.Objects.Evaluations.EvaluationGraph"/>.
             </summary>
         </member>
-        <member name="P:ACadSharp.Objects.EvaluationGraph.GraphNode.Next">
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationGraph.Node.Next">
             <summary>
-            Gets the next <see cref="T:ACadSharp.Objects.EvaluationGraph.GraphNode"/> in the list of
-            graph nodes in the owning <see cref="T:ACadSharp.Objects.EvaluationGraph"/>.
+            Gets the next <see cref="T:ACadSharp.Objects.Evaluations.EvaluationGraph.Node"/> in the list of
+            graph nodes in the owning <see cref="T:ACadSharp.Objects.Evaluations.EvaluationGraph"/>.
             </summary>
         </member>
-        <member name="P:ACadSharp.Objects.EvaluationGraph.GraphNode.Flags">
-            <summary>
-            Unknown
-            </summary>
-        </member>
-        <member name="P:ACadSharp.Objects.EvaluationGraph.GraphNode.Data1">
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationGraph.Node.Flags">
             <summary>
             Unknown
             </summary>
         </member>
-        <member name="P:ACadSharp.Objects.EvaluationGraph.GraphNode.Data2">
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationGraph.Node.Data1">
             <summary>
             Unknown
             </summary>
         </member>
-        <member name="P:ACadSharp.Objects.EvaluationGraph.GraphNode.Data3">
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationGraph.Node.Data2">
             <summary>
             Unknown
             </summary>
         </member>
-        <member name="P:ACadSharp.Objects.EvaluationGraph.GraphNode.Data4">
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationGraph.Node.Data3">
             <summary>
             Unknown
             </summary>
         </member>
-        <member name="P:ACadSharp.Objects.EvaluationGraph.GraphNode.NodeObject">
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationGraph.Node.Data4">
             <summary>
-            Gets a <see cref="T:ACadSharp.CadObject"/> associated with this <see cref="T:ACadSharp.CadObject"/>.
+            Unknown
             </summary>
         </member>
-        <member name="M:ACadSharp.Objects.EvaluationGraph.Clone">
+        <member name="P:ACadSharp.Objects.Evaluations.EvaluationGraph.Node.Expression">
+            <summary>
+            Gets a <see cref="T:ACadSharp.Objects.Evaluations.EvaluationExpression"/> associated with this <see cref="T:ACadSharp.Objects.Evaluations.EvaluationGraph.Node"/>.
+            </summary>
+        </member>
+        <member name="T:ACadSharp.Objects.GeoData">
+            <summary>
+            Represents a <see cref="T:ACadSharp.Objects.GeoData"/> object
+            </summary>
+            <remarks>
+            Object name <see cref="F:ACadSharp.DxfFileToken.ObjectGeoData"/> <br/>
+            Dxf class name <see cref="F:ACadSharp.DxfSubclassMarker.GeoData"/>
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.ObjectType">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.ObjectName">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.SubclassMarker">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.Version">
+            <summary>
+            AcDbGeoData Object version.
+            </summary>
+            <remarks>
+            1 - 2009 <br/>
+            2 - 2010 <br/>
+            3 - 2013
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.CoordinatesType">
+            <summary>
+            Type of design coordinates.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.HostBlock">
+            <summary>
+            Host block table record.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.DesignPoint">
+            <summary>
+            Design point, reference point in WCS coordinates.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.ReferencePoint">
+            <summary>
+            Reference point in coordinate system coordinates, valid only when coordinate type is Local Grid.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.NorthDirection">
+            <summary>
+            North direction vector.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.HorizontalUnitScale">
+            <summary>
+            Horizontal unit scale, factor which converts horizontal design coordinates to meters by multiplication.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.VerticalUnitScale">
+            <summary>
+            Vertical unit scale, factor which converts vertical design coordinates to meters by multiplication.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.HorizontalUnits">
+            <summary>
+            Horizontal units.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.VerticalUnits">
+            <summary>
+            Vertical units.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.UpDirection">
+            <summary>
+            Up direction.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.ScaleEstimationMethod">
+            <summary>
+            Scale estimation method.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.EnableSeaLevelCorrection">
+            <summary>
+            Bool flag specifying whether to do sea level correction.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.UserSpecifiedScaleFactor">
+            <summary>
+            User specified scale factor.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.SeaLevelElevation">
+            <summary>
+            Sea level elevation.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.CoordinateProjectionRadius">
+            <summary>
+            Coordinate projection radius.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.CoordinateSystemDefinition">
+            <summary>
+            Coordinate system definition string.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.GeoRssTag">
+            <summary>
+            GeoRSS tag.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.ObservationFromTag">
+            <summary>
+            Observation from tag.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.ObservationToTag">
+            <summary>
+            Observation to tag.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.ObservationCoverageTag">
+            <summary>
+            Observation coverage tag.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.Points">
+            <summary>
+            Geo-Mesh points.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.Faces">
+            <summary>
+            Faces.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.GeoMeshFace.Index1">
+            <summary>
+            Point index for face 1.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.GeoMeshFace.Index2">
+            <summary>
+            Point index for face 2.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.GeoMeshFace.Index3">
+            <summary>
+            Point index for face 3.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.GeoMeshPoint.Source">
+            <summary>
+            Coordinate of source mesh point.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Objects.GeoData.GeoMeshPoint.Destination">
+            <summary>
+            Coordinate of destination mesh point
+            </summary>
+        </member>
+        <member name="M:ACadSharp.Objects.GeoData.GeoMeshPoint.ToString">
             <inheritdoc/>
         </member>
         <member name="T:ACadSharp.Objects.Group">
@@ -11699,6 +12523,9 @@
             The standard class for a basic CAD non-graphical object.
             </summary>
         </member>
+        <member name="P:ACadSharp.Objects.NonGraphicalObject.ObjectType">
+            <inheritdoc/>
+        </member>
         <member name="P:ACadSharp.Objects.NonGraphicalObject.Name">
             <inheritdoc/>
             <remarks>
@@ -12228,7 +13055,7 @@
             <summary>
             Sorter attached to an entity.
             </summary>
-            <param name="entity">Enity in the block to be sorted.</param>
+            <param name="entity">Entity in the block to be sorted.</param>
             <param name="sorterHandle">Sorter handle, will use the entity handle if null.</param>
             <exception cref="T:System.ArgumentException"></exception>
         </member>
@@ -12251,6 +13078,24 @@
             </summary>
             <param name="entity">Enity in the block to be sorted.</param>
             <param name="handle">Sorter handle, will use the entity handle if null.</param>
+        </member>
+        <member name="T:ACadSharp.Objects.TableContent">
+            <summary>
+            Represents a <see cref="T:ACadSharp.Objects.TableContent"/> object.
+            </summary>
+            <remarks>
+            Object name <see cref="F:ACadSharp.DxfFileToken.ObjectTableContent"/> <br/>
+            Dxf class name <see cref="F:ACadSharp.DxfSubclassMarker.TableContent"/>
+            </remarks>
+        </member>
+        <member name="P:ACadSharp.Objects.TableContent.ObjectType">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.TableContent.ObjectName">
+            <inheritdoc/>
+        </member>
+        <member name="P:ACadSharp.Objects.TableContent.SubclassMarker">
+            <inheritdoc/>
         </member>
         <member name="T:ACadSharp.Objects.UnderlayDefinition">
             <summary>
@@ -12367,6 +13212,9 @@
             <br/>
             Is not recommended to modify, add or remove entries to an XRecord unless you know what consequences will cause in the document.
             </remarks>
+        </member>
+        <member name="M:ACadSharp.Objects.XRecord.Entry.ToString">
+            <inheritdoc/>
         </member>
         <member name="P:ACadSharp.Objects.XRecord.ObjectType">
             <inheritdoc/>
@@ -12588,6 +13436,16 @@
         <member name="P:ACadSharp.Tables.BlockRecord.SortEntitiesTable">
             <summary>
             Sort entities table for this block record.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Tables.BlockRecord.IsDynamic">
+            <summary>
+            Active flag if it has an <see cref="T:ACadSharp.Objects.Evaluations.EvaluationGraph"/> attached to it with dynamic expressions.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.Tables.BlockRecord.EvaluationGraph">
+            <summary>
+            Gets the evaluation graph for this block if it has dynamic properties attached to it.
             </summary>
         </member>
         <member name="P:ACadSharp.Tables.BlockRecord.BlockEntity">
@@ -14109,9 +14967,6 @@
             Default text style.
             </summary>
         </member>
-        <member name="P:ACadSharp.Tables.TextStyle.Name">
-            <inheritdoc/>
-        </member>
         <member name="P:ACadSharp.Tables.TextStyle.Flags">
             <summary>
             Style state flags.
@@ -15305,6 +16160,186 @@
             US Survey Miles
             </summary>
         </member>
+        <member name="T:ACadSharp.XData.ExtendedData">
+            <summary>
+            Extended data linked to an <see cref="T:ACadSharp.Tables.AppId"/>.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.XData.ExtendedData.Records">
+            <summary>
+            Records contained in this Extended Data instance.
+            </summary>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedData.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedData.#ctor(System.Collections.Generic.IEnumerable{ACadSharp.XData.ExtendedDataRecord})">
+            <summary>
+            Initialize an instance of <see cref="T:ACadSharp.XData.ExtendedData"/> with a collection of records.
+            </summary>
+            <param name="records">Records to add to the <see cref="T:ACadSharp.XData.ExtendedData"/>.</param>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedData.AddControlStrings">
+            <summary>
+            Make sure that the first and last record are <see cref="T:ACadSharp.XData.ExtendedDataControlString"/>.
+            </summary>
+            <remarks>
+            The first control string must be the opening one and the last one closing.
+            </remarks>
+        </member>
+        <member name="T:ACadSharp.XData.ExtendedDataDictionary">
+            <summary>
+            Dictionary containing all the extended data for a giving <see cref="T:ACadSharp.CadObject"/>, 
+            each entry is identified with an <see cref="T:ACadSharp.Tables.AppId"/> key that identifies the application that
+            has added the collection of Extended Data (XData) into the object.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.XData.ExtendedDataDictionary.Owner">
+            <summary>
+            Owner of the Extended Data dictionary.
+            </summary>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.#ctor(ACadSharp.CadObject)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="owner"></param>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.Add(ACadSharp.Tables.AppId)">
+            <summary>
+            Add an empty entry of ExtendedData for a given <see cref="T:ACadSharp.Tables.AppId"/>.
+            </summary>
+            <param name="app"></param>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.Add(ACadSharp.Tables.AppId,ACadSharp.XData.ExtendedData)">
+            <summary>
+            Add ExtendedData for a specific <see cref="T:ACadSharp.Tables.AppId"/> to the Dictionary.
+            </summary>
+            <param name="app"></param>
+            <param name="extendedData"></param>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.Add(ACadSharp.Tables.AppId,System.Collections.Generic.IEnumerable{ACadSharp.XData.ExtendedDataRecord})">
+            <summary>
+            Add ExtendedData for a specific <see cref="T:ACadSharp.Tables.AppId"/> to the Dictionary.
+            </summary>
+            <param name="app">The AppId object.</param>
+            <param name="records">The ExtendedData records.</param>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.GetExtendedDataByName">
+            <summary>
+            Get the different extended data by it's name.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.Get(System.String)">
+            <summary>
+            Get the Extended data for a given <see cref="T:ACadSharp.Tables.AppId"/> name.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.Get(ACadSharp.Tables.AppId)">
+            <summary>
+            Get ExtendedData for a specific <see cref="T:ACadSharp.Tables.AppId"/> from the Dictionary.
+            </summary>
+            <param name="app">The AppId object.</param>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.TryGet(ACadSharp.Tables.AppId,ACadSharp.XData.ExtendedData@)">
+            <summary>
+            Try to get ExtendedData for a specific <see cref="T:ACadSharp.Tables.AppId"/> from the Dictionary.
+            </summary>
+            <param name="app">The AppId object.</param>
+            <param name="value">ExtendedData object.</param>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.TryGet(System.String,ACadSharp.XData.ExtendedData@)">
+            <summary>
+            Try to get ExtendedData for a specific <see cref="T:ACadSharp.Tables.AppId"/> name from the Dictionary.
+            </summary>
+            <param name="name">The AppId name.</param>
+            <param name="value">ExtendedData object.</param>
+            <returns>true, if found.</returns>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.ContainsKey(ACadSharp.Tables.AppId)">
+            <summary>
+            Check whether a given AppId is in the Dictionary.
+            </summary>
+            <param name="app">The AppId object.</param>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.ContainsKeyName(System.String)">
+            <summary>
+            Check whether a given AppId is in the Dictionary.
+            </summary>
+            <param name="name">The AppId name.</param>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.Clear">
+            <summary>
+            Clear all Dictionary entries.
+            </summary>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataDictionary.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="T:ACadSharp.XData.ExtendedDataRecord">
+            <summary>
+            Defines an <see cref="T:ACadSharp.XData.ExtendedData"/> record.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.XData.ExtendedDataRecord.Code">
+            <summary>
+            Dxf code which defines the value type.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.XData.ExtendedDataRecord.RawValue">
+            <summary>
+            Raw value as an object.
+            </summary>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataRecord.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:ACadSharp.XData.ExtendedDataRecord`1">
+            <summary>
+            Defines a typed <see cref="T:ACadSharp.XData.ExtendedData"/> record.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:ACadSharp.XData.ExtendedDataRecord`1.Value">
+            <summary>
+            Value for this record.
+            </summary>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataReference`1.ResolveReference(ACadSharp.CadDocument)">
+            <summary>
+            Resolve the reference of for an specific <see cref="T:ACadSharp.CadDocument"/>.
+            </summary>
+            <param name="document"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ACadSharp.XData.ExtendedDataReference`1.ACadSharp#XData#IExtendedDataHandleReference#ResolveReference(ACadSharp.CadDocument)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ACadSharp.XData.IExtendedDataHandleReference">
+            <summary>
+            Interface to define <see cref="T:ACadSharp.XData.ExtendedDataRecord"/> that are referencing another <see cref="T:ACadSharp.CadObject"/>.
+            </summary>
+        </member>
+        <member name="P:ACadSharp.XData.IExtendedDataHandleReference.Value">
+            <summary>
+            ulong value that points to a <see cref="P:ACadSharp.IHandledCadObject.Handle"/>.
+            </summary>
+        </member>
+        <member name="M:ACadSharp.XData.IExtendedDataHandleReference.ResolveReference(ACadSharp.CadDocument)">
+            <summary>
+            Resolve the reference of for an specific <see cref="T:ACadSharp.CadDocument"/>.
+            </summary>
+            <param name="document"></param>
+            <returns></returns>
+        </member>
         <member name="T:CSMath.BoundingBox">
             <summary>
             Bounding box representation aligned to XYZ axis.
@@ -15713,11 +16748,12 @@
             <param name="threshold">Tolerance.</param>
             <returns>True if its close to one or false in any other case.</returns>
         </member>
-        <member name="M:CSMath.MathHelper.RadToDeg(System.Double)">
+        <member name="M:CSMath.MathHelper.RadToDeg(System.Double,System.Boolean)">
             <summary>
             Convert a value from radian to degree
             </summary>
             <param name="value">Value in radians</param>
+            <param name="absolute">Calculates the negative values in a 0-360 range.</param>
             <returns>The radian value</returns>
         </member>
         <member name="M:CSMath.MathHelper.DegToRad(System.Double)">
@@ -16220,6 +17256,14 @@
         <member name="M:CSMath.XY.ToString">
             <inheritdoc/>
         </member>
+        <member name="M:CSMath.XY.ToString(System.IFormatProvider)">
+            <summary>
+            Converts the numeric value of this instance to its equivalent string representation
+            using the specified culture-specific format information.
+            </summary>
+            <param name="cultureInfo">An object that supplies culture-specific formatting information.</param>
+            <returns>The string representation of the value of this instance as specified by provider.</returns>
+        </member>
         <member name="M:CSMath.XYZ.op_Addition(CSMath.XYZ,CSMath.XYZ)">
             <summary>
             Adds two vectors together.
@@ -16370,6 +17414,14 @@
         <member name="M:CSMath.XYZ.ToString">
             <inheritdoc/>
         </member>
+        <member name="M:CSMath.XYZ.ToString(System.IFormatProvider)">
+            <summary>
+            Converts the numeric value of this instance to its equivalent string representation
+            using the specified culture-specific format information.
+            </summary>
+            <param name="cultureInfo">An object that supplies culture-specific formatting information.</param>
+            <returns>The string representation of the value of this instance as specified by provider.</returns>
+        </member>
         <member name="M:CSMath.XYZM.op_Addition(CSMath.XYZM,CSMath.XYZM)">
             <summary>
             Adds two vectors together.
@@ -16509,6 +17561,14 @@
         </member>
         <member name="M:CSMath.XYZM.ToString">
             <inheritdoc/>
+        </member>
+        <member name="M:CSMath.XYZM.ToString(System.IFormatProvider)">
+            <summary>
+            Converts the numeric value of this instance to its equivalent string representation
+            using the specified culture-specific format information.
+            </summary>
+            <param name="cultureInfo">An object that supplies culture-specific formatting information.</param>
+            <returns>The string representation of the value of this instance as specified by provider.</returns>
         </member>
         <member name="T:CSUtilities.Attributes.StringValueAttribute">
             <summary>
@@ -16718,7 +17778,17 @@
         </member>
         <member name="T:CSUtilities.Extensions.IDictionaryExtension">
             <summary>
-            Estensions for <see cref="T:System.Collections.Generic.IDictionary`2"/>
+            Extensions for <see cref="T:System.Collections.Generic.IDictionary`2"/>
+            </summary>
+        </member>
+        <member name="T:CSUtilities.Extensions.StreamExtensions">
+            <summary>
+            Stream utility extensions.
+            </summary>
+        </member>
+        <member name="T:CSUtilities.Extensions.StringBuilderExtensions">
+            <summary>
+            StringBuilder utility extensions.
             </summary>
         </member>
         <member name="T:CSUtilities.Extensions.IEnumerableExtensions">
