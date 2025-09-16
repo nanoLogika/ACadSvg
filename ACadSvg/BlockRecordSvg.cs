@@ -7,8 +7,9 @@
 
 using ACadSharp.Entities;
 using ACadSharp.Objects;
-using ACadSharp.Objects.Evaluations;
 using ACadSharp.Tables;
+
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
 namespace ACadSvg {
@@ -114,14 +115,34 @@ namespace ACadSvg {
                         Children.Add(childGroupSvg);
                     }
                 }
-                foreach (var state in dynamicBLock.States) {
+                foreach (var subBlock in dynamicBLock.SubBlocks) {
                     GroupSvg subBlockGroupSvg = new GroupSvg(_ctx) {
-                        ID = $"{_ctx.ConversionOptions.BlockVisibilityParametersPrefix}{Utils.CleanBlockName(state.Name)}"
+                        ID = $"{_ctx.ConversionOptions.BlockVisibilityParametersPrefix}{Utils.CleanBlockName(subBlock.Name)}"
                     };
 
-                    subBlockGroupSvg.Children.AddRange(ConvertEntitiesToSvg(state.Entities, ctx));
+                    subBlockGroupSvg.Children.AddRange(ConvertEntitiesToSvg(subBlock.Entities, ctx));
 
                     Children.Add(subBlockGroupSvg);
+
+                    BlockFlipAction flipAction = null;
+                    BlockFlipParameter flipParameter = null;
+                    foreach (EvaluationExpression expression in state.Expressions) {
+                        if (expression is BlockFlipAction flipActionExpression) {
+                            flipAction = flipActionExpression;
+                        }
+                        else if (expression is BlockFlipParameter flipParameterExpression) {
+                            flipParameter = flipParameterExpression;
+                        }
+                    }
+
+                    //  Accept ONE flip action and parameter
+                    if (flipAction != null && flipParameter != null) {
+                        GroupSvg subBlockGroupFlippedSvg = new GroupSvg(_ctx) {
+                            ID = $"{_ctx.ConversionOptions.BlockVisibilityParametersPrefix}{Utils.CleanBlockName(state.Name)}_F"
+                        };
+                        subBlockGroupFlippedSvg.Children.AddRange(ConvertEntitiesToSvg(flipAction.Entities, flipParameter, ctx));
+                        Children.Add(subBlockGroupFlippedSvg);
+                    }
                 }
             }
 
@@ -137,9 +158,9 @@ namespace ACadSvg {
             if (blockRecord.XDictionary != null && blockRecord.XDictionary.EntryNames.Contains("ACAD_ENHANCEDBLOCK")) {
                 var enhancedBlock = blockRecord.XDictionary["ACAD_ENHANCEDBLOCK"] as EvaluationGraph;
                 if (enhancedBlock != null && enhancedBlock is EvaluationGraph) {
-                    foreach (EvaluationGraph.Node node in enhancedBlock.Nodes) {
-                        if (node.Expression is BlockVisibilityParameter) {
-                            dynamicBLock = (BlockVisibilityParameter)node.Expression;
+                    foreach (EvaluationGraph.GraphNode node in enhancedBlock.Nodes) {
+                        if (node.NodeObject is BlockVisibilityParameter) {
+                            dynamicBLock = (BlockVisibilityParameter)node.NodeObject;
                             break;
                         }
                     }

@@ -9,8 +9,10 @@ using System.Text;
 
 using ACadSharp;
 using ACadSharp.Entities;
+using ACadSharp.Objects.Evaluations;
 using ACadSharp.Tables.Collections;
-using ACadSharp.XData;
+
+using CSMath;
 
 using SvgElements;
 
@@ -96,6 +98,43 @@ namespace ACadSvg {
         }
 
 
+        protected IEnumerable<EntitySvg> ConvertEntitiesToSvg(List<Entity> entities, BlockFlipParameter flipParameter, ConversionContext ctx) {
+            IList<EntitySvg> convertedEntities = new List<EntitySvg>();
+            foreach (Entity entityUnflipped in entities) {
+                Entity entity = flipEntity(entityUnflipped, flipParameter);
+
+                var entitySvg = CreateEntitySvg(entity, ctx);
+                if (entitySvg == null) {
+                    ctx.ConversionInfo.RegisterConversion(entity, ConversionInfo.ConversionStatus.NotSupported);
+                }
+                else if (entitySvg.Skip) {
+                    ctx.ConversionInfo.RegisterConversion(entity, ConversionInfo.ConversionStatus.Skipped);
+                }
+                else {
+                    convertedEntities.Add(entitySvg);
+                    ctx.ConversionInfo.RegisterConversion(entity);
+                }
+            }
+            return convertedEntities;
+        }
+
+        private Entity flipEntity(Entity entityUnflipped, BlockFlipParameter flipParameter) {
+
+            //XY p1 = flipParameter.FirstPoint.ToXY();
+            //XY p2 = flipParameter.SecondPoint.ToXY();
+
+            Entity entity = entityUnflipped;
+            entity.ApplyScaling(new XYZ(-1, 1, 1), XYZ.Zero);
+            if (entity is Insert insert) {
+                //  TODO
+                insert.Rotation = -insert.Rotation;
+            }
+
+            return entity;
+        }
+
+
+
         //  Reserved for future use 
         public static string GetEntityExtendedDataInfo(CadObject entity) {
             StringBuilder exdSb = new StringBuilder();
@@ -106,10 +145,10 @@ namespace ACadSvg {
                 if (extendedData.ContainsKey(appId)) {
                     exdSb.AppendLine();
                     exdSb.Append("    ").Append(appId.Name).Append(":: ");
-                    IList<ExtendedDataRecord> exd = extendedData.Get(appId).Records;
+                    IList<ExtendedDataRecord> exd = extendedData.Get(appId).Data;
                     foreach (var e in exd) {
                         exdSb.AppendLine();
-                        exdSb.Append($"      {e.ToString()}");
+                        exdSb.Append($"      {e.Code.ToString()}: {e.Value.ToString()}");
                         //exdSb.Append(" . ");
                     }
                 }
