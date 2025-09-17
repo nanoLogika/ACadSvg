@@ -44,7 +44,7 @@ Console.WriteLine(ctx.ConversionInfo.GetOccurringEntitiesLog());
 
 ## Dependencies
 * **SvgElements** https://github.com/nanoLogika/SvgElements
-* **ACadSharp (3.2.2)** https://github.com/DomCR/ACadSharp, see also forked repo: https://github.com/nanoLogika/ACadSharp
+* **ACadSharp (3.2.2)** https://github.com/DomCR/ACadSharp
 * **net6.0**
 
 ## WIP
