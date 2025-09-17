@@ -44,11 +44,8 @@ Console.WriteLine(ctx.ConversionInfo.GetOccurringEntitiesLog());
 
 ## Dependencies
 * **SvgElements** https://github.com/nanoLogika/SvgElements
-* **ACadSharp** https://github.com/DomCR/ACadSharp, see also forked repo: https://github.com/nanoLogika/ACadSharp
+* **ACadSharp (3.2.2)** https://github.com/DomCR/ACadSharp, see also forked repo: https://github.com/nanoLogika/ACadSharp
 * **net6.0**
-
-**NOTE:** Currently not all ACadSharp features required by ACadSvg are pushed to [ACadSharp](https://github.com/DomCR/ACadSharp).
-Please use the "merged" branch from [this repository](https://github.com/nanoLogika/ACadSharp).
 
 ## WIP
 The converter does not support all AutoCAD entities. Entitiy types that could not be converted, either because the conversion is not implemented in ACad/SVG or the DWG reader is not implemented in ACadSharp are listed in the conversion log.
