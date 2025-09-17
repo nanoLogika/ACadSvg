@@ -31,6 +31,7 @@ namespace ACadSvg {
         /// It also received the conversion log.</param>
         /// <returns>A <see cref="DocumentSvg" /> representing the read document converted to SVG/XML.</returns>
         public static DocumentSvg LoadDwg(string path, ConversionContext ctx) {
+            ctx.BlocksInDefs.Items.Clear();
             ctx.ConversionInfo.Log($"Loading DWG from \"{path}\" started");
             CadDocument doc = DwgReader.Read(path);
 			DocumentSvg docSvg = new DocumentSvg(doc, ctx);
