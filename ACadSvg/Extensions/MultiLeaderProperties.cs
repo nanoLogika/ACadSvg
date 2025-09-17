@@ -10,7 +10,7 @@ using ACadSharp.Entities;
 using ACadSharp.Objects;
 using ACadSharp.Tables;
 using ACadSharp;
-using static ACadSharp.Objects.MultiLeaderAnnotContext;
+using static ACadSharp.Objects.MultiLeaderObjectContextData;
 using CSMath;
 
 namespace ACadSvg.Extensions {
@@ -37,7 +37,7 @@ namespace ACadSvg.Extensions {
 
         private MultiLeader _multiLeader;
         private MultiLeaderStyle _style;
-        private MultiLeaderAnnotContext _contextData;
+        private MultiLeaderObjectContextData _contextData;
         private MultiLeaderPropertyOverrideFlags _flags;
         private LeaderRoot _leaderRoot;
         private IDictionary<LeaderLine, LeaderLineProperties> _leaderLines = new Dictionary<LeaderLine, LeaderLineProperties>();
@@ -114,7 +114,7 @@ namespace ACadSvg.Extensions {
         }
 
 
-        public LineweightType LineWeight {
+        public LineWeightType LineWeight {
             get {
                 if (_style == null || _flags.HasFlag(MultiLeaderPropertyOverrideFlags.LeaderLineWeight)) {
                     return _multiLeader.LeaderLineWeight;
@@ -533,7 +533,7 @@ namespace ACadSvg.Extensions {
             }
 
 
-            public LineweightType LeaderLineWeight {
+            public LineWeightType LeaderLineWeight {
                 get {
                     if (_leaderLine.OverrideFlags.HasFlag(LeaderLinePropertOverrideFlags.LineWeight)) {
                         return _leaderLine.LineWeight;
