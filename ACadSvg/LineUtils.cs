@@ -19,31 +19,31 @@ namespace ACadSvg {
     internal static class LineUtils {
 
 
-        public static double? GetLineWeight(LineweightType lineWeightType, Entity entity, ConversionContext ctx) {
+        public static double? GetLineWeight(LineWeightType lineWeightType, Entity entity, ConversionContext ctx) {
 
             switch (lineWeightType) {
-            case LineweightType.ByDIPs:
-            case LineweightType.Default:
-                return getLineWeightValue(ctx.ConversionOptions.DefaultLineweight, entity, ctx);
-            case LineweightType.ByBlock:
+            case LineWeightType.ByDIPs:
+            case LineWeightType.Default:
+                return getLineWeightValue(ctx.ConversionOptions.DefaultLineWeight, entity, ctx);
+            case LineWeightType.ByBlock:
                 BlockRecord block = entity.Owner as BlockRecord;
                 if (block == null) {
-                    return getLineWeightValue(ctx.ConversionOptions.DefaultLineweight, entity, ctx);
+                    return getLineWeightValue(ctx.ConversionOptions.DefaultLineWeight, entity, ctx);
                 }
 
-                var lineweightByBlock = block.BlockEntity.LineWeight;
-                if (lineweightByBlock == LineweightType.ByLayer) {
-                    lineweightByBlock = block.BlockEntity.Layer.LineWeight;
+                var lineWeightByBlock = block.BlockEntity.LineWeight;
+                if (lineWeightByBlock == LineWeightType.ByLayer) {
+                    lineWeightByBlock = block.BlockEntity.Layer.LineWeight;
                 }
-                if (lineweightByBlock == LineweightType.Default || lineweightByBlock == LineweightType.ByDIPs) {
-                    return getLineWeightValue(ctx.ConversionOptions.DefaultLineweight, entity, ctx);
+                if (lineWeightByBlock == LineWeightType.Default || lineWeightByBlock == LineWeightType.ByDIPs) {
+                    return getLineWeightValue(ctx.ConversionOptions.DefaultLineWeight, entity, ctx);
                 }
 
-                return getLineWeightValue(lineweightByBlock, entity, ctx);
-            case LineweightType.ByLayer:
+                return getLineWeightValue(lineWeightByBlock, entity, ctx);
+            case LineWeightType.ByLayer:
                 var lv = entity.Layer.LineWeight;
-                if (lv == LineweightType.Default) {
-                    return getLineWeightValue(ctx.ConversionOptions.DefaultLineweight, entity, ctx);
+                if (lv == LineWeightType.Default) {
+                    return getLineWeightValue(ctx.ConversionOptions.DefaultLineWeight, entity, ctx);
                 }
                 return getLineWeightValue(entity.Layer.LineWeight, entity, ctx);
             default:
@@ -53,7 +53,7 @@ namespace ACadSvg {
 
 
         // Convert to millimeters/pixels
-        private static double? getLineWeightValue(LineweightType lineweightType, Entity entity, ConversionContext ctx) {
+        private static double? getLineWeightValue(LineWeightType lineweightType, Entity entity, ConversionContext ctx) {
             CadHeader header = entity.Document.Header;
             double scaleFactor = ctx.ConversionOptions.LineweightScaleFactor;
             if (scaleFactor <= 0) {

@@ -75,7 +75,7 @@ namespace ACadSvg {
         /// <summary>
         /// Gets or sets the default line weight in hundreths of mm.
         /// </summary>
-        public LineweightType DefaultLineweight { get; set; } = LineweightType.W25;
+        public LineWeightType DefaultLineWeight { get; set; } = LineWeightType.W25;
 
 
         /// <summary>
