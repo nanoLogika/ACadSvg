@@ -56,7 +56,7 @@ namespace ACadSvg {
             if (_leader.HasHookline) {
                 var annotationOffset = _leader.AnnotationOffset;
                 var blockOffset = _leader.BlockOffset;
-                var hookLineDirectionF = _leader.HookLineDirection ? -1 : 1;
+                var hookLineDirectionF = _leader.HookLineDirection == HookLineDirection.Opposite ? -1 : 1;
                 var horizontalDirection = _leader.HorizontalDirection * hookLineDirectionF;
                 XYZ landingPoint = vertices[vertices.Count - 1] - horizontalDirection * _leader.Style.ArrowSize;
                 vertices.Insert(vertices.Count - 1, landingPoint);
