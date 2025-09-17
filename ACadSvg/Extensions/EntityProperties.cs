@@ -16,7 +16,7 @@ namespace ACadSvg.Extensions {
 
     /// <summary>
     /// Base class for property classes. Propery classes provide entity properties
-    /// having a standard value defined by the associated style object byt may be
+    /// having a standard value defined by the associated style object but may be
     /// overridden either by explicit properties of the entity object or by the
     /// entity's extended data.
     /// </summary>
@@ -71,16 +71,24 @@ namespace ACadSvg.Extensions {
                 Type type = typeof(T);
                 if (type.IsEnum) {
                     Type intType = type.GetEnumUnderlyingType();
-                    var value = Convert.ChangeType(((ExtendedDataRecord<T>)rec).Value, intType);
-                    if (type.IsEnumDefined(value)) {
-                        return (T)value;
+                    if (rec is ExtendedDataRecord<short> shortRec) {
+                        var value = Convert.ChangeType(shortRec.Value, intType);
+                        if (type.IsEnumDefined(value)) {
+                            return (T)value;
+                        }
+                    }
+                    if (rec is ExtendedDataRecord<int> intRec) {
+                        var value = Convert.ChangeType(intRec.Value, intType);
+                        if (type.IsEnumDefined(value)) {
+                            return (T)value;
+                        }
                     }
                 }
                 if (type == typeof(bool)) {
                     T tbValue = (T)Convert.ChangeType(((ExtendedDataRecord<short>)rec).Value != 0, typeof(bool));
                     return tbValue;
                 }
-                if (((ExtendedDataRecord<object>)rec).Value is T tValue) {
+                if (rec is ExtendedDataRecord<T> recT && recT.Value is T tValue) {
                     return tValue;
                 }
             }
