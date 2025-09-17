@@ -95,9 +95,9 @@ namespace ACadSvg.Extensions {
         /// Gets the value of the <see cref="DimensionStyle.DimensionLineWeight"/> property or the
         /// overriden value from the entity's extended data.
         /// </summary>
-        public LineweightType DimensionLineWeight {
+        public LineWeightType DimensionLineWeight {
             get {
-                return GetExtendedDataValue<LineweightType>(_entity, "ACAD", "DSTYLE", 371, _dimStyle.DimensionLineWeight);
+                return GetExtendedDataValue<LineWeightType>(_entity, "ACAD", "DSTYLE", 371, _dimStyle.DimensionLineWeight);
             }
         }
 
@@ -106,9 +106,9 @@ namespace ACadSvg.Extensions {
         /// Gets the value of the <see cref="DimensionStyle.ExtensionLineWeight"/> property or the
         /// overriden value from the entity's extended data.
         /// </summary>
-        public LineweightType ExtensionLineWeight {
+        public LineWeightType ExtensionLineWeight {
             get {
-                return GetExtendedDataValue<LineweightType>(_entity, "ACAD", "DSTYLE", 372, _dimStyle.ExtensionLineWeight);
+                return GetExtendedDataValue<LineWeightType>(_entity, "ACAD", "DSTYLE", 372, _dimStyle.ExtensionLineWeight);
             }
         }
 
@@ -650,7 +650,7 @@ namespace ACadSvg.Extensions {
         /// </summary>
         public short AngularDimensionDecimalPlaces {
             get {
-                short angularDimensionDecimalPlaces = GetExtendedDataValue<short>(_entity, "ACAD", "DSTYLE", 179, _dimStyle.AngularDimensionDecimalPlaces);
+                short angularDimensionDecimalPlaces = GetExtendedDataValue<short>(_entity, "ACAD", "DSTYLE", 179, _dimStyle.AngularDecimalPlaces);
                 if (angularDimensionDecimalPlaces >= 0) {
                     return angularDimensionDecimalPlaces;
                 }

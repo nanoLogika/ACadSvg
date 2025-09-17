@@ -40,8 +40,8 @@ namespace ACadSvg {
 
 			var ec = _ellipse.Center;
 			var rr = _ellipse.RadiusRatio;
-			//  ep defines the length and rotation of the large axis
-			var ep = _ellipse.EndPoint;
+			//  ep defines the length and rotation of the major axis
+			var ep = _ellipse.MajorAxisEndPoint;
 			var ep2 = new XY(ep.X, ep.Y);
 
 			var cx = ec.X;
