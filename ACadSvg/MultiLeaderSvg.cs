@@ -13,7 +13,7 @@ using ACadSharp.Objects;
 using ACadSharp.Tables;
 using SvgElements;
 using CSMath;
-using static ACadSharp.Objects.MultiLeaderAnnotContext;
+using static ACadSharp.Objects.MultiLeaderObjectContextData;
 using ACadSvg.Extensions;
 using static ACadSvg.Extensions.MultiLeaderProperties;
 
@@ -36,7 +36,7 @@ namespace ACadSvg {
         private MultiLeader _multiLeader;
         private MultiLeaderProperties _mlProps;
         private MultiLeaderStyle _style;
-        private MultiLeaderAnnotContext _contextData;
+        private MultiLeaderObjectContextData _contextData;
         private MultiLeaderPropertyOverrideFlags _flags;
         private double _multiLeaderLineWidth;
         private string _multiLeaderLineColor;
