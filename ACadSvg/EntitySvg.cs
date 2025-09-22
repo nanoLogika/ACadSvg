@@ -11,6 +11,7 @@ using ACadSharp;
 using ACadSharp.Entities;
 using ACadSharp.Objects.Evaluations;
 using ACadSharp.Tables.Collections;
+using ACadSharp.XData;
 
 using CSMath;
 
