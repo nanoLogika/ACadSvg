@@ -5,10 +5,18 @@
 //  See LICENSE file in the project root for full license information.
 #endregion
 
-using ACadSharp.Entities;
-using SvgElements;
-using CSMath;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Net;
+using System.Text;
+
+using ACadSharp.Entities;
+
+using CSMath;
+
+using SvgElements;
+
+using static ACadSharp.Entities.Hatch.BoundaryPath;
 
 
 namespace ACadSvg {
@@ -51,12 +59,12 @@ namespace ACadSvg {
         /// <inheritdoc />
         public override SvgElementBase ToSvgElement() {
             var path = new PathElement();
+            StringBuilder ellarcs = new StringBuilder();
 
             foreach (Hatch.BoundaryPath boundaryPath in _hatch.Paths) {
 
                 IList<Hatch.BoundaryPath.Edge> edges = sortHatchEdges2(boundaryPath.Edges, out Dictionary<Hatch.BoundaryPath.Edge, bool> edgeReverse);
 
-                int ellarcCounter = 0;
                 bool first = true;
 
                 foreach (var edge in edges) {
@@ -65,12 +73,23 @@ namespace ACadSvg {
                     case Hatch.BoundaryPath.EdgeType.CircularArc:
                         Hatch.BoundaryPath.Arc arc = (Hatch.BoundaryPath.Arc)edge;
 
-                        if (first) {
-                            path.AddMoveAndArc(arc.Center.X, arc.Center.Y, arc.StartAngle, arc.EndAngle, arc.Radius, arc.CounterClockWise);
+                        double arcStartAngle;
+                        double arcEndAngle;
+                        bool arcCounterClockWise;
+                        if (reverse) {
+                            arcStartAngle = arc.EndAngle;
+                            arcEndAngle = arc.StartAngle;
+                            arcCounterClockWise = !arc.CounterClockWise;
                         }
                         else {
-                            path.AddLineAndArc(arc.Center.X, arc.Center.Y, arc.StartAngle, arc.EndAngle, arc.Radius, arc.CounterClockWise);
+                            arcStartAngle = arc.StartAngle;
+                            arcEndAngle = arc.EndAngle;
+                            arcCounterClockWise = arc.CounterClockWise;
                         }
+
+                        Utils.ArcToPath(
+                            path, first,
+                            arc.Center, arc.Radius, arcStartAngle, arcEndAngle, arcCounterClockWise);
 
                         first = false;
                         break;
@@ -78,16 +97,35 @@ namespace ACadSvg {
                     case Hatch.BoundaryPath.EdgeType.EllipticArc:
                         Hatch.BoundaryPath.Ellipse ellarc = (Hatch.BoundaryPath.Ellipse)edge;
 
-                        double largeAxis = ellarc.MajorAxisEndPoint.GetLength();
-
-                        if (first) {
-                            path.AddMoveAndArc(ellarc.Center.X, ellarc.Center.Y, ellarc.StartAngle, ellarc.EndAngle, largeAxis, ellarc.CounterClockWise);
+                        double ellStartAngle;
+                        double ellEndAngle;
+                        bool counterClockWise;
+                        if (reverse) {
+                            ellStartAngle = ellarc.EndAngle;
+                            ellEndAngle = ellarc.StartAngle;
+                            counterClockWise = !ellarc.CounterClockWise;
                         }
                         else {
-                            path.AddLineAndArc(ellarc.Center.X, ellarc.Center.Y, ellarc.StartAngle, ellarc.EndAngle, largeAxis, ellarc.CounterClockWise);
+                            ellStartAngle = ellarc.StartAngle;
+                            ellEndAngle = ellarc.EndAngle;
+                            counterClockWise = ellarc.IsCounterclockwise;
                         }
+                        Utils.EllipseArcToPath(
+                            path, first,
+                            ellarc.Center, ellarc.MajorAxisEndPoint, ellarc.MinorToMajorRatio,
+                            ellStartAngle, ellEndAngle, counterClockWise);
 
-                        ellarcCounter++;
+                        PathElement myPath = new PathElement()
+                            .WithClass((counterClockWise ? "CCW" : "CW") + (reverse ? "-r" : ""))
+                            .WithStroke(counterClockWise ? reverse ? "green" : "red" : reverse ? "yellow" : "blue")
+                            .WithStrokeWidth(0.5)
+                            .WithFill("none");
+                        Utils.EllipseArcToPath(
+                            myPath, true,
+                            ellarc.Center, ellarc.MajorAxisEndPoint, ellarc.MinorToMajorRatio,
+                            ellStartAngle, ellEndAngle, counterClockWise);
+
+                        ellarcs.AppendLine(myPath.ToString());
 
                         first = false;
                         break;
@@ -174,12 +212,18 @@ namespace ACadSvg {
                 }
             }
 
+            if (ellarcs.Length > 0) {
+                System.Diagnostics.Debug.WriteLine(this.ID);
+                System.Diagnostics.Debug.WriteLine(ellarcs);
+            }
+
             string hatchPatternName = _hatch.Pattern.Name;
             return path
                 .Close()
                 .WithID(ID)
                 .WithClass(Class)
-                .WithStroke("none").WithFillURL($"#{hatchPatternName}");
+                .WithStroke("aqua")
+                .WithFillURL($"#{hatchPatternName}");
         }
 
 
@@ -234,26 +278,46 @@ namespace ACadSvg {
             if ((startPoint1 - startPoint0).GetLength() < 0.001 || (endPoint1 - startPoint0).GetLength() < 0.001) {
                 edgeReverse.Add(edges[0], true);
                 endPoint = startPoint0;
+                diagnose(0, startPoint0, endPoint0, true, false, edges[0]);
             }
             else {
                 edgeReverse.Add(edges[0], false);
                 endPoint = endPoint0;
+                diagnose(0, startPoint0, endPoint0, false, false, edges[0]);
             }
 
             for (int i = 1; i < edges.Count; i++) {
                 var edge = edges[i];
                 getStartAndEnd(edges[i], out XY startPointi, out XY endPointi);
+
+                bool gap = (startPointi - endPoint).GetLength() > 0.001 && (endPointi - endPoint).GetLength() > 0.001;
+
                 if ((startPointi - endPoint).GetLength() <= (endPointi - endPoint).GetLength()) {
                     edgeReverse.Add(edge, false);
                     endPoint = endPointi;
+                    diagnose(i, startPointi, endPointi, false, gap, edge);
                 }
                 else {
                     edgeReverse.Add(edge, true);
                     endPoint = endPointi;
+                    diagnose(i, startPointi, endPointi, true, gap, edge);
                 }
             }
 
             return edges;
+        }
+
+
+        private static void diagnose(int i, XY startPoint0, XY endPoint0, bool reverse, bool isgap, Edge edge) {
+            string rev = reverse ? "reverse" : "x";
+            string ellProps = string.Empty;
+            string gap = isgap ? "gap" : "x";
+            if (edge is Hatch.BoundaryPath.Ellipse ell) {
+                double rot = Math.Atan2(ell.MajorAxisEndPoint.Y, ell.MajorAxisEndPoint.X) * 180.0 / Math.PI;
+                string ccw = ell.IsCounterclockwise ? "CCW" : "CW";
+                ellProps = $"{ell.Center.X} {ell.Center.Y} {ell.MajorAxisEndPoint.X} {ell.MajorAxisEndPoint.Y} {ell.MinorToMajorRatio}  {rot} {ell.StartAngle * 180 / Math.PI} {ell.EndAngle * 180 / Math.PI} {ccw}";
+            }
+            System.Diagnostics.Debug.WriteLine($"{i} {startPoint0.X} {startPoint0.Y} {endPoint0.X} {endPoint0.Y} {rev} {gap} {ellProps}");
         }
 
 
@@ -263,29 +327,17 @@ namespace ACadSvg {
             switch (edge.Type) {
             case Hatch.BoundaryPath.EdgeType.CircularArc:
                 Hatch.BoundaryPath.Arc arc = (Hatch.BoundaryPath.Arc)edge;
-
-                var fa = arc.CounterClockWise ? 1 : -1;
-                var saa = fa * arc.StartAngle;
-                var eaa = fa * arc.EndAngle;
-
-                getArcStartAndEnd(arc.Center, saa, eaa, arc.Radius, arc.CounterClockWise, out startPoint, out endPoint);
+                Utils.GetArcStartAndEnd(
+                    arc.Center, arc.StartAngle, arc.EndAngle, arc.Radius, arc.CounterClockWise,
+                    out startPoint, out endPoint);
                 break;
 
             case Hatch.BoundaryPath.EdgeType.EllipticArc:
                 Hatch.BoundaryPath.Ellipse ellarc = (Hatch.BoundaryPath.Ellipse)edge;
-
-                var f = ellarc.CounterClockWise ? 1 : -1;
-
-                double largeAxis = ellarc.MajorAxisEndPoint.GetLength();
-                double smallAxis = largeAxis * ellarc.MinorToMajorRatio;
-                var ella = ellarc.MajorAxisEndPoint.GetAngle();
-                var sae = ella + f * ellarc.StartAngle;
-                var eae = ella + f * ellarc.EndAngle;
-
-                if (Math.Round(ellarc.MinorToMajorRatio, 1) != 1) {
-                }
-
-                getArcStartAndEnd(ellarc.Center, sae, eae, largeAxis, ellarc.CounterClockWise, out startPoint, out endPoint);
+                Utils.GetEllipseArcStartAndEnd(
+                    ellarc.Center, ellarc.MajorAxisEndPoint, ellarc.MinorToMajorRatio,
+                    ellarc.StartAngle, ellarc.EndAngle, ellarc.IsCounterclockwise,
+                    out startPoint, out endPoint);
                 break;
 
             case Hatch.BoundaryPath.EdgeType.Line:
@@ -293,11 +345,13 @@ namespace ACadSvg {
                 startPoint = line.Start;
                 endPoint = line.End;
                 break;
+
             case Hatch.BoundaryPath.EdgeType.Polyline:
                 Hatch.BoundaryPath.Polyline polyline = (Hatch.BoundaryPath.Polyline)edge;
                 startPoint = polyline.Vertices[0].ToXY();
                 endPoint = polyline.Vertices[polyline.Vertices.Count - 1].ToXY();
                 break;
+
             case Hatch.BoundaryPath.EdgeType.Spline:
                 Hatch.BoundaryPath.Spline spline = (Hatch.BoundaryPath.Spline)edge;
                 XYZ start = spline.ControlPoints[0];
@@ -306,17 +360,6 @@ namespace ACadSvg {
                 endPoint = new XY(end.X, end.Y);
                 break;
             }
-        }
-
-
-        private static void getArcStartAndEnd(XY c, double sa, double ea, double r, bool counterClockWise, out XY startPoint, out XY endPoint) {
-            var mx = c.X + r * Math.Cos(sa);
-            var my = c.Y + r * Math.Sin(sa);
-            var ex = c.X + r * Math.Cos(ea);
-            var ey = c.Y + r * Math.Sin(ea);
-
-            startPoint = new XY(mx, my);
-            endPoint = new XY(ex, ey);
         }
     }
 }
