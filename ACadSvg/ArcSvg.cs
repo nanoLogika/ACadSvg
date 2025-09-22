@@ -34,20 +34,17 @@ namespace ACadSvg {
 
 		/// <inheritdoc />
 		public override SvgElementBase ToSvgElement() {
-			var c = _arc.Center;
-			var sa = _arc.StartAngle;
-			var ea = _arc.EndAngle;
-			var r = _arc.Radius;
 
-			SvgElementBase pathElement = new PathElement()
-				.AddMoveAndArc(c.X, c.Y, sa, ea, r)
+            PathElement path = new PathElement()
 				.WithID(ID)
 				.WithFill("none")
 				.WithClass(Class)
 				.WithStroke(ColorUtils.GetHtmlColor(_arc, _arc.Color))
 				.WithStrokeWidth(LineUtils.GetLineWeight(_arc.LineWeight, _arc, _ctx));
 
-			return pathElement;
+			Utils.ArcToPath(path, true, _arc.Center.ToXY(), _arc.Radius, _arc.StartAngle, _arc.EndAngle);
+
+			return path;
 		}
     }
 }

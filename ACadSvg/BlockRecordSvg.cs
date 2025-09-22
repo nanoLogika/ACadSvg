@@ -7,6 +7,7 @@
 
 using ACadSharp.Entities;
 using ACadSharp.Objects;
+using ACadSharp.Objects.Evaluations;
 using ACadSharp.Tables;
 
 using System.Linq.Expressions;

@@ -5,12 +5,19 @@
 //  See LICENSE file in the project root for full license information.
 #endregion
 
+using System.IO;
+using System.Net;
+
 using ACadSharp.Entities;
 using ACadSharp.Types.Units;
+
 using ACadSvg.DimensionTextFormatter;
+
 using CSMath;
 
 using SvgElements;
+
+using static ACadSharp.Entities.Hatch.BoundaryPath;
 
 
 namespace ACadSvg {
@@ -38,15 +45,19 @@ namespace ACadSvg {
         /// </summary>
         /// <param name="center">The center of the arc.</param>
         /// <param name="r">The radus of the arc.</param>
-        /// <param name="beginAngle">The angle of the begin of the arc.</param>
+        /// <param name="startAngle">The angle of the begin of the arc.</param>
         /// <param name="endAngle">The angle of the end of the arc.</param>
-        protected void CreateDimensionLineArc(XY center, double r, double beginAngle, double endAngle) {
-            _groupElement.Children.Add(new PathElement()
-                .AddMoveAndArc(center.X, center.Y, beginAngle, endAngle, r)
+        protected void CreateDimensionLineArc(XY center, double r, double startAngle, double endAngle) {
+
+            PathElement path = new PathElement()
                 .WithFill("none")
                 .WithStroke(_dimensionLineColor)
                 .WithFill("none")
-                .WithStrokeWidth(_dimensionLineWidth));
+                .WithStrokeWidth(_dimensionLineWidth);
+
+            Utils.ArcToPath(path, true, center, r, startAngle, endAngle);
+
+            _groupElement.Children.Add(path);
         }
 
 
