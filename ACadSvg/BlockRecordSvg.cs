@@ -7,6 +7,7 @@
 
 using ACadSharp.Entities;
 using ACadSharp.Objects;
+using ACadSharp.Objects.Evaluations;
 using ACadSharp.Tables;
 
 using System.Linq.Expressions;
@@ -81,18 +82,18 @@ namespace ACadSvg {
                 ctx.ConversionInfo.Log($"ExtendedData: {blockExtendedDataInfo}");
             }
 
-            BlockVisibilityParameter dynamicBLock = getDynamicBlock(blockRecord);
+            BlockVisibilityParameter visbílityParameterExpression = getVisibilityParameterExpression(blockRecord);
 
             IList<Entity> blockRecordEntities = new List<Entity>(_blockRecord.Entities);
             GroupSvg childGroupSvg = null;
-            if (dynamicBLock != null) {
+            if (visbílityParameterExpression != null) {
                 //  The Entities list of the BlockVisibilityParameter object contains
                 //  all entities of the dynamic block. The combined set of entities
-                //  of all subblocks is equal to the total list.
+                //  of all states is equal to the total list.
                 //  It is not known whether all entities of the block record appear in
                 //  the dynamic block. Thus create an additonal group to collect the
-                //  rest. Add the "free-entities subblock" as subgroup.
-                foreach (Entity entity in dynamicBLock.Entities) {
+                //  rest. Add the "free-entities state" as subgroup.
+                foreach (Entity entity in visbílityParameterExpression.Entities) {
                     blockRecordEntities.Remove(entity);
                 }
                 if (blockRecordEntities.Count > 0) {
@@ -108,19 +109,19 @@ namespace ACadSvg {
                 this.Children.AddRange(ConvertEntitiesToSvg(blockRecordEntities, ctx));
             }
 
-            if (dynamicBLock != null) {
+            if (visbílityParameterExpression != null) {
                 if (blockRecord.Entities.Count > 0) {
                     //  Close free-elements group
                     if (childGroupSvg != null) {
                         Children.Add(childGroupSvg);
                     }
                 }
-                foreach (var subBlock in dynamicBLock.SubBlocks) {
+                foreach (var state in visbílityParameterExpression.States) {
                     GroupSvg subBlockGroupSvg = new GroupSvg(_ctx) {
-                        ID = $"{_ctx.ConversionOptions.BlockVisibilityParametersPrefix}{Utils.CleanBlockName(subBlock.Name)}"
+                        ID = $"{_ctx.ConversionOptions.BlockVisibilityParametersPrefix}{Utils.CleanBlockName(state.Name)}"
                     };
 
-                    subBlockGroupSvg.Children.AddRange(ConvertEntitiesToSvg(subBlock.Entities, ctx));
+                    subBlockGroupSvg.Children.AddRange(ConvertEntitiesToSvg(state.Entities, ctx));
 
                     Children.Add(subBlockGroupSvg);
 
@@ -153,14 +154,14 @@ namespace ACadSvg {
 		}
 
 
-        private static BlockVisibilityParameter getDynamicBlock(BlockRecord blockRecord) {
+        private static BlockVisibilityParameter getVisibilityParameterExpression(BlockRecord blockRecord) {
             BlockVisibilityParameter dynamicBLock = null;
             if (blockRecord.XDictionary != null && blockRecord.XDictionary.EntryNames.Contains("ACAD_ENHANCEDBLOCK")) {
                 var enhancedBlock = blockRecord.XDictionary["ACAD_ENHANCEDBLOCK"] as EvaluationGraph;
                 if (enhancedBlock != null && enhancedBlock is EvaluationGraph) {
-                    foreach (EvaluationGraph.GraphNode node in enhancedBlock.Nodes) {
-                        if (node.NodeObject is BlockVisibilityParameter) {
-                            dynamicBLock = (BlockVisibilityParameter)node.NodeObject;
+                    foreach (EvaluationGraph.Node node in enhancedBlock.Nodes) {
+                        if (node.Expression is BlockVisibilityParameter blockVisibilityParameter) {
+                            dynamicBLock = blockVisibilityParameter;
                             break;
                         }
                     }
