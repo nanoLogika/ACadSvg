@@ -126,9 +126,7 @@ namespace ACadSvg {
                 arcCenter, startAngle, endAngle, r, counterClockWise,
                 out XY startPoint, out XY endPoint);
 
-            double sweepAngle = endAngle - startAngle;
-            bool largeArc = Math.Abs(sweepAngle) < Math.PI;
-
+            bool largeArc = determineLargeArc(startAngle, endAngle);
             bool sweep = counterClockWise;
 
             if (move) {
@@ -156,7 +154,7 @@ namespace ACadSvg {
                 out XY startPoint, out XY endPoint);
 
             double sweepAngle = endAngle - startAngle;
-            bool largeArc = Math.Abs(sweepAngle) > Math.PI;
+            bool largeArc = determineLargeArc(startAngle, endAngle);
             bool sweep = counterClockWise; // CCW = 1, CW = 0
 
             if (move) {
@@ -209,6 +207,22 @@ namespace ACadSvg {
             endPoint = arcCenter +
                 Math.Cos(endAngle) * majorAxisEndPoint +
                 Math.Sin(endAngle) * minorAxisEndPoint;
+        }
+
+
+        private static bool determineLargeArc(double startAngle, double endAngle) {
+            if (startAngle < 0) {
+                startAngle += 2 * Math.PI;
+            }
+            if (endAngle < 0) {
+                endAngle += 2 * Math.PI;
+            }
+            if (startAngle > endAngle) {
+                return endAngle - startAngle - 2 * Math.PI > Math.PI;
+            }
+            else {
+                return (endAngle - startAngle) > Math.PI;
+            }
         }
     }
 }

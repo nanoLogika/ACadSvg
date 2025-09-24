@@ -108,7 +108,7 @@ namespace ACadSvg {
                         else {
                             ellStartAngle = ellarc.StartAngle;
                             ellEndAngle = ellarc.EndAngle;
-                            counterClockWise = ellarc.IsCounterclockwise;
+                            counterClockWise = ellarc.CounterClockWise;
                         }
                         Utils.EllipseArcToPath(
                             path, first,
@@ -222,7 +222,7 @@ namespace ACadSvg {
                 .Close()
                 .WithID(ID)
                 .WithClass(Class)
-                .WithStroke("aqua")
+                .WithStroke("none")
                 .WithFillURL($"#{hatchPatternName}");
         }
 
@@ -314,7 +314,7 @@ namespace ACadSvg {
             string gap = isgap ? "gap" : "x";
             if (edge is Hatch.BoundaryPath.Ellipse ell) {
                 double rot = Math.Atan2(ell.MajorAxisEndPoint.Y, ell.MajorAxisEndPoint.X) * 180.0 / Math.PI;
-                string ccw = ell.IsCounterclockwise ? "CCW" : "CW";
+                string ccw = ell.CounterClockWise ? "CCW" : "CW";
                 ellProps = $"{ell.Center.X} {ell.Center.Y} {ell.MajorAxisEndPoint.X} {ell.MajorAxisEndPoint.Y} {ell.MinorToMajorRatio}  {rot} {ell.StartAngle * 180 / Math.PI} {ell.EndAngle * 180 / Math.PI} {ccw}";
             }
             System.Diagnostics.Debug.WriteLine($"{i} {startPoint0.X} {startPoint0.Y} {endPoint0.X} {endPoint0.Y} {rev} {gap} {ellProps}");
@@ -336,7 +336,7 @@ namespace ACadSvg {
                 Hatch.BoundaryPath.Ellipse ellarc = (Hatch.BoundaryPath.Ellipse)edge;
                 Utils.GetEllipseArcStartAndEnd(
                     ellarc.Center, ellarc.MajorAxisEndPoint, ellarc.MinorToMajorRatio,
-                    ellarc.StartAngle, ellarc.EndAngle, ellarc.IsCounterclockwise,
+                    ellarc.StartAngle, ellarc.EndAngle, ellarc.CounterClockWise,
                     out startPoint, out endPoint);
                 break;
 
