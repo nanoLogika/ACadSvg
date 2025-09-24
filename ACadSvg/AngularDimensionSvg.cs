@@ -49,13 +49,21 @@ namespace ACadSvg {
         /// <param name="endAngle">The angle of the end of the arc.</param>
         protected void CreateDimensionLineArc(XY center, double r, double startAngle, double endAngle) {
 
+            if (startAngle < 0) {
+                startAngle += 2 * Math.PI;
+            }
+            if (endAngle < 0) {
+                endAngle += 2 * Math.PI;
+            }
+            bool flipped = endAngle < startAngle;
+
             PathElement path = new PathElement()
                 .WithFill("none")
                 .WithStroke(_dimensionLineColor)
                 .WithFill("none")
                 .WithStrokeWidth(_dimensionLineWidth);
 
-            Utils.ArcToPath(path, true, center, r, startAngle, endAngle);
+            Utils.ArcToPath(path, true, center, r, flipped ? endAngle : startAngle, flipped ? startAngle : endAngle);
 
             _groupElement.Children.Add(path);
         }
@@ -75,11 +83,18 @@ namespace ACadSvg {
         protected void GetArrorwsDirection(double r, double firstAngle, double secondAngle, bool firstArrowOutside, bool secondArrowOutside, out double alpha, out XY firstArrowDirection, out XY secondArrowDirection) {
             //  Sehne - kreis - winkel: s = 2 r sin(a/2)
             //  sin(a/2) = s / 2 / r
+            if (firstAngle < 0) {
+                firstAngle += 2 * Math.PI;
+            }
+            if (secondAngle < 0) {
+                secondAngle += 2 * Math.PI;
+            }
+            double f = (secondAngle > firstAngle) ? 1 : -1;  
             alpha = Math.Asin(_arrowSize / 2 / r);
-            double firstAngleAlpha = firstAngle + alpha * (firstArrowOutside ? -1 : 1);
-            double secondAngleAlpha = secondAngle - alpha * (secondArrowOutside ? -1 : 1);
-            firstArrowDirection = new XY(Math.Sin(firstAngleAlpha), -Math.Cos(firstAngleAlpha)) * (firstArrowOutside ? -1 : 1);
-            secondArrowDirection = new XY(-Math.Sin(secondAngleAlpha), Math.Cos(secondAngleAlpha)) * (secondArrowOutside ? -1 : 1);
+            double firstAngleAlpha = firstAngle + alpha * (firstArrowOutside ? -1 : 1) * f;
+            double secondAngleAlpha = secondAngle - alpha * (secondArrowOutside ? -1 : 1) * f;
+            firstArrowDirection = new XY(Math.Sin(firstAngleAlpha), -Math.Cos(firstAngleAlpha)) * (firstArrowOutside ? -1 : 1) * f;
+            secondArrowDirection = new XY(-Math.Sin(secondAngleAlpha), Math.Cos(secondAngleAlpha)) * (secondArrowOutside ? -1 : 1) * f;
         }
 
 
