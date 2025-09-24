@@ -69,9 +69,8 @@ namespace ACadSvg {
 
             double firstAngle = firstExtDir.GetAngle();
             double secondAngle = secondExtDir.GetAngle();
-            bool flipped = secondAngle < firstAngle;
 
-            CreateDimensionLineArc(arcCenter, r, flipped ? secondAngle : firstAngle, flipped ? firstAngle : secondAngle);
+            CreateDimensionLineArc(arcCenter, r, firstAngle, secondAngle);
 
             //  Arrows
             GetArrowsOutside(r * (secondAngle - firstAngle), out bool firstArrowOutside, out bool secondArrowOutside);

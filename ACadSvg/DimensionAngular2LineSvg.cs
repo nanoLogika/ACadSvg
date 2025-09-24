@@ -77,9 +77,7 @@ namespace ACadSvg {
             CreateDebugPoint(arcCenter, "white");           //  evaluated intersection of first an second line
             //  -Debug
 
-            bool flipped = secondAngle < firstAngle;
-
-            CreateDimensionLineArc(arcCenter, r, flipped ? secondAngle : firstAngle, flipped ? firstAngle : secondAngle);
+            CreateDimensionLineArc(arcCenter, r, firstAngle, secondAngle);
 
             //  Lines
             CreateFirstExtensionLine(arcCenter, firstArcPoint, firstExtDir);
