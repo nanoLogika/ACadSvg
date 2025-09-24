@@ -342,7 +342,7 @@ namespace ACadSvg {
 
 
         protected void GetArrowsOutside(double dimensionLineLength, out bool firstArrowOutside, out bool secondArrowOutside) {
-            bool arrowsOutside = dimensionLineLength < _arrowSize * 2.8;
+            bool arrowsOutside = Math.Abs(dimensionLineLength) < _arrowSize * 2.8;
             firstArrowOutside = arrowsOutside ^ _dimension.FlipArrow2;
             secondArrowOutside = arrowsOutside ^ _dimension.FlipArrow1;
         }
