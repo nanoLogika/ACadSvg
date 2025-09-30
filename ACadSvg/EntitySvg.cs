@@ -269,7 +269,10 @@ namespace ACadSvg {
 
             case ObjectType.INSERT:
                 return new InsertSvg(entity, ctx);
-           
+
+            case ObjectType.DIMENSION_ALIGNED:
+                return new DimensionAlignedSvg(entity, ctx);
+
             case ObjectType.DIMENSION_LINEAR:
                 return new DimensionLinearSvg(entity, ctx);
 
