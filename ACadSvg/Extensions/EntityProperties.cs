@@ -164,28 +164,28 @@ namespace ACadSvg.Extensions {
         /// Gets a record from an <see cref="ExtendedData"/> entry with the specified
         /// <see cref="AppId"/> name and 
         /// </summary>
-        private static ExtendedDataRecord getExtendedDataRecord(Entity entity, string appIdName, string entryName, short field) {
-            ExtendedData extendedData = getExtendedData(entity, appIdName, entryName);
+        private static ExtendedDataRecord? getExtendedDataRecord(Entity entity, string appIdName, string entryName, short field) {
+            ExtendedData? extendedData = getExtendedData(entity, appIdName, entryName);
             if (extendedData == null) {
                 return null;
             }
             bool fieldFound = false;
             foreach (ExtendedDataRecord record in extendedData.Records) {
-                if (record.Code == DxfCode.ExtendedDataInteger16) {
-                    if (((ExtendedDataRecord<short>)record).Value == field) {
-                        fieldFound = true;
-                    }
-                }
-                else if (fieldFound) {
-                    //  If preceding record matched.
+                //  If preceding record matched return this record
+                if (fieldFound) {
                     return record;
+                }
+                if (record.Code == DxfCode.ExtendedDataInteger16 &&
+                    ((ExtendedDataRecord<short>)record).Value == field) {
+                    //  Record containing the specified group code found.
+                    fieldFound = true;
                 }
             }
             return null;
         }
 
 
-        private static ExtendedData getExtendedData(Entity entity, string appIdName, string entryName) {
+        private static ExtendedData? getExtendedData(Entity entity, string appIdName, string entryName) {
             ExtendedDataDictionary extendedDataDict = entity.ExtendedData;
             var doc = entity.Document;
             AppIdsTable appIds = doc.AppIds;
