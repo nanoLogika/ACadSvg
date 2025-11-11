@@ -35,7 +35,8 @@ namespace ACadSvg {
 		/// <inheritdoc />
 		public override SvgElementBase ToSvgElement() {
 			var path = new PathElement();
-			path.AddPoints(Utils.VerticesToArray(_polyline.Vertices.ToList()));
+			var vertices = _polyline.Vertices.ToList();
+            path.AddPoints(Utils.VerticesToArray(vertices));
 
 			if (_polyline.IsClosed) {
 				path.Close();

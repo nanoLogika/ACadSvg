@@ -51,6 +51,30 @@ namespace ACadSvg {
         }
 
 
+        public static double[] VerticesToArray(IList<Vertex2D> list) {
+            List<double> result = new List<double>();
+
+            foreach (Vertex2D v in list) {
+                result.Add(v.Location.X);
+                result.Add(v.Location.Y);
+            }
+
+            return result.ToArray();
+        }
+
+
+        public static double[] VerticesToArray(IList<Vertex3D> list) {
+            List<double> result = new List<double>();
+
+            foreach (Vertex3D v in list) {
+                result.Add(v.Location.X);
+                result.Add(v.Location.Y);
+            }
+
+            return result.ToArray();
+        }
+
+
         public static double[] VerticesToArray(IList<XYZ> list) {
             List<double> result = new List<double>();
 
