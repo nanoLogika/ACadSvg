@@ -29,7 +29,6 @@ namespace ACadSvg {
 		public WipeoutSvg(Entity wipeout, ConversionContext ctx) : base(ctx) {
             _wipeout = (Wipeout)wipeout;
             SetStandardIdAndClassIf(wipeout, ctx);
-            _insertAtTopOfTheParentGroup = true;
         }
 
 
