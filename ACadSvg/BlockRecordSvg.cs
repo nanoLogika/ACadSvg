@@ -106,9 +106,16 @@ namespace ACadSvg {
                 }
             }
             else {
-                // Convert full block, use SortEntitiesTable
-				IList<Entity> sortedBlockRecordEntities = _blockRecord.GetSortedEntities().ToList();
-				this.Children.AddRange(ConvertEntitiesToSvg(sortedBlockRecordEntities, ctx));
+                if (_blockRecord.SortEntitiesTable == null)
+                {
+					this.Children.AddRange(ConvertEntitiesToSvg(blockRecord.Entities.ToArray(), ctx));
+				}
+                else
+                {
+					// Convert full block, use SortEntitiesTable
+					IList<Entity> sortedBlockRecordEntities = _blockRecord.GetSortedEntities().ToList();
+					this.Children.AddRange(ConvertEntitiesToSvg(sortedBlockRecordEntities, ctx));
+				}
 			}
 
             if (visibilityParameterExpression != null) {
@@ -123,9 +130,39 @@ namespace ACadSvg {
                         ID = $"{_ctx.ConversionOptions.BlockVisibilityParametersPrefix}{Utils.CleanBlockName(state.Name)}"
                     };
 
-                    subBlockGroupSvg.Children.AddRange(ConvertEntitiesToSvg(state.Entities, ctx));
+                    if (blockRecord.SortEntitiesTable == null)
+                    {
+						subBlockGroupSvg.Children.AddRange(ConvertEntitiesToSvg(state.Entities, ctx));
+					}
+					else
+					{
+						IList<Entity> sortedBlockRecordEntities = _blockRecord.GetSortedEntities().ToList();
 
-                    Children.Add(subBlockGroupSvg);
+						List<Entity> children = new List<Entity>();
+
+                        foreach (var entity in state.Entities)
+                        {
+                            bool containsEntity = false;
+
+                            foreach (var sortedBlockRecordEntity in sortedBlockRecordEntities)
+                            {
+                                if (entity.Handle == sortedBlockRecordEntity.Handle)
+                                {
+                                    containsEntity = true;
+                                    break;
+                                }
+                            }
+
+                            if (containsEntity)
+                            {
+                                children.Add(entity);
+                            }
+                        }
+
+						subBlockGroupSvg.Children.AddRange(ConvertEntitiesToSvg(children, ctx));
+					}
+
+					Children.Add(subBlockGroupSvg);
 
                     BlockFlipAction flipAction = null;
                     BlockFlipParameter flipParameter = null;
