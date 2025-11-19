@@ -106,8 +106,10 @@ namespace ACadSvg {
                 }
             }
             else {
-                this.Children.AddRange(ConvertEntitiesToSvg(blockRecordEntities, ctx));
-            }
+                // Convert full block, use SortEntitiesTable
+				IList<Entity> sortedBlockRecordEntities = _blockRecord.GetSortedEntities().ToList();
+				this.Children.AddRange(ConvertEntitiesToSvg(sortedBlockRecordEntities, ctx));
+			}
 
             if (visbílityParameterExpression != null) {
                 if (blockRecord.Entities.Count > 0) {
