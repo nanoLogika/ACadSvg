@@ -82,18 +82,18 @@ namespace ACadSvg {
                 ctx.ConversionInfo.Log($"ExtendedData: {blockExtendedDataInfo}");
             }
 
-            BlockVisibilityParameter visbilityParameterExpression = getVisibilityParameterExpression(blockRecord);
+            BlockVisibilityParameter visibilityParameterExpression = getVisibilityParameterExpression(blockRecord);
 
             IList<Entity> blockRecordEntities = new List<Entity>(_blockRecord.Entities);
             GroupSvg childGroupSvg = null;
-            if (visbilityParameterExpression != null) {
+            if (visibilityParameterExpression != null) {
                 //  The Entities list of the BlockVisibilityParameter object contains
                 //  all entities of the dynamic block. The combined set of entities
                 //  of all states is equal to the total list.
                 //  It is not known whether all entities of the block record appear in
                 //  the dynamic block. Thus create an additonal group to collect the
                 //  rest. Add the "free-entities state" as subgroup.
-                foreach (Entity entity in visbilityParameterExpression.Entities) {
+                foreach (Entity entity in visibilityParameterExpression.Entities) {
                     blockRecordEntities.Remove(entity);
                 }
                 if (blockRecordEntities.Count > 0) {
@@ -111,14 +111,14 @@ namespace ACadSvg {
 				this.Children.AddRange(ConvertEntitiesToSvg(sortedBlockRecordEntities, ctx));
 			}
 
-            if (visbilityParameterExpression != null) {
+            if (visibilityParameterExpression != null) {
                 if (blockRecord.Entities.Count > 0) {
                     //  Close free-elements group
                     if (childGroupSvg != null) {
                         Children.Add(childGroupSvg);
                     }
                 }
-                foreach (var state in visbilityParameterExpression.States) {
+                foreach (var state in visibilityParameterExpression.States) {
                     GroupSvg subBlockGroupSvg = new GroupSvg(_ctx) {
                         ID = $"{_ctx.ConversionOptions.BlockVisibilityParametersPrefix}{Utils.CleanBlockName(state.Name)}"
                     };
