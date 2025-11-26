@@ -4491,6 +4491,13 @@
         <member name="P:ACadSharp.Entities.MText.ObjectType">
             <inheritdoc/>
         </member>
+        <member name="P:ACadSharp.Entities.MText.PlainText">
+            <summary>
+            Gets the plain text representation of the processed value.
+            </summary>
+            <remarks>This property processes the underlying value and returns its plain text equivalent. The parsing
+            operation may involve removing formatting or extracting meaningful content.</remarks>
+        </member>
         <member name="P:ACadSharp.Entities.MText.RectangleHeight">
             <summary>
             Reference rectangle height.
@@ -4527,6 +4534,12 @@
         <member name="M:ACadSharp.Entities.MText.#ctor">
             <inheritdoc/>
         </member>
+        <member name="M:ACadSharp.Entities.MText.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ACadSharp.Entities.MText"/> class with the specified text value.
+            </summary>
+            <param name="value">The text value to initialize the instance with. Cannot be <see langword="null"/>.</param>
+        </member>
         <member name="M:ACadSharp.Entities.MText.ApplyTransform(CSMath.Transform)">
             <inheritdoc/>
         </member>
@@ -4536,11 +4549,29 @@
         <member name="M:ACadSharp.Entities.MText.GetBoundingBox">
             <inheritdoc/>
         </member>
+        <member name="M:ACadSharp.Entities.MText.GetPlainTextLines">
+            <summary>
+            Splits the plain text into an array of lines based on common line break sequences.
+            </summary>
+            <remarks>The method splits the text using the following line break sequences:  carriage return and line feed
+            ("\r\n"), carriage return ("\r"), line feed ("\n"), and the Unicode paragraph separator ("\P").
+            The resulting array includes all lines, including empty ones.
+            </remarks>
+            <returns>An array of strings, where each string represents a line of text. The array may contain empty strings if the plain
+            text includes consecutive line break sequences.</returns>
+        </member>
         <member name="M:ACadSharp.Entities.MText.GetTextLines">
             <summary>
-            Get the text value separated in lines.
+            Splits the text into an array of lines based on common line break sequences.
             </summary>
-            <returns></returns>
+            <remarks>The method splits the text using the following line break sequences: carriage return and line feed
+            ("\r\n"), carriage return ("\r"),  line feed ("\n"), and the Unicode paragraph separator ("\P").
+            The resulting array includes all lines, including empty ones.
+            </remarks>
+            <returns>
+            An array of strings, where each string represents a line of text. The array may contain empty strings if the
+            text includes consecutive line break sequences.
+            </returns>
         </member>
         <member name="P:ACadSharp.Entities.MText.TextColumn.ColumnType">
             <summary>
@@ -20698,19 +20729,19 @@
             <returns>true if the value parameter is null or System.String.Empty, or if value consists exclusively of white-space characters.</returns>
         </member>
         <member name="M:CSUtilities.Extensions.StringExtensions.TrowIfNullOrEmpty(System.String)">
-            <summary>
+             <summary>
             
-            </summary>
-            <param name="str"></param>
-            <exception cref="T:System.ArgumentException"></exception>
+             </summary>
+             <param name="str"></param>
+             <exception cref="T:System.ArgumentException"></exception>
         </member>
         <member name="M:CSUtilities.Extensions.StringExtensions.TrowIfNullOrEmpty(System.String,System.String)">
-            <summary>
+             <summary>
             
-            </summary>
-            <param name="str"></param>
-            <param name="message"></param>
-            <exception cref="T:System.ArgumentException"></exception>
+             </summary>
+             <param name="str"></param>
+             <param name="message"></param>
+             <exception cref="T:System.ArgumentException"></exception>
         </member>
         <member name="M:CSUtilities.Extensions.StringExtensions.GetLines(System.String)">
             <summary>
@@ -20772,7 +20803,7 @@
             <param name="residual">The last part of the string.</param>
             <returns></returns>
         </member>
-        <member name="M:CSUtilities.Extensions.StringExtensions.RemoveStartWhitespaces(System.String)">
+        <member name="M:CSUtilities.Extensions.StringExtensions.RemoveStartWhiteSpaces(System.String)">
             <summary>
             Remove all the first whitespaces in a string.
             </summary>
@@ -20821,6 +20852,14 @@
             <param name="keepCollons"></param>
             <param name="ignoreEmpty"></param>
             <returns></returns>
+        </member>
+        <member name="M:CSUtilities.Extensions.StringExtensions.TryGet(System.String,System.Int32)">
+            <summary>
+            Attempts to retrieve the character at the specified index in the string.
+            </summary>
+            <param name="str">The string from which to retrieve the character. Cannot be <see langword="null"/>.</param>
+            <param name="index">The zero-based index of the character to retrieve.</param>
+            <returns>The character at the specified index, or <see langword="null"/> if the index is out of range.</returns>
         </member>
         <member name="T:CSUtilities.Text.CodePage">
             <summary>
