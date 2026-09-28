@@ -44,8 +44,8 @@ Console.WriteLine(ctx.ConversionInfo.GetOccurringEntitiesLog());
 
 ## Dependencies
 * **SvgElements** https://github.com/nanoLogika/SvgElements
-* **ACadSharp (3.2.2)** https://github.com/DomCR/ACadSharp
-* **net6.0**
+* **ACadSharp (local assembly 3.7.16)** https://github.com/DomCR/ACadSharp
+* **net8.0**
 
 ## WIP
 The converter does not support all AutoCAD entities. Entitiy types that could not be converted, either because the conversion is not implemented in ACad/SVG or the DWG reader is not implemented in ACadSharp are listed in the conversion log.
@@ -54,3 +54,31 @@ Notice that this project is in an alpha version, not all the features are implem
 
 ## Contributions
 Please feel free to fork this repo and send a pull request if you want to contribute to this project.
+
+## ACadSharp 3.7 migration
+
+Validated against the local ACadSharp 3.7.16.0 build at
+`W:\SVG\ACadSharp\DomCR-ACadSharp-Master\src\ACadSharp\bin\Debug\net8.0\ACadSharp.dll`.
+Run `copyACadSharp.bat` to copy its DLL and PDB into both Imports folders.
+All three projects reference the DLLs in Imports.
+The published NuGet release at migration time is 3.7.1; this project continues
+to use the supplied local DLL rather than replacing it with the NuGet package.
+
+API adaptations:
+* Import CSMath.Extensions for vector operations.
+* Iterate BlockVisibilityParameter.States.Values.
+* Use Hatch.BoundaryPath.Ellipse.RadiusRatio.
+* Translate AngularZeroHandling values 0/1/2/3 to the decimal formatter's
+  ZeroHandling values 0/4/8/12 after reading dimension-style overrides.
+
+ACadSvgStudio references the ACadSvg project directly so builds use the updated
+converter without manually copying ACadSvg.dll.
+
+Validation:
+* Build the containing ACadSvgSuite.sln.
+* Run ACadSvg.Test with filter FullyQualifiedName~ACadSharpMigrationTests for
+  decimal angular formatting and dynamic visibility group regression coverage.
+* The full existing MText suite currently reports failures in TestFont,
+  TestSubSpanFont and TestSubSpanOverstrike. Those cases have not been changed
+  as part of this migration.
+* Representative production DWG files still need a visual conversion check.

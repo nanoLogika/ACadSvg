@@ -82,18 +82,28 @@ namespace ACadSvg {
                 ctx.ConversionInfo.Log($"ExtendedData: {blockExtendedDataInfo}");
             }
 
-            BlockVisibilityParameter visbílityParameterExpression = getVisibilityParameterExpression(blockRecord);
+            BlockVisibilityParameter visbilityParameterExpression = getVisibilityParameterExpression(blockRecord);
 
-            IList<Entity> blockRecordEntities = new List<Entity>(_blockRecord.Entities);
+            // Visibility lists describe membership, not drawing order. Reuse the
+            // owning block's order for every subset, including flip actions.
+            List<Entity> sortedBlockRecordEntities = _blockRecord.GetSortedEntities().ToList();
+            var drawOrder = sortedBlockRecordEntities
+                .Select((entity, index) => (entity, index))
+                .ToDictionary(item => item.entity, item => item.index);
+            List<Entity> sortSubset(IEnumerable<Entity> entities) =>
+                entities.OrderBy(entity => drawOrder.TryGetValue(entity, out int index)
+                    ? index : int.MaxValue).ToList();
+
+            IList<Entity> blockRecordEntities = new List<Entity>(sortedBlockRecordEntities);
             GroupSvg childGroupSvg = null;
-            if (visbílityParameterExpression != null) {
+            if (visbilityParameterExpression != null) {
                 //  The Entities list of the BlockVisibilityParameter object contains
                 //  all entities of the dynamic block. The combined set of entities
                 //  of all states is equal to the total list.
                 //  It is not known whether all entities of the block record appear in
                 //  the dynamic block. Thus create an additonal group to collect the
                 //  rest. Add the "free-entities state" as subgroup.
-                foreach (Entity entity in visbílityParameterExpression.Entities) {
+                foreach (Entity entity in visbilityParameterExpression.Entities) {
                     blockRecordEntities.Remove(entity);
                 }
                 if (blockRecordEntities.Count > 0) {
@@ -106,22 +116,17 @@ namespace ACadSvg {
                 }
             }
             else {
-                this.Children.AddRange(ConvertEntitiesToSvg(blockRecordEntities, ctx));
+                //  Convert full block, use SortEntitiesTable
+                this.Children.AddRange(ConvertEntitiesToSvg(sortedBlockRecordEntities, ctx));
             }
 
-            if (visbílityParameterExpression != null) {
-                if (blockRecord.Entities.Count > 0) {
-                    //  Close free-elements group
-                    if (childGroupSvg != null) {
-                        Children.Add(childGroupSvg);
-                    }
-                }
-                foreach (var state in visbílityParameterExpression.States) {
+            if (visbilityParameterExpression != null) {
+                foreach (var state in visbilityParameterExpression.States.Values) {
                     GroupSvg subBlockGroupSvg = new GroupSvg(_ctx) {
                         ID = $"{_ctx.ConversionOptions.BlockVisibilityParametersPrefix}{Utils.CleanBlockName(state.Name)}"
                     };
 
-                    subBlockGroupSvg.Children.AddRange(ConvertEntitiesToSvg(state.Entities, ctx));
+                    subBlockGroupSvg.Children.AddRange(ConvertEntitiesToSvg(sortSubset(state.Entities), ctx));
 
                     Children.Add(subBlockGroupSvg);
 
@@ -141,7 +146,7 @@ namespace ACadSvg {
                         GroupSvg subBlockGroupFlippedSvg = new GroupSvg(_ctx) {
                             ID = $"{_ctx.ConversionOptions.BlockVisibilityParametersPrefix}{Utils.CleanBlockName(state.Name)}_F"
                         };
-                        subBlockGroupFlippedSvg.Children.AddRange(ConvertEntitiesToSvg(flipAction.Entities, flipParameter, ctx));
+                        subBlockGroupFlippedSvg.Children.AddRange(ConvertEntitiesToSvg(sortSubset(flipAction.Entities), flipParameter, ctx));
                         Children.Add(subBlockGroupFlippedSvg);
                     }
                 }

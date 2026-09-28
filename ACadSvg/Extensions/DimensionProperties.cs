@@ -661,7 +661,15 @@ namespace ACadSvg.Extensions {
 
         public ZeroHandling AngularZeroHandling {
             get {
-                return GetExtendedDataValue<ZeroHandling>(_entity, "ACAD", "DSTYLE", 79, _dimStyle.AngularZeroHandling);
+                AngularZeroHandling handling = GetExtendedDataValue<AngularZeroHandling>(
+                    _entity, "ACAD", "DSTYLE", 79, _dimStyle.AngularZeroHandling);
+                // Angular suppression uses values 0..3; decimal suppression uses 0, 4, 8, 12.
+                return handling switch {
+                    ACadSharp.Tables.AngularZeroHandling.SuppressLeadingZeroes => ZeroHandling.SuppressDecimalLeadingZeroes,
+                    ACadSharp.Tables.AngularZeroHandling.SupressTrailingZeroes => ZeroHandling.SuppressDecimalTrailingZeroes,
+                    ACadSharp.Tables.AngularZeroHandling.SupressAll => ZeroHandling.SuppressDecimalLeadingAndTrailingZeroes,
+                    _ => ZeroHandling.SuppressZeroFeetAndInches
+                };
             }
         }
 
