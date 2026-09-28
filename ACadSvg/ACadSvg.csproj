@@ -29,6 +29,8 @@
 
   <ItemGroup>
     <Folder Include="Imports\" />
+    <Using Include="CSMath.Extensions" />
+    <InternalsVisibleTo Include="ACadSvg.Test" />
   </ItemGroup>
 
   <ItemGroup>

@@ -112,7 +112,7 @@ namespace ACadSvg {
                         }
                         Utils.EllipseArcToPath(
                             path, first,
-                            ellarc.Center, ellarc.MajorAxisEndPoint, ellarc.MinorToMajorRatio,
+                            ellarc.Center, ellarc.MajorAxisEndPoint, ellarc.RadiusRatio,
                             ellStartAngle, ellEndAngle, counterClockWise);
 
                         PathElement myPath = new PathElement()
@@ -122,7 +122,7 @@ namespace ACadSvg {
                             .WithFill("none");
                         Utils.EllipseArcToPath(
                             myPath, true,
-                            ellarc.Center, ellarc.MajorAxisEndPoint, ellarc.MinorToMajorRatio,
+                            ellarc.Center, ellarc.MajorAxisEndPoint, ellarc.RadiusRatio,
                             ellStartAngle, ellEndAngle, counterClockWise);
 
                         ellarcs.AppendLine(myPath.ToString());
@@ -315,7 +315,7 @@ namespace ACadSvg {
             if (edge is Hatch.BoundaryPath.Ellipse ell) {
                 double rot = Math.Atan2(ell.MajorAxisEndPoint.Y, ell.MajorAxisEndPoint.X) * 180.0 / Math.PI;
                 string ccw = ell.CounterClockWise ? "CCW" : "CW";
-                ellProps = $"{ell.Center.X} {ell.Center.Y} {ell.MajorAxisEndPoint.X} {ell.MajorAxisEndPoint.Y} {ell.MinorToMajorRatio}  {rot} {ell.StartAngle * 180 / Math.PI} {ell.EndAngle * 180 / Math.PI} {ccw}";
+                ellProps = $"{ell.Center.X} {ell.Center.Y} {ell.MajorAxisEndPoint.X} {ell.MajorAxisEndPoint.Y} {ell.RadiusRatio}  {rot} {ell.StartAngle * 180 / Math.PI} {ell.EndAngle * 180 / Math.PI} {ccw}";
             }
             System.Diagnostics.Debug.WriteLine($"{i} {startPoint0.X} {startPoint0.Y} {endPoint0.X} {endPoint0.Y} {rev} {gap} {ellProps}");
         }
@@ -335,7 +335,7 @@ namespace ACadSvg {
             case Hatch.BoundaryPath.EdgeType.EllipticArc:
                 Hatch.BoundaryPath.Ellipse ellarc = (Hatch.BoundaryPath.Ellipse)edge;
                 Utils.GetEllipseArcStartAndEnd(
-                    ellarc.Center, ellarc.MajorAxisEndPoint, ellarc.MinorToMajorRatio,
+                    ellarc.Center, ellarc.MajorAxisEndPoint, ellarc.RadiusRatio,
                     ellarc.StartAngle, ellarc.EndAngle, ellarc.CounterClockWise,
                     out startPoint, out endPoint);
                 break;
