@@ -57,7 +57,10 @@ Please feel free to fork this repo and send a pull request if you want to contri
 
 ## ACadSharp 3.7 migration
 
-Validated against the existing Imports/ACadSharp.dll (file version 3.7.16.0).
+Validated against the local ACadSharp 3.7.16.0 build at
+`W:\SVG\ACadSharp\DomCR-ACadSharp-Master\src\ACadSharp\bin\Debug\net8.0\ACadSharp.dll`.
+Run `copyACadSharp.bat` to copy its DLL and PDB into both Imports folders.
+All three projects reference the DLLs in Imports.
 The published NuGet release at migration time is 3.7.1; this project continues
 to use the supplied local DLL rather than replacing it with the NuGet package.
 
